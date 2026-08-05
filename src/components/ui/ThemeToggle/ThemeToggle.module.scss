@@ -1,0 +1,37 @@
+@use '../../../styles/spacing' as *;
+
+.toggle {
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  background: transparent;
+  border: 1px solid var(--border-subtle);
+  cursor: pointer;
+  transition: all 0.25s ease;
+
+  &:hover {
+    border-color: var(--accent-primary);
+    background: var(--accent-glow);
+  }
+
+  &:focus-visible {
+    outline: 2px solid var(--accent-primary);
+    outline-offset: 2px;
+  }
+}
+
+.icon {
+  width: 18px;
+  height: 18px;
+  transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  color: var(--text-secondary);
+}
+
+.toggle:hover .icon {
+  color: var(--accent-secondary);
+  transform: rotate(15deg);
+}

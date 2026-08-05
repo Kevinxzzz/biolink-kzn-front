@@ -1,0 +1,96 @@
+@use '../../../styles/spacing' as *;
+@use '../../../styles/typography' as *;
+@use '../../../styles/mixins' as *;
+
+.header {
+  text-align: center;
+  margin-bottom: $space-3xl;
+}
+
+.title {
+  font-size: $text-4xl;
+  margin-bottom: $space-md;
+}
+
+.subtitle {
+  color: var(--text-secondary);
+  max-width: 600px;
+  margin: 0 auto;
+}
+
+.list {
+  max-width: 800px;
+  margin: 0 auto;
+  display: flex;
+  flex-direction: column;
+  gap: $space-md;
+}
+
+// Accordion Item
+.item {
+  background: var(--bg-elevated);
+  border: 1px solid var(--border-subtle);
+  border-radius: $radius-lg;
+  overflow: hidden;
+  transition: border-color 0.3s ease, background-color 0.3s ease;
+
+  &.isOpen {
+    border-color: var(--border-accent);
+    background: var(--bg-primary); // Subtle contrast shift
+  }
+}
+
+.trigger {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: $space-lg;
+  text-align: left;
+  background: transparent;
+  border: none;
+  cursor: pointer;
+  
+  @include focus-visible;
+}
+
+.question {
+  font-size: $text-lg;
+  font-weight: $weight-medium;
+  color: var(--text-primary);
+  padding-right: $space-lg;
+}
+
+.icon {
+  flex-shrink: 0;
+  width: 24px;
+  height: 24px;
+  color: var(--text-secondary);
+  transition: transform 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+  
+  .isOpen & {
+    transform: rotate(45deg);
+    color: var(--accent-primary);
+  }
+}
+
+// Grid transition wrapper
+.contentWrapper {
+  display: grid;
+  grid-template-rows: 0fr;
+  transition: grid-template-rows 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+
+  .isOpen & {
+    grid-template-rows: 1fr;
+  }
+}
+
+.contentInner {
+  overflow: hidden;
+}
+
+.answer {
+  padding: 0 $space-lg $space-lg;
+  color: var(--text-secondary);
+  line-height: $leading-relaxed;
+}

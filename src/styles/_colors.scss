@@ -1,0 +1,31 @@
+// ============================================
+// KZN Color System
+// ============================================
+
+// Dark theme (default)
+$dark-bg-primary: #09080e;
+$dark-bg-elevated: #12111a;
+$dark-bg-glass: rgba(18, 17, 26, 0.72);
+$dark-text-primary: #f0eef6;
+$dark-text-secondary: #a09bb0;
+$dark-text-muted: #6b6580;
+$dark-accent-primary: #8b5cf6;
+$dark-accent-secondary: #c084fc;
+$dark-accent-glow: rgba(139, 92, 246, 0.15);
+$dark-accent-glow-strong: rgba(139, 92, 246, 0.3);
+$dark-border-subtle: rgba(255, 255, 255, 0.06);
+$dark-border-accent: rgba(139, 92, 246, 0.3);
+
+// Light theme
+$light-bg-primary: #faf9fe;
+$light-bg-elevated: #ffffff;
+$light-bg-glass: rgba(255, 255, 255, 0.72);
+$light-text-primary: #1a1625;
+$light-text-secondary: #64607a;
+$light-text-muted: #9690a6;
+$light-accent-primary: #7c3aed;
+$light-accent-secondary: #a855f7;
+$light-accent-glow: rgba(124, 58, 237, 0.08);
+$light-accent-glow-strong: rgba(124, 58, 237, 0.16);
+$light-border-subtle: rgba(0, 0, 0, 0.06);
+$light-border-accent: rgba(124, 58, 237, 0.3);
