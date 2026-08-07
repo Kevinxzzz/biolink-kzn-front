@@ -1,0 +1,74 @@
+@use '../../../styles/mixins' as *;
+@use '../../../styles/spacing' as *;
+@use '../../../styles/typography' as *;
+
+.button {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: $space-xs;
+  padding: $space-sm $space-xl;
+  font-weight: $weight-semibold;
+  font-size: $text-sm;
+  line-height: $leading-normal;
+  letter-spacing: $tracking-wide;
+  border-radius: $radius-pill;
+  transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+  white-space: nowrap;
+  cursor: pointer;
+  user-select: none;
+  text-decoration: none;
+
+  @include focus-visible;
+
+  @include reduced-motion {
+    transition: none;
+  }
+
+  &.primary {
+    background: var(--accent-primary);
+    color: #ffffff;
+    box-shadow: 0 0 0 0 transparent;
+
+    &:hover {
+      transform: translateY(-1px) scale(1.02);
+      box-shadow: 0 8px 32px var(--accent-glow-strong), 0 0 0 1px var(--accent-primary);
+    }
+
+    &:active {
+      transform: translateY(0) scale(0.98);
+    }
+  }
+
+  &.secondary {
+    background: transparent;
+    color: var(--text-primary);
+    border: 1px solid var(--border-subtle);
+
+    &:hover {
+      border-color: var(--accent-primary);
+      color: var(--accent-secondary);
+      background: var(--accent-glow);
+    }
+  }
+
+  &.ghost {
+    background: transparent;
+    color: var(--text-secondary);
+
+    &:hover {
+      color: var(--text-primary);
+      background: var(--accent-glow);
+    }
+  }
+
+  &.lg {
+    padding: $space-md $space-2xl;
+    font-size: $text-base;
+  }
+
+  &.sm {
+    padding: $space-2xs $space-md;
+    font-size: $text-xs;
+  }
+}

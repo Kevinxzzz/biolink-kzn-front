@@ -1,0 +1,57 @@
+@use '../../../styles/spacing' as *;
+@use '../../../styles/typography' as *;
+@use '../../../styles/mixins' as *;
+
+.footer {
+  border-top: 1px solid var(--border-subtle);
+  background: var(--bg-primary);
+  padding: $space-3xl 0 $space-xl;
+}
+
+.inner {
+  display: flex;
+  flex-direction: column;
+  gap: $space-xl;
+
+  @include md {
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+  }
+}
+
+.logo {
+  font-size: $text-2xl;
+  font-weight: $weight-extrabold;
+  letter-spacing: $tracking-tight;
+  color: var(--text-primary);
+  text-decoration: none;
+}
+
+.logoAccent {
+  color: var(--accent-primary);
+}
+
+.links {
+  display: flex;
+  gap: $space-lg;
+  flex-wrap: wrap;
+}
+
+.link {
+  font-size: $text-sm;
+  color: var(--text-secondary);
+  transition: color 0.2s ease;
+  text-decoration: none;
+
+  &:hover {
+    color: var(--text-primary);
+  }
+}
+
+.copy {
+  margin-top: $space-2xl;
+  text-align: center;
+  font-size: $text-sm;
+  color: var(--text-muted);
+}
