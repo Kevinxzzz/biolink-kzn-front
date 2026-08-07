@@ -1,0 +1,74 @@
+@use '../../../../styles/spacing' as *;
+@use '../../../../styles/typography' as *;
+@use '../../../../styles/mixins' as *;
+
+.hero {
+  position: relative;
+  min-height: 100dvh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+  padding-top: $space-4xl; // Account for header
+}
+
+.inner {
+  position: relative;
+  z-index: 10;
+  width: 100%;
+  max-width: $container-max-width;
+  margin-inline: auto;
+  padding-inline: $container-padding;
+  text-align: center;
+}
+
+.content {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: $space-xl;
+  max-width: 800px;
+  margin-inline: auto;
+}
+
+.title {
+  font-size: $text-hero;
+  font-weight: $weight-extrabold;
+  line-height: $leading-tight;
+  letter-spacing: $tracking-tight;
+  color: var(--text-primary);
+  margin: 0;
+
+  span {
+    background: linear-gradient(135deg, var(--accent-primary), var(--accent-secondary));
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+    color: transparent;
+  }
+}
+
+.description {
+  font-size: $text-xl;
+  color: var(--text-secondary);
+  line-height: $leading-relaxed;
+  max-width: 600px;
+  margin: 0;
+
+  @include md {
+    font-size: $text-2xl;
+  }
+}
+
+.cta {
+  display: flex;
+  flex-direction: column;
+  gap: $space-md;
+  align-items: center;
+  margin-top: $space-lg;
+
+  @include md {
+    flex-direction: row;
+    gap: $space-lg;
+  }
+}

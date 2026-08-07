@@ -1,0 +1,336 @@
+@use '../../../styles/spacing' as *;
+@use '../../../styles/typography' as *;
+@use '../../../styles/mixins' as *;
+
+.page {
+  display: flex;
+  flex-direction: column;
+  gap: $space-2xl;
+}
+
+// ============================================
+// Header & Filters
+// ============================================
+.header {
+  display: flex;
+  flex-direction: column;
+  gap: $space-md;
+
+  @include md {
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-between;
+  }
+}
+
+.pageTitle {
+  font-size: $text-2xl;
+  font-weight: $weight-bold;
+  color: var(--text-primary);
+}
+
+.filters {
+  display: flex;
+  flex-wrap: wrap;
+  gap: $space-sm;
+}
+
+.filterSelect {
+  padding: $space-xs $space-md;
+  font-size: $text-sm;
+  color: var(--text-primary);
+  background: var(--bg-primary);
+  border: 1px solid var(--border-subtle);
+  border-radius: $radius-pill;
+  outline: none;
+  cursor: pointer;
+  appearance: none;
+  padding-right: $space-2xl;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='16' viewBox='0 0 24 24' fill='none' stroke='currentColor' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpolyline points='6 9 12 15 18 9'%3E%3C/polyline%3E%3C/svg%3E");
+  background-repeat: no-repeat;
+  background-position: right $space-sm center;
+  transition: all 0.2s ease;
+
+  &:hover, &:focus {
+    border-color: var(--accent-primary);
+  }
+}
+
+// ============================================
+// Stats Grid
+// ============================================
+.statsGrid {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: $space-lg;
+
+  @include sm { grid-template-columns: repeat(2, 1fr); }
+  @include lg { grid-template-columns: repeat(4, 1fr); }
+}
+
+// ============================================
+// Chart Section
+// ============================================
+.chartSection {
+  background: var(--bg-elevated);
+  border: 1px solid var(--border-subtle);
+  border-radius: $radius-xl;
+  padding: $space-xl;
+}
+
+.sectionHeader {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: $space-xl;
+}
+
+.sectionTitle {
+  font-size: $text-lg;
+  font-weight: $weight-semibold;
+  color: var(--text-primary);
+}
+
+.chartLegend {
+  display: flex;
+  gap: $space-lg;
+  font-size: $text-xs;
+  font-weight: $weight-medium;
+  color: var(--text-secondary);
+}
+
+.legendItem {
+  display: flex;
+  align-items: center;
+  gap: $space-xs;
+
+  &::before {
+    content: '';
+    display: block;
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+  }
+}
+
+.legendCurrent::before {
+  background: var(--accent-primary);
+}
+
+.legendPrevious::before {
+  background: var(--text-muted);
+}
+
+.chartContainer {
+  height: 300px;
+  width: 100%;
+}
+
+// ============================================
+// Bottom Grid (Rankings & Status)
+// ============================================
+.bottomGrid {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: $space-lg;
+
+  @include lg {
+    grid-template-columns: repeat(3, 1fr);
+  }
+}
+
+.widget {
+  background: var(--bg-elevated);
+  border: 1px solid var(--border-subtle);
+  border-radius: $radius-xl;
+  padding: $space-xl;
+  display: flex;
+  flex-direction: column;
+}
+
+.widgetTitle {
+  font-size: $text-base;
+  font-weight: $weight-semibold;
+  color: var(--text-primary);
+  margin-bottom: $space-lg;
+}
+
+.list {
+  display: flex;
+  flex-direction: column;
+  gap: $space-md;
+  flex: 1;
+}
+
+.listItem {
+  display: flex;
+  align-items: center;
+  gap: $space-md;
+  padding-bottom: $space-sm;
+  border-bottom: 1px solid var(--border-subtle);
+
+  &:last-child {
+    border-bottom: none;
+    padding-bottom: 0;
+  }
+}
+
+.rankBadge {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 24px;
+  height: 24px;
+  font-size: $text-xs;
+  font-weight: $weight-bold;
+  color: var(--text-secondary);
+  background: var(--bg-primary);
+  border-radius: 50%;
+}
+
+.rankTop {
+  color: var(--accent-primary);
+  background: var(--accent-glow);
+}
+
+.itemInfo {
+  flex: 1;
+  min-width: 0;
+}
+
+.itemName {
+  font-size: $text-sm;
+  font-weight: $weight-semibold;
+  color: var(--text-primary);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.itemSub {
+  font-size: $text-xs;
+  color: var(--text-secondary);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.itemValue {
+  font-size: $text-sm;
+  font-weight: $weight-bold;
+  color: var(--text-primary);
+}
+
+.avatar {
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  background: var(--bg-primary);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: $text-xs;
+  font-weight: $weight-bold;
+  color: var(--text-secondary);
+  flex-shrink: 0;
+  overflow: hidden;
+
+  img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+  }
+}
+
+// ============================================
+// Status Widget (Active Link)
+// ============================================
+.statusWidget {
+  background: linear-gradient(135deg, var(--bg-elevated) 0%, var(--bg-primary) 100%);
+  border-color: var(--border-accent);
+}
+
+.activeLinkCard {
+  padding: $space-md;
+  background: rgba(34, 197, 94, 0.05);
+  border: 1px solid rgba(34, 197, 94, 0.2);
+  border-radius: $radius-lg;
+  margin-bottom: $space-lg;
+}
+
+.activeHeader {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: $space-sm;
+}
+
+.activeLabel {
+  font-size: $text-xs;
+  font-weight: $weight-bold;
+  text-transform: uppercase;
+  letter-spacing: $tracking-wider;
+  color: #22c55e;
+  display: flex;
+  align-items: center;
+  gap: $space-2xs;
+
+  &::before {
+    content: '';
+    display: block;
+    width: 6px;
+    height: 6px;
+    background: #22c55e;
+    border-radius: 50%;
+    animation: pulse 2s infinite;
+  }
+}
+
+.activeLinkName {
+  font-size: $text-lg;
+  font-weight: $weight-bold;
+  color: var(--text-primary);
+  margin-bottom: $space-2xs;
+}
+
+.activeLinkUrl {
+  font-size: $text-xs;
+  color: var(--text-secondary);
+  font-family: monospace;
+}
+
+.rotationStatus {
+  display: flex;
+  align-items: center;
+  gap: $space-sm;
+  padding: $space-sm;
+  background: var(--bg-primary);
+  border-radius: $radius-md;
+  font-size: $text-sm;
+  color: var(--text-secondary);
+}
+
+@keyframes pulse {
+  0% { transform: scale(1); opacity: 1; }
+  50% { transform: scale(1.5); opacity: 0.5; }
+  100% { transform: scale(1); opacity: 1; }
+}
+
+// ============================================
+// Loading State
+// ============================================
+.loadingState {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: $space-4xl;
+}
+
+.spinner {
+  width: 40px;
+  height: 40px;
+  border: 3px solid var(--border-subtle);
+  border-top-color: var(--accent-primary);
+  border-radius: 50%;
+  animation: spin 0.8s linear infinite;
+}
