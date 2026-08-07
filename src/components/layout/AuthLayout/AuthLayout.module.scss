@@ -1,0 +1,70 @@
+@use '../../../styles/spacing' as *;
+@use '../../../styles/typography' as *;
+@use '../../../styles/mixins' as *;
+
+.layout {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  min-height: 100dvh;
+  padding: $space-lg;
+}
+
+.logo {
+  display: flex;
+  align-items: center;
+  margin-bottom: $space-2xl;
+  font-size: $text-3xl;
+  font-weight: $weight-extrabold;
+  letter-spacing: $tracking-tight;
+  color: var(--text-primary);
+  text-decoration: none;
+  animation: fadeInUp 0.5s ease both;
+
+  @include reduced-motion {
+    animation: none;
+  }
+}
+
+.logoAccent {
+  color: var(--accent-primary);
+}
+
+.content {
+  position: relative;
+  width: 100%;
+  max-width: 480px;
+  animation: fadeInUp 0.5s ease 0.1s both;
+
+  @include reduced-motion {
+    animation: none;
+  }
+}
+
+.footer {
+  margin-top: $space-2xl;
+  text-align: center;
+  animation: fadeIn 0.5s ease 0.3s both;
+
+  @include reduced-motion {
+    animation: none;
+  }
+}
+
+.footerLink {
+  font-size: $text-sm;
+  color: var(--text-muted);
+  text-decoration: none;
+  transition: color 0.2s ease;
+
+  &:hover {
+    color: var(--accent-primary);
+  }
+
+  strong {
+    color: var(--text-secondary);
+    font-weight: $weight-semibold;
+  }
+}

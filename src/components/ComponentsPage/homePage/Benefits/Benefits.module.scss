@@ -1,0 +1,217 @@
+@use '../../../../styles/spacing' as *;
+@use '../../../../styles/typography' as *;
+@use '../../../../styles/mixins' as *;
+
+.header {
+  text-align: center;
+  margin-bottom: $space-3xl;
+}
+
+.title {
+  font-size: $text-4xl;
+  margin-bottom: $space-md;
+}
+
+.subtitle {
+  color: var(--text-secondary);
+  max-width: 600px;
+  margin: 0 auto;
+}
+
+.container {
+  display: flex;
+  flex-direction: column;
+  gap: $space-2xl;
+
+  @include lg {
+    flex-direction: row;
+    align-items: center;
+    min-height: 500px;
+  }
+}
+
+// Tabs Container
+.tabs {
+  display: flex;
+  flex-direction: column;
+  gap: $space-sm;
+  width: 100%;
+
+  @include lg {
+    width: 40%;
+  }
+}
+
+// Individual Tab Item
+.tabItem {
+  display: flex;
+  align-items: center;
+  gap: $space-md;
+  padding: $space-lg;
+  border-radius: $radius-lg;
+  border-left: 2px solid transparent;
+  background: transparent;
+  text-align: left;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  position: relative;
+  overflow: hidden;
+
+  &::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: var(--bg-elevated);
+    opacity: 0;
+    transition: opacity 0.3s ease;
+    z-index: -1;
+    border-radius: inherit;
+  }
+
+  &:hover {
+    &::before {
+      opacity: 0.5;
+    }
+  }
+
+  &.active {
+    border-left-color: var(--accent-primary);
+
+    &::before {
+      opacity: 1;
+    }
+
+    .iconWrapper {
+      background: var(--accent-primary);
+      color: #ffffff;
+      border-color: var(--accent-primary);
+    }
+  }
+}
+
+.iconWrapper {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 48px;
+  height: 48px;
+  border-radius: $radius-md;
+  background: var(--bg-primary);
+  border: 1px solid var(--border-subtle);
+  color: var(--text-secondary);
+  transition: all 0.3s ease;
+  flex-shrink: 0;
+
+  svg {
+    width: 24px;
+    height: 24px;
+  }
+}
+
+.tabText {
+  display: flex;
+  flex-direction: column;
+  gap: $space-2xs;
+}
+
+.tabTitle {
+  font-size: $text-lg;
+  font-weight: $weight-semibold;
+  color: var(--text-primary);
+}
+
+.tabSubtitle {
+  font-size: $text-sm;
+  color: var(--text-secondary);
+  @include truncate(2);
+
+  @include lg {
+    display: none; // Hide on desktop to keep tabs compact
+  }
+
+  .active & {
+    display: block; // Show when active even on desktop if desired
+  }
+}
+
+// Content Area
+.contentArea {
+  position: relative;
+  width: 100%;
+  aspect-ratio: 1;
+  background: var(--bg-elevated);
+  border-radius: $radius-2xl;
+  border: 1px solid var(--border-subtle);
+  overflow: hidden;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  @include md {
+    aspect-ratio: 16/9;
+  }
+
+  @include lg {
+    width: 60%;
+    aspect-ratio: auto;
+    height: 500px;
+  }
+}
+
+.contentInner {
+  position: absolute;
+  inset: $space-xl;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  opacity: 0;
+  transition: opacity 0.5s ease;
+  pointer-events: none;
+
+  &.active {
+    opacity: 1;
+    pointer-events: auto;
+  }
+}
+
+.contentTitle {
+  font-size: $text-2xl;
+  margin-bottom: $space-md;
+  color: var(--text-primary);
+}
+
+.contentDescription {
+  font-size: $text-base;
+  color: var(--text-secondary);
+  line-height: $leading-relaxed;
+}
+
+.illustration {
+  margin-top: auto;
+  align-self: center;
+  width: 200px;
+  height: 200px;
+  position: relative;
+
+  // Abstract placeholder illustration styling
+  &::before,
+  &::after {
+    content: '';
+    position: absolute;
+    border-radius: 50%;
+    filter: blur(40px);
+    opacity: 0.5;
+  }
+
+  &::before {
+    inset: 10%;
+    background: var(--accent-primary);
+    animation: blobFloat 8s infinite;
+  }
+
+  &::after {
+    inset: 20% -10% -10% 20%;
+    background: var(--accent-secondary);
+    animation: blobFloatReverse 10s infinite;
+  }
+}

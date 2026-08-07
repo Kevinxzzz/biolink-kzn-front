@@ -26,6 +26,7 @@ export function FadeIn({
     .filter(Boolean)
     .join(" ");
 
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   const Tag = as as any;
 
   return (

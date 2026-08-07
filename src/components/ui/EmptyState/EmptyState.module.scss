@@ -1,0 +1,76 @@
+@use '../../../styles/spacing' as *;
+@use '../../../styles/typography' as *;
+@use '../../../styles/mixins' as *;
+
+.container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  padding: $space-4xl $space-lg;
+  color: var(--text-muted);
+  width: 100%;
+  animation: fadeInUp 0.4s ease;
+
+  @include reduced-motion {
+    animation: none;
+  }
+}
+
+.icon {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 64px;
+  height: 64px;
+  margin-bottom: $space-lg;
+  border-radius: 50%;
+  background: var(--accent-glow);
+  color: var(--accent-primary);
+  opacity: 0.8;
+
+  svg {
+    width: 32px;
+    height: 32px;
+  }
+}
+
+.title {
+  font-size: $text-lg;
+  font-weight: $weight-bold;
+  color: var(--text-primary);
+  margin-bottom: $space-sm;
+}
+
+.description {
+  font-size: $text-base;
+  color: var(--text-secondary);
+  max-width: 400px;
+  line-height: $leading-relaxed;
+  margin-bottom: $space-xl;
+}
+
+.action {
+  display: inline-flex;
+  align-items: center;
+  gap: $space-xs;
+  padding: $space-sm $space-xl;
+  font-size: $text-sm;
+  font-weight: $weight-semibold;
+  color: #ffffff;
+  background: var(--accent-primary);
+  border: none;
+  border-radius: 9999px;
+  cursor: pointer;
+  transition: all 0.2s ease;
+
+  &:hover {
+    transform: translateY(-1px);
+    box-shadow: 0 4px 16px var(--accent-glow-strong);
+  }
+
+  &:active {
+    transform: translateY(0);
+  }
+}
