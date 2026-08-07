@@ -29,7 +29,11 @@ function MoonIcon() {
   );
 }
 
-export function ThemeToggle() {
+interface ThemeToggleProps {
+  showLabel?: boolean;
+}
+
+export function ThemeToggle({ showLabel = false }: ThemeToggleProps) {
   const [theme, setTheme] = useState<Theme>("dark");
 
   useEffect(() => {
@@ -47,14 +51,17 @@ export function ThemeToggle() {
     localStorage.setItem("kzn-theme", next);
   };
 
+  const labelText = theme === "dark" ? "Tema Claro" : "Tema Escuro";
+
   return (
     <button
-      className={styles.toggle}
+      className={`${styles.toggle} ${showLabel ? styles.withLabel : ""}`}
       onClick={toggle}
       aria-label={theme === "dark" ? "Ativar tema claro" : "Ativar tema escuro"}
       type="button"
     >
       {theme === "dark" ? <SunIcon /> : <MoonIcon />}
+      {showLabel && <span>{labelText}</span>}
     </button>
   );
 }

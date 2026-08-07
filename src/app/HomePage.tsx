@@ -1,5 +1,6 @@
 import { Header } from "@/components/layout/Header";
 import { Footer } from "@/components/layout/Footer";
+import { FloatingBackground } from "@/components/animations/FloatingBackground";
 import { HeroSection } from "@/components/sections/Hero";
 import { InfluencersSection } from "@/components/sections/Influencers";
 import { BenefitsSection } from "@/components/sections/Benefits";
@@ -11,6 +12,7 @@ export function HomePage() {
     <>
       <Header />
       <main>
+        <FloatingBackground />
         <HeroSection />
         <InfluencersSection />
         <BenefitsSection />

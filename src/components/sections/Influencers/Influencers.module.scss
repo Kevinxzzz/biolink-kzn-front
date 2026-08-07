@@ -131,12 +131,17 @@
   display: flex;
   gap: $space-sm;
   overflow: hidden;
-  height: 0; // Hidden initially
-  opacity: 0;
+  height: 40px;
+  opacity: 1;
+  margin-top: $space-sm;
   transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
 
-  // Show on desktop hover
+  // Hidden on desktop unless hovered
   @include lg {
+    height: 0;
+    opacity: 0;
+    margin-top: 0;
+
     .card:hover & {
       height: 40px;
       opacity: 1;
@@ -146,13 +151,6 @@
     .card:hover .name {
       transform: translateY(-4px);
     }
-  }
-
-  // Always show or handle via JS state on mobile
-  .card.isActive & {
-    height: 40px;
-    opacity: 1;
-    margin-top: $space-sm;
   }
 }
 
