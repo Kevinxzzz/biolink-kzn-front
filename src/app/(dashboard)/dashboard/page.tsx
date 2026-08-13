@@ -4,7 +4,7 @@ import { useState } from "react";
 import { DashboardLayout } from "@/components/layout/DashboardLayout";
 import { StatCard } from "@/components/ui/StatCard";
 import { useDashboard } from "@/hooks/useDashboard";
-import type { DashboardPeriodFilter } from "@/types/analytics";
+import type { DashboardPeriodFilter } from "@/types/analyticsType";
 import { ResponsiveContainer, LineChart, Line, XAxis, YAxis, Tooltip, CartesianGrid } from "recharts";
 import styles from "./dashboard.module.scss";
 
@@ -37,7 +37,7 @@ export default function DashboardOverviewPage() {
   const [period, setPeriod] = useState<DashboardPeriodFilter>("7days");
   const [linkFilter, setLinkFilter] = useState("all");
   const [influencerFilter, setInfluencerFilter] = useState("all");
-  
+
   const { data, isLoading } = useDashboard(period, linkFilter !== "all" ? linkFilter : undefined, influencerFilter !== "all" ? influencerFilter : undefined);
 
   if (isLoading || !data) {
@@ -53,7 +53,7 @@ export default function DashboardOverviewPage() {
   return (
     <DashboardLayout pageTitle="Visão Geral">
       <div className={styles.page}>
-        
+
         {/* Header & Filters */}
         <div className={styles.header}>
           <h1 className={styles.pageTitle}>Analytics</h1>
@@ -126,7 +126,7 @@ export default function DashboardOverviewPage() {
 
         {/* Bottom Grid */}
         <div className={styles.bottomGrid}>
-          
+
           {/* Top Links */}
           <div className={styles.widget}>
             <h3 className={styles.widgetTitle}>Links Mais Acessados</h3>
@@ -167,7 +167,7 @@ export default function DashboardOverviewPage() {
           {/* System Status / Active Link */}
           <div className={`${styles.widget} ${styles.statusWidget}`}>
             <h3 className={styles.widgetTitle}>Status do Sistema</h3>
-            
+
             <div className={styles.activeLinkCard}>
               <div className={styles.activeHeader}>
                 <span className={styles.activeLabel}>Link Ativo</span>

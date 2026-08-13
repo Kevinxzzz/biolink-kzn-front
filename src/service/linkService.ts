@@ -1,4 +1,4 @@
-import type { Link, ScheduledChange, RotationSettings } from "@/types/link";
+import type { Link, ScheduledChange, RotationSettings } from "@/types/linkType";
 import { MOCK_LINKS, MOCK_SCHEDULED_CHANGES, MOCK_ROTATION_SETTINGS, MOCK_LINK_DELAY } from "./mocks/linkMocks";
 
 // Fake database instance for the session
@@ -65,7 +65,7 @@ export const linkService = {
     await delay();
     return [...scheduledChangesDb];
   },
-  
+
   async createScheduledChange(linkId: string, scheduledAt: string): Promise<ScheduledChange> {
     await delay();
     const sc: ScheduledChange = { id: `sch_${Date.now()}`, linkId, scheduledAt };

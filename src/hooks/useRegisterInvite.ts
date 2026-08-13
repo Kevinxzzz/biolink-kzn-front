@@ -1,8 +1,8 @@
 "use client";
 
 import { useState } from "react";
-import type { InviteRegisterData } from "@/types/register";
-import * as registerService from "@/service/registerService";
+import type { InviteRegisterData } from "@/types/enterpriseType";
+import * as registerService from "@/service/enterpriseService";
 
 type RegisterStatus = "idle" | "loading" | "success" | "error";
 

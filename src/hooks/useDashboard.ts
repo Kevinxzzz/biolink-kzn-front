@@ -1,6 +1,6 @@
 import { useState, useEffect, useCallback } from "react";
 import { dashboardService, type DashboardAnalyticsResponse } from "@/service/dashboardService";
-import type { DashboardPeriodFilter } from "@/types/analytics";
+import type { DashboardPeriodFilter } from "@/types/analyticsType";
 
 export function useDashboard(
   period: DashboardPeriodFilter,

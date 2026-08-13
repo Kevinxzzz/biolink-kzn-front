@@ -1,4 +1,4 @@
-import type { CompanySettings, UserProfile } from "@/types/settings";
+import type { CompanySettings, UserProfile } from "@/types/settingsType";
 import { MOCK_COMPANY_SETTINGS, MOCK_USER_PROFILE, MOCK_SETTINGS_DELAY } from "./mocks/settingsMocks";
 
 let companyDb = { ...MOCK_COMPANY_SETTINGS };

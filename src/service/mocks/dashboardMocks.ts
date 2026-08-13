@@ -1,4 +1,4 @@
-import type { ChartDataPoint, DashboardOverview, TopLink, TopInfluencer } from "@/types/analytics";
+import type { ChartDataPoint, DashboardOverview, TopLink, TopInfluencer } from "@/types/analyticsType";
 
 export const MOCK_OVERVIEW: DashboardOverview = {
   totalClicks: 24582,

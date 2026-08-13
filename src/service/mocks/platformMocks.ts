@@ -1,4 +1,4 @@
-import type { Platform } from "@/types/platform";
+import type { Platform } from "@/types/platformType";
 
 export const MOCK_PLATFORMS: Platform[] = [
   { id: "plat_tiktok", name: "TikTok" },

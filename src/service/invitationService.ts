@@ -1,4 +1,4 @@
-import type { InvitationToken, CreateInvitationData } from "@/types/invitation";
+import type { InvitationToken, CreateInvitationData } from "@/types/invitationType";
 import { MOCK_INVITATIONS, MOCK_INVITATION_DELAY } from "./mocks/invitationMocks";
 
 export async function listInvitations(): Promise<InvitationToken[]> {

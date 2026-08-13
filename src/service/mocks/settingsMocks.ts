@@ -1,4 +1,4 @@
-import type { CompanySettings, UserProfile } from "@/types/settings";
+import type { CompanySettings, UserProfile } from "@/types/settingsType";
 
 export const MOCK_COMPANY_SETTINGS: CompanySettings = {
   name: "KZN eSports",

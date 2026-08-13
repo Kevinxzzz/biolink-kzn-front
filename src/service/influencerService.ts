@@ -1,4 +1,4 @@
-import type { Influencer, InfluencerPlatform } from "@/types/influencer";
+import type { Influencer, InfluencerPlatform } from "@/types/influencerType";
 import { MOCK_INFLUENCERS, MOCK_INFLUENCER_DELAY } from "./mocks/influencerMocks";
 import { generateSlug } from "@/utils/slug";
 

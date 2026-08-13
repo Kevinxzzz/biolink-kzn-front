@@ -1,4 +1,4 @@
-import type { DashboardOverview, ChartDataPoint, TopLink, TopInfluencer, DashboardPeriodFilter } from "@/types/analytics";
+import type { DashboardOverview, ChartDataPoint, TopLink, TopInfluencer, DashboardPeriodFilter } from "@/types/analyticsType";
 import { MOCK_OVERVIEW, MOCK_CHART_DATA, MOCK_TOP_LINKS, MOCK_TOP_INFLUENCERS, MOCK_DASHBOARD_DELAY } from "./mocks/dashboardMocks";
 
 export interface DashboardAnalyticsResponse {

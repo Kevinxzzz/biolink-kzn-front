@@ -1,4 +1,4 @@
-import type { Influencer } from "@/types/influencer";
+import type { Influencer } from "@/types/influencerType";
 
 export const MOCK_INFLUENCERS: Influencer[] = [
   {

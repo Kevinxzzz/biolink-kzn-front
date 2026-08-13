@@ -1,6 +1,6 @@
 import { useState, useEffect, useCallback } from "react";
 import { settingsService } from "@/service/settingsService";
-import type { CompanySettings, UserProfile } from "@/types/settings";
+import type { CompanySettings, UserProfile } from "@/types/settingsType";
 
 export function useSettings() {
   const [companySettings, setCompanySettings] = useState<CompanySettings | null>(null);

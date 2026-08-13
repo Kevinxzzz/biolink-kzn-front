@@ -1,6 +1,6 @@
 import { useState, useEffect, useCallback } from "react";
 import { linkService } from "@/service/linkService";
-import type { RotationSettings } from "@/types/link";
+import type { RotationSettings } from "@/types/linkType";
 
 export function useRotationSettings() {
   const [settings, setSettings] = useState<RotationSettings | null>(null);

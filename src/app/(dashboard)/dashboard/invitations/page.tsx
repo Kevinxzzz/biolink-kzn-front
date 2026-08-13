@@ -3,7 +3,7 @@
 import { useState } from "react";
 import { DashboardLayout } from "@/components/layout/DashboardLayout";
 import { useInvitations } from "@/hooks/useInvitations";
-import type { InvitationToken } from "@/types/invitation";
+import type { InvitationToken } from "@/types/invitationType";
 import styles from "./invitations.module.scss";
 
 
@@ -232,7 +232,7 @@ export default function InvitationsPage() {
                 gap: "0.5rem"
               }}>
                 <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={2} strokeLinecap="round" style={{ width: "18px", height: "18px", flexShrink: 0, marginTop: "2px" }}>
-                  <circle cx="12" cy="12" r="10"/><line x1="12" y1="16" x2="12" y2="12"/><line x1="12" y1="8" x2="12.01" y2="8"/>
+                  <circle cx="12" cy="12" r="10" /><line x1="12" y1="16" x2="12" y2="12" /><line x1="12" y1="8" x2="12.01" y2="8" />
                 </svg>
                 O usuário que utilizar este convite será cadastrado como Administrador.
               </div>

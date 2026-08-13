@@ -1,5 +1,5 @@
 import { useState, useEffect } from "react";
-import type { Platform } from "@/types/platform";
+import type { Platform } from "@/types/platformType";
 import { platformService } from "@/service/platformService";
 
 export function usePlatforms() {
