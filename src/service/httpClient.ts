@@ -49,7 +49,7 @@ const httpClient = axios.create({
       for (const key in params) {
         if (params[key] !== undefined && params[key] !== null) {
           if (Array.isArray(params[key])) {
-            params[key].forEach((val: any) => searchParams.append(key, val));
+            params[key].forEach((val: unknown) => searchParams.append(key, String(val)));
           } else {
             searchParams.append(key, params[key]);
           }
@@ -92,7 +92,7 @@ httpClient.interceptors.response.use(
         }
       }
 
-      const message = data?.error || 'Erro inesperado no servidor.';
+      const message = data?.message || data?.error || 'Erro inesperado no servidor.';
       const details = data?.details;
 
       throw new ApiError(message, status, details);

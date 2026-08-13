@@ -1,5 +1,5 @@
 export interface ApiErrorResponse {
   error?: string;
   message?: string;
-  details?: Record<string, any> | Array<any> | any;
+  details?: Record<string, unknown> | Array<unknown> | unknown;
 }
