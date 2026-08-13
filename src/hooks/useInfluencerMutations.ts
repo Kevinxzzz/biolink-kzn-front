@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { influencerService } from "@/service/influencerService";
-import type { InfluencerPlatform } from "@/types/influencer";
+import type { InfluencerPlatform } from "@/types/influencerType";
 
 export function useCreateInfluencer() {
   const [isCreating, setIsCreating] = useState(false);

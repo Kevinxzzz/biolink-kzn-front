@@ -11,7 +11,7 @@ import { Input } from "@/components/ui/Input";
 import { Select } from "@/components/ui/Select";
 import { usePlatforms } from "@/hooks/usePlatforms";
 import { generateSlug } from "@/utils/slug";
-import type { Influencer, InfluencerPlatform } from "@/types/influencer";
+import type { Influencer, InfluencerPlatform } from "@/types/influencerType";
 import styles from "./influencers.module.scss";
 
 export default function InfluencersPage() {
@@ -38,7 +38,7 @@ export default function InfluencersPage() {
     try {
       await updateStatus(influencerId, isActive ? "ACTIVE" : "INACTIVE");
       refetch();
-    } catch {}
+    } catch { }
   };
 
   const openPlatformsModal = (influencer: Influencer) => {
@@ -73,7 +73,7 @@ export default function InfluencersPage() {
       await updatePlatforms(editingInfluencer.id, formPlatforms);
       setEditingInfluencer(null);
       refetch();
-    } catch {}
+    } catch { }
   };
 
   const handleCreateSubmit = async () => {
@@ -87,7 +87,7 @@ export default function InfluencersPage() {
       });
       setIsCreateModalOpen(false);
       refetch();
-    } catch {}
+    } catch { }
   };
 
   const openCreateModal = () => {
@@ -113,7 +113,7 @@ export default function InfluencersPage() {
 
   const handleCopyLink = async (influencer: Influencer) => {
     const slug = influencer.slug || generateSlug(influencer.name);
-    const link = `${process.env.NEXT_PUBLIC_FRONT_URL || "http://localhost:3000"}/${slug}`;
+    const link = `${process.env.API_URL || "http://localhost:3000"}/${slug}`;
     await navigator.clipboard.writeText(link);
     setCopiedId(influencer.id);
     setTimeout(() => setCopiedId(null), 2000);
@@ -138,7 +138,7 @@ export default function InfluencersPage() {
             }}
           >
             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={2} strokeLinecap="round" width="16" height="16">
-              <line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/>
+              <line x1="12" y1="5" x2="12" y2="19" /><line x1="5" y1="12" x2="19" y2="12" />
             </svg>
             Adicionar influenciador
           </button>
@@ -146,48 +146,48 @@ export default function InfluencersPage() {
       </div>
 
       {influencers.length === 0 ? (
-        <EmptyState 
+        <EmptyState
           title="Nenhum influenciador vinculado"
           description="Você ainda não possui influenciadores vinculados à sua empresa. Gere um convite na aba 'Tokens de Convite' para adicionar novos membros."
-          icon={<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={2} strokeLinecap="round"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>}
+          icon={<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={2} strokeLinecap="round"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2" /><circle cx="9" cy="7" r="4" /><path d="M23 21v-2a4 4 0 0 0-3-3.87" /><path d="M16 3.13a4 4 0 0 1 0 7.75" /></svg>}
         />
       ) : (
         <div className={styles.grid}>
           {influencers.map(influencer => (
             <div key={influencer.id} className={styles.card}>
-              
+
               <div className={styles.cardHeader}>
                 <div className={styles.avatar}>
                   {influencer.avatarUrl ? <img src={influencer.avatarUrl} alt={influencer.name} /> : influencer.name.charAt(0)}
                 </div>
-                <Toggle 
-                  checked={influencer.status === "ACTIVE"} 
-                  onChange={(c) => handleToggleStatus(influencer.id, c)} 
+                <Toggle
+                  checked={influencer.status === "ACTIVE"}
+                  onChange={(c) => handleToggleStatus(influencer.id, c)}
                 />
               </div>
 
               <div className={styles.info}>
                 <div className={styles.name}>{influencer.name}</div>
                 <div className={styles.email}>{influencer.email}</div>
-                
+
                 <div className={styles.publicLinkBox}>
                   <div className={styles.publicLinkUrl}>
-                    {(process.env.NEXT_PUBLIC_FRONT_URL || "http://localhost:3000").replace(/^https?:\/\//, '')}/
+
                     <span style={{ color: "var(--text-primary)", fontWeight: 500 }}>{influencer.slug || generateSlug(influencer.name)}</span>
                   </div>
-                  <button 
-                    className={`${styles.copyBtn} ${copiedId === influencer.id ? styles.copied : ""}`} 
-                    onClick={() => handleCopyLink(influencer)} 
+                  <button
+                    className={`${styles.copyBtn} ${copiedId === influencer.id ? styles.copied : ""}`}
+                    onClick={() => handleCopyLink(influencer)}
                     type="button"
                   >
                     {copiedId === influencer.id ? (
                       <>
-                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={2} strokeLinecap="round" width="14" height="14"><polyline points="20 6 9 17 4 12"/></svg>
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={2} strokeLinecap="round" width="14" height="14"><polyline points="20 6 9 17 4 12" /></svg>
                         Copiado!
                       </>
                     ) : (
                       <>
-                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={2} strokeLinecap="round" width="14" height="14"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg>
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={2} strokeLinecap="round" width="14" height="14"><rect x="9" y="9" width="13" height="13" rx="2" ry="2" /><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1" /></svg>
                         Copiar link
                       </>
                     )}
@@ -248,15 +248,15 @@ export default function InfluencersPage() {
               </div>
               <button className={styles.removePlatBtn} onClick={() => removePlatformRow(idx)} type="button" title="Remover">
                 <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={2} strokeLinecap="round" strokeLinejoin="round">
-                  <polyline points="3 6 5 6 21 6"/><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"/>
+                  <polyline points="3 6 5 6 21 6" /><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2" />
                 </svg>
               </button>
             </div>
           ))}
-          
+
           <button className={styles.addPlatBtn} onClick={addPlatformRow} type="button">
             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={2} strokeLinecap="round" width="16" height="16">
-              <line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/>
+              <line x1="12" y1="5" x2="12" y2="19" /><line x1="5" y1="12" x2="19" y2="12" />
             </svg>
             Adicionar URL
           </button>
@@ -276,7 +276,7 @@ export default function InfluencersPage() {
           <Input id="create-email" name="email" type="email" label="Email" value={createEmail} onChange={(e) => setCreateEmail(e.target.value)} required />
           <Input id="create-password" name="password" type="password" label="Senha provisória" value={createPassword} onChange={(e) => setCreatePassword(e.target.value)} required />
           <Input id="create-avatar" name="avatar" label="URL do Avatar (opcional)" value={createAvatar} onChange={(e) => setCreateAvatar(e.target.value)} />
-          
+
           <div style={{ marginTop: "1rem" }}>
             <h4 style={{ fontSize: "0.875rem", fontWeight: 600, color: "var(--text-primary)", marginBottom: "1rem" }}>Redes Sociais (Opcional)</h4>
             {createPlats.map((plat, idx) => (
@@ -294,14 +294,14 @@ export default function InfluencersPage() {
                 </div>
                 <button className={styles.removePlatBtn} onClick={() => removeCreatePlat(idx)} type="button" title="Remover">
                   <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={2} strokeLinecap="round" strokeLinejoin="round">
-                    <polyline points="3 6 5 6 21 6"/><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"/>
+                    <polyline points="3 6 5 6 21 6" /><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2" />
                   </svg>
                 </button>
               </div>
             ))}
             <button className={styles.addPlatBtn} onClick={addCreatePlat} type="button">
               <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={2} strokeLinecap="round" width="16" height="16">
-                <line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/>
+                <line x1="12" y1="5" x2="12" y2="19" /><line x1="5" y1="12" x2="19" y2="12" />
               </svg>
               Adicionar URL
             </button>

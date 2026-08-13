@@ -1,4 +1,4 @@
-import type { Platform } from "@/types/platform";
+import type { Platform } from "@/types/platformType";
 import { MOCK_PLATFORMS, MOCK_PLATFORM_DELAY } from "./mocks/platformMocks";
 
 const delay = () => new Promise((res) => setTimeout(res, MOCK_PLATFORM_DELAY));

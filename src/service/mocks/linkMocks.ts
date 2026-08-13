@@ -1,4 +1,4 @@
-import type { Link, ScheduledChange, RotationSettings } from "@/types/link";
+import type { Link, ScheduledChange, RotationSettings } from "@/types/linkType";
 
 export const MOCK_LINKS: Link[] = [
   {

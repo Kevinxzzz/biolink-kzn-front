@@ -1,8 +1,8 @@
 "use client";
 
 import { useState, useEffect } from "react";
-import type { InvitationTokenValidation } from "@/types/invitation";
-import * as registerService from "@/service/registerService";
+import type { InvitationTokenValidation } from "@/types/invitationType";
+import * as registerService from "@/service/enterpriseService";
 
 type TokenPageStatus = "loading" | "valid" | "invalid" | "expired" | "used" | "revoked" | "error";
 

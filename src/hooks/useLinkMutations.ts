@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { linkService } from "@/service/linkService";
-import type { Link } from "@/types/link";
+import type { Link } from "@/types/linkType";
 
 export function useCreateLink() {
   const [isCreating, setIsCreating] = useState(false);

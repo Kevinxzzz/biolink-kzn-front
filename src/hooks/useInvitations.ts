@@ -1,7 +1,7 @@
 "use client";
 
 import { useState, useEffect, useCallback } from "react";
-import type { InvitationToken, CreateInvitationData } from "@/types/invitation";
+import type { InvitationToken, CreateInvitationData } from "@/types/invitationType";
 import * as invitationService from "@/service/invitationService";
 
 export function useInvitations() {

@@ -1,6 +1,6 @@
 import { useState, useEffect, useCallback } from "react";
 import { influencerService } from "@/service/influencerService";
-import type { Influencer } from "@/types/influencer";
+import type { Influencer } from "@/types/influencerType";
 
 export function useInfluencers() {
   const [influencers, setInfluencers] = useState<Influencer[]>([]);

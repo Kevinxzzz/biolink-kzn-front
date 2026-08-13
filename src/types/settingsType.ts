@@ -1,4 +1,4 @@
-import { UserRole } from "./auth";
+import { UserRole } from "./authType";
 
 export interface CompanySettings {
   name: string;

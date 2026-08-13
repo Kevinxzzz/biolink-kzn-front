@@ -1,4 +1,4 @@
-import type { InvitationToken, InvitationTokenValidation } from "@/types/invitation";
+import type { InvitationToken, InvitationTokenValidation } from "@/types/invitationType";
 
 export const MOCK_VALID_TOKEN_RESPONSE: InvitationTokenValidation = {
   status: "VALID",

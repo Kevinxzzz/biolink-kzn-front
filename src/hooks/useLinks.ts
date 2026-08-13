@@ -1,6 +1,6 @@
 import { useState, useEffect, useCallback } from "react";
 import { linkService } from "@/service/linkService";
-import type { Link, ScheduledChange } from "@/types/link";
+import type { Link, ScheduledChange } from "@/types/linkType";
 
 export function useLinks() {
   const [links, setLinks] = useState<Link[]>([]);

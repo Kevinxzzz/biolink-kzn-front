@@ -1,15 +1,14 @@
-import type { CompanyRegisterData, InviteRegisterData } from "@/types/register";
-import type { InvitationTokenValidation } from "@/types/invitation";
+import type { CompanyRegisterData, InviteRegisterData } from "@/types/enterpriseType";
+import type { InvitationTokenValidation } from "@/types/invitationType";
+import { httpClient, getErrorMessage } from "./httpClient";
 import { MOCK_REGISTER_DELAY } from "./mocks/registerMocks";
 import { MOCK_VALID_TOKEN_RESPONSE, MOCK_INVITATION_DELAY } from "./mocks/invitationMocks";
 
 export async function registerCompany(data: CompanyRegisterData): Promise<void> {
-  // TODO: Substituir por chamada real à API
-  // return fetch("/api/register/company", { method: "POST", body: JSON.stringify(data) })
-  await new Promise((resolve) => setTimeout(resolve, MOCK_REGISTER_DELAY));
-
-  if (data.company.email === "existente@kzn.com") {
-    throw new Error("Este email de empresa já está cadastrado.");
+  try {
+    await httpClient.post("/auth/register/enterprise", data);
+  } catch (error) {
+    throw new Error(getErrorMessage(error));
   }
 }
 
