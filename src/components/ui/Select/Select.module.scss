@@ -1,0 +1,55 @@
+@use '../../../styles/spacing' as *;
+@use '../../../styles/typography' as *;
+@use '../../../styles/mixins' as *;
+
+.field {
+  display: flex;
+  flex-direction: column;
+  gap: $space-2xs;
+  width: 100%;
+}
+
+.label {
+  font-size: $text-sm;
+  font-weight: $weight-medium;
+  color: var(--text-secondary);
+  letter-spacing: $tracking-wide;
+}
+
+.select {
+  width: 100%;
+  padding: $space-sm $space-2xl $space-sm $space-md;
+  font-size: $text-base;
+  font-family: inherit;
+  font-weight: $weight-regular;
+  color: var(--text-primary);
+  background: var(--bg-elevated);
+  border: 1px solid var(--border-subtle);
+  border-radius: $radius-md;
+  outline: none;
+  appearance: none;
+  cursor: pointer;
+  transition: border-color 0.2s ease, box-shadow 0.2s ease;
+
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='16' viewBox='0 0 24 24' fill='none' stroke='%239690a6' stroke-width='2' stroke-linecap='round'%3E%3Cpolyline points='6 9 12 15 18 9'/%3E%3C/svg%3E");
+  background-repeat: no-repeat;
+  background-position: right $space-sm center;
+
+  &:hover:not(:disabled) {
+    border-color: var(--text-muted);
+  }
+
+  &:focus {
+    border-color: var(--accent-primary);
+    box-shadow: 0 0 0 3px var(--accent-glow);
+  }
+
+  &:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+  }
+
+  @include reduced-motion {
+    transition: none;
+  }
+}

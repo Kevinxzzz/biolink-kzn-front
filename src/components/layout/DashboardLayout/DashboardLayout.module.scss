@@ -1,0 +1,233 @@
+@use '../../../styles/spacing' as *;
+@use '../../../styles/typography' as *;
+@use '../../../styles/mixins' as *;
+
+.layout {
+  display: flex;
+  min-height: 100dvh;
+}
+
+// ============================================
+// Sidebar
+// ============================================
+.sidebar {
+  position: fixed;
+  top: 0;
+  left: 0;
+  bottom: 0;
+  width: 260px;
+  display: flex;
+  flex-direction: column;
+  background: var(--bg-elevated);
+  border-right: 1px solid var(--border-subtle);
+  z-index: 50;
+  transform: translateX(-100%);
+  transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+
+  @include lg {
+    transform: translateX(0);
+  }
+
+  @include reduced-motion {
+    transition: none;
+  }
+}
+
+.sidebarOpen {
+  transform: translateX(0);
+}
+
+.sidebarHeader {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: $space-lg $space-lg $space-xl;
+}
+
+.sidebarLogo {
+  font-size: $text-2xl;
+  font-weight: $weight-extrabold;
+  letter-spacing: $tracking-tight;
+  color: var(--text-primary);
+  text-decoration: none;
+}
+
+.sidebarLogoAccent {
+  color: var(--accent-primary);
+}
+
+.sidebarClose {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 32px;
+  height: 32px;
+  border-radius: $radius-sm;
+  color: var(--text-muted);
+  transition: color 0.2s ease, background 0.2s ease;
+
+  &:hover {
+    color: var(--text-primary);
+    background: var(--accent-glow);
+  }
+
+  @include lg {
+    display: none;
+  }
+
+  svg {
+    width: 18px;
+    height: 18px;
+  }
+}
+
+.sidebarNav {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: $space-2xs;
+  padding: 0 $space-sm;
+}
+
+.navItem {
+  display: flex;
+  align-items: center;
+  gap: $space-md;
+  padding: $space-sm $space-md;
+  font-size: $text-sm;
+  font-weight: $weight-medium;
+  color: var(--text-secondary);
+  text-decoration: none;
+  border-radius: $radius-md;
+  transition: color 0.15s ease, background 0.15s ease;
+
+  &:hover {
+    color: var(--text-primary);
+    background: var(--accent-glow);
+  }
+
+  svg {
+    width: 20px;
+    height: 20px;
+    flex-shrink: 0;
+  }
+}
+
+.navItemActive {
+  color: var(--accent-primary);
+  background: var(--accent-glow);
+  font-weight: $weight-semibold;
+}
+
+.sidebarFooter {
+  padding: $space-lg $space-md;
+  border-top: 1px solid var(--border-subtle);
+}
+
+// ============================================
+// Overlay (mobile)
+// ============================================
+.overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.5);
+  z-index: 49;
+  opacity: 0;
+  visibility: hidden;
+  transition: opacity 0.3s ease, visibility 0.3s ease;
+
+  @include lg {
+    display: none;
+  }
+}
+
+.overlayVisible {
+  opacity: 1;
+  visibility: visible;
+}
+
+// ============================================
+// Main Content
+// ============================================
+.main {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  min-width: 0;
+
+  @include lg {
+    margin-left: 260px;
+  }
+}
+
+// ============================================
+// Topbar
+// ============================================
+.topbar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: $space-md;
+  padding: $space-md $space-lg;
+  border-bottom: 1px solid var(--border-subtle);
+  background: var(--bg-primary);
+  position: sticky;
+  top: 0;
+  z-index: 40;
+}
+
+.topbarLeft {
+  display: flex;
+  align-items: center;
+  gap: $space-md;
+}
+
+.menuToggle {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 36px;
+  height: 36px;
+  border-radius: $radius-sm;
+  color: var(--text-secondary);
+  transition: color 0.2s ease, background 0.2s ease;
+
+  &:hover {
+    color: var(--text-primary);
+    background: var(--accent-glow);
+  }
+
+  @include lg {
+    display: none;
+  }
+
+  svg {
+    width: 20px;
+    height: 20px;
+  }
+}
+
+.pageTitle {
+  font-size: $text-lg;
+  font-weight: $weight-semibold;
+  color: var(--text-primary);
+  letter-spacing: $tracking-snug;
+}
+
+.topbarRight {
+  display: flex;
+  align-items: center;
+  gap: $space-sm;
+}
+
+// ============================================
+// Page Content
+// ============================================
+.pageContent {
+  flex: 1;
+  padding: $space-xl $space-lg;
+
+  @include lg {
+    padding: $space-2xl $space-2xl;
+  }
+}
