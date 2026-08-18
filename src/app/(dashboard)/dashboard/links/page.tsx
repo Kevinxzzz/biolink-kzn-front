@@ -1,14 +1,13 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { DashboardLayout } from "@/components/layout/DashboardLayout";
 import { useLinks } from "@/hooks/useLinks";
-import { useCreateLink, useUpdateLink, useDeleteLink, useReorderLinks } from "@/hooks/useLinkMutations";
+import { useCreateLink, useUpdateLink, useDeleteLink, useReorderLinks, useActivateLink } from "@/hooks/useLinkMutations";
 import { SharedModal } from "@/components/ui/SharedModal";
 import { ConfirmDialog } from "@/components/ui/ConfirmDialog";
 import { EmptyState } from "@/components/ui/EmptyState";
 import { Input } from "@/components/ui/Input";
-import { Toggle } from "@/components/ui/Toggle";
 import type { Link } from "@/types/linkType";
 
 // dnd-kit
@@ -20,7 +19,7 @@ import styles from "./links.module.scss";
 
 // Sortable Item Component
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
-function SortableLinkItem({ link, onEdit, onDelete, onToggleEnabled, onTogglePool }: any) {
+function SortableLinkItem({ link, onEdit, onDelete, onActivate }: any) {
   const { attributes, listeners, setNodeRef, transform, transition, isDragging } = useSortable({ id: link.id });
   const style = { transform: CSS.Transform.toString(transform), transition, zIndex: isDragging ? 1 : 0, opacity: isDragging ? 0.5 : 1 };
 
@@ -37,7 +36,8 @@ function SortableLinkItem({ link, onEdit, onDelete, onToggleEnabled, onTogglePoo
         <div className={styles.linkInfo}>
           <div className={styles.linkTitle}>
             {link.title}
-            {link.isActive && <span className={styles.activeBadge}>Ativo Agora</span>}
+            {link.active && <span className={styles.activeBadge}>Ativo Agora</span>}
+            {!link.inRotationPool && <span style={{ marginLeft: "8px", fontSize: "10px", color: "var(--text-tertiary)" }} title="Contrato API">(Não está no pool)</span>}
           </div>
           <div className={styles.linkUrl}>{link.url}</div>
         </div>
@@ -45,17 +45,19 @@ function SortableLinkItem({ link, onEdit, onDelete, onToggleEnabled, onTogglePoo
         <div className={styles.linkMetrics}>
           <div className={styles.metric}>
             <span className={styles.metricLabel}>Cliques</span>
-            <span className={styles.metricValue}>{link.clicks.toLocaleString()}</span>
-          </div>
-
-          <div className={styles.toggles}>
-            <Toggle checked={link.isEnabled} onChange={(c) => onToggleEnabled(link.id, c)} label="Habilitado" />
-            <Toggle checked={link.rotationPool} onChange={(c) => onTogglePool(link.id, c)} label="No Pool" />
+            <span className={styles.metricValue}>{(link.countClicks || 0).toLocaleString()}</span>
           </div>
         </div>
       </div>
 
       <div className={styles.actions}>
+        {!link.active && link.inRotationPool && (
+          <button className={`${styles.iconButton} ${styles.activateButton}`} onClick={() => onActivate(link)} title="Ativar Link" type="button" style={{ color: "var(--success)" }}>
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={2} strokeLinecap="round" strokeLinejoin="round">
+              <polygon points="5 3 19 12 5 21 5 3" />
+            </svg>
+          </button>
+        )}
         <button className={`${styles.iconButton} ${styles.editButton}`} onClick={() => onEdit(link)} title="Editar" type="button">
           <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={2} strokeLinecap="round" strokeLinejoin="round">
             <path d="M17 3a2.828 2.828 0 1 1 4 4L7.5 20.5 2 22l1.5-5.5L17 3z" />
@@ -72,11 +74,12 @@ function SortableLinkItem({ link, onEdit, onDelete, onToggleEnabled, onTogglePoo
 }
 
 export default function LinksPage() {
-  const { links: initialLinks, isLoading, refetch } = useLinks();
-  const { create, isCreating } = useCreateLink();
-  const { update } = useUpdateLink();
+  const { links: initialLinks, isLoading, error: fetchError } = useLinks();
+  const { create, isCreating, error: createError } = useCreateLink();
+  const { update, isUpdating, error: updateError } = useUpdateLink();
   const { remove, isDeleting } = useDeleteLink();
-  const { reorder } = useReorderLinks();
+  const { reorder, isReordering } = useReorderLinks();
+  const { activate, isActivating, error: activateError } = useActivateLink();
 
   const [localLinks, setLocalLinks] = useState<Link[]>([]);
   const [isCreateModalOpen, setIsCreateModalOpen] = useState(false);
@@ -87,13 +90,14 @@ export default function LinksPage() {
   // Form State
   const [formTitle, setFormTitle] = useState("");
   const [formUrl, setFormUrl] = useState("");
-  const [formEnabled, setFormEnabled] = useState(true);
-  const [formPool, setFormPool] = useState(true);
+  const [formError, setFormError] = useState<string | null>(null);
 
   // Sync initial links to local state for drag and drop
-  if (initialLinks.length > 0 && localLinks.length === 0 && !isLoading) {
-    setLocalLinks(initialLinks);
-  }
+  useEffect(() => {
+    if (initialLinks && !isLoading) {
+      setLocalLinks(initialLinks);
+    }
+  }, [initialLinks, isLoading]);
 
   // DND Setup
   const sensors = useSensors(
@@ -101,32 +105,57 @@ export default function LinksPage() {
     useSensor(KeyboardSensor, { coordinateGetter: sortableKeyboardCoordinates })
   );
 
-  const handleDragEnd = (event: DragEndEvent) => {
+  const handleDragEnd = async (event: DragEndEvent) => {
     const { active, over } = event;
     if (over && active.id !== over.id) {
       const oldIndex = localLinks.findIndex((l) => l.id === active.id);
       const newIndex = localLinks.findIndex((l) => l.id === over.id);
+      
+      const previousOrder = [...localLinks];
       const newOrder = arrayMove(localLinks, oldIndex, newIndex);
+      
+      // Atualiza UI instantaneamente (Optimistic Update Local)
       setLocalLinks(newOrder);
-      reorder(newOrder.map(l => l.id)); // Background sync
+      
+      try {
+        await reorder(newOrder.map(l => l.id));
+      } catch (err) {
+        // Rollback para ordem anterior em caso de falha
+        setLocalLinks(previousOrder);
+        alert(err instanceof Error ? err.message : "Erro ao reordenar links.");
+      }
     }
   };
 
   const handleCreateSubmit = async () => {
+    setFormError(null);
+    if (!formTitle.trim() || !formUrl.trim()) {
+      setFormError("Preencha todos os campos obrigatórios.");
+      return;
+    }
+
     try {
-      await create({ title: formTitle, url: formUrl, isEnabled: formEnabled, rotationPool: formPool });
+      await create({ title: formTitle, url: formUrl });
       setIsCreateModalOpen(false);
-      refetch();
-    } catch { }
+    } catch (err) {
+      setFormError(err instanceof Error ? err.message : "Erro ao criar link.");
+    }
   };
 
   const handleEditSubmit = async () => {
+    setFormError(null);
     if (!editingLink) return;
+    if (!formTitle.trim() || !formUrl.trim()) {
+      setFormError("Preencha todos os campos obrigatórios.");
+      return;
+    }
+
     try {
-      await update(editingLink.id, { title: formTitle, url: formUrl, isEnabled: formEnabled, rotationPool: formPool });
+      await update(editingLink.id, { title: formTitle, url: formUrl });
       setIsEditModalOpen(false);
-      refetch();
-    } catch { }
+    } catch (err) {
+      setFormError(err instanceof Error ? err.message : "Erro ao atualizar link.");
+    }
   };
 
   const handleDelete = async () => {
@@ -134,29 +163,32 @@ export default function LinksPage() {
     try {
       await remove(deleteConfirmLink.id);
       setDeleteConfirmLink(null);
-      refetch();
-    } catch { }
+    } catch (err) {
+      alert(err instanceof Error ? err.message : "Erro ao excluir link.");
+    }
+  };
+
+  const handleActivate = async (link: Link) => {
+    try {
+      await activate(link.id);
+    } catch (err) {
+      alert(err instanceof Error ? err.message : "Erro ao ativar link.");
+    }
   };
 
   const openCreateModal = () => {
-    setFormTitle(""); setFormUrl(""); setFormEnabled(true); setFormPool(true);
+    setFormTitle(""); 
+    setFormUrl(""); 
+    setFormError(null);
     setIsCreateModalOpen(true);
   };
 
   const openEditModal = (link: Link) => {
     setEditingLink(link);
-    setFormTitle(link.title); setFormUrl(link.url); setFormEnabled(link.isEnabled); setFormPool(link.rotationPool);
+    setFormTitle(link.title); 
+    setFormUrl(link.url);
+    setFormError(null);
     setIsEditModalOpen(true);
-  };
-
-  const onToggleEnabled = async (id: string, checked: boolean) => {
-    setLocalLinks(prev => prev.map(l => l.id === id ? { ...l, isEnabled: checked } : l));
-    await update(id, { isEnabled: checked });
-  };
-
-  const onTogglePool = async (id: string, checked: boolean) => {
-    setLocalLinks(prev => prev.map(l => l.id === id ? { ...l, rotationPool: checked } : l));
-    await update(id, { rotationPool: checked });
   };
 
   if (isLoading) {
@@ -175,6 +207,18 @@ export default function LinksPage() {
         </button>
       </div>
 
+      {fetchError && (
+        <div className={`${styles.alert} ${styles.alertError}`} role="alert" style={{ marginBottom: "1rem" }}>
+          <span>{fetchError}</span>
+        </div>
+      )}
+
+      {activateError && (
+        <div className={`${styles.alert} ${styles.alertError}`} role="alert" style={{ marginBottom: "1rem" }}>
+          <span>{activateError}</span>
+        </div>
+      )}
+
       {localLinks.length === 0 ? (
         <EmptyState
           title="Nenhum link encontrado"
@@ -184,57 +228,54 @@ export default function LinksPage() {
           icon={<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={2} strokeLinecap="round"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71" /><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71" /></svg>}
         />
       ) : (
-        <DndContext sensors={sensors} collisionDetection={closestCenter} onDragEnd={handleDragEnd}>
-          <SortableContext items={localLinks.map(l => l.id)} strategy={verticalListSortingStrategy}>
-            <div className={styles.linksList}>
-              {localLinks.map(link => (
-                <SortableLinkItem
-                  key={link.id}
-                  link={link}
-                  onEdit={openEditModal}
-                  onDelete={setDeleteConfirmLink}
-                  onToggleEnabled={onToggleEnabled}
-                  onTogglePool={onTogglePool}
-                />
-              ))}
-            </div>
-          </SortableContext>
-        </DndContext>
+        <div style={{ opacity: isReordering || isActivating ? 0.7 : 1, pointerEvents: isReordering ? "none" : "auto", transition: "opacity 0.2s" }}>
+          <DndContext sensors={sensors} collisionDetection={closestCenter} onDragEnd={handleDragEnd}>
+            <SortableContext items={localLinks.map(l => l.id)} strategy={verticalListSortingStrategy}>
+              <div className={styles.linksList}>
+                {localLinks.map(link => (
+                  <SortableLinkItem
+                    key={link.id}
+                    link={link}
+                    onEdit={openEditModal}
+                    onDelete={setDeleteConfirmLink}
+                    onActivate={handleActivate}
+                  />
+                ))}
+              </div>
+            </SortableContext>
+          </DndContext>
+        </div>
       )}
 
       {/* Create Modal */}
       <SharedModal isOpen={isCreateModalOpen} onClose={() => setIsCreateModalOpen(false)} title="Adicionar Novo Link"
         footer={
-          <button style={{ padding: "8px 16px", borderRadius: "99px", background: "var(--accent-primary)", color: "#fff", border: "none", fontWeight: 600, cursor: "pointer" }} onClick={handleCreateSubmit} disabled={isCreating}>
+          <button style={{ padding: "8px 16px", borderRadius: "99px", background: "var(--accent-primary)", color: "#fff", border: "none", fontWeight: 600, cursor: "pointer", opacity: isCreating ? 0.7 : 1 }} onClick={handleCreateSubmit} disabled={isCreating}>
             {isCreating ? "Salvando..." : "Criar Link"}
           </button>
         }
       >
         <div className={styles.form}>
-          <Input id="title" name="title" label="Título" value={formTitle} onChange={(e) => setFormTitle(e.target.value)} placeholder="Ex: Grupo VIP" />
-          <Input id="url" name="url" label="URL de Destino" value={formUrl} onChange={(e) => setFormUrl(e.target.value)} placeholder="https://" />
-          <div style={{ display: 'flex', flexDirection: 'column', gap: '1rem', marginTop: '1rem' }}>
-            <Toggle checked={formEnabled} onChange={setFormEnabled} label="Habilitado (Pode receber tráfego)" />
-            <Toggle checked={formPool} onChange={setFormPool} label="Adicionar ao Pool de Rotação Automática" />
-          </div>
+          {formError && <div style={{ color: "var(--danger)", fontSize: "0.875rem" }}>{formError}</div>}
+          {createError && <div style={{ color: "var(--danger)", fontSize: "0.875rem" }}>{createError}</div>}
+          <Input id="title" name="title" label="Título" value={formTitle} onChange={(e) => setFormTitle(e.target.value)} placeholder="Ex: Grupo VIP" disabled={isCreating} />
+          <Input id="url" name="url" label="URL de Destino" value={formUrl} onChange={(e) => setFormUrl(e.target.value)} placeholder="https://" disabled={isCreating} />
         </div>
       </SharedModal>
 
       {/* Edit Modal */}
       <SharedModal isOpen={isEditModalOpen} onClose={() => setIsEditModalOpen(false)} title="Editar Link"
         footer={
-          <button style={{ padding: "8px 16px", borderRadius: "99px", background: "var(--accent-primary)", color: "#fff", border: "none", fontWeight: 600, cursor: "pointer" }} onClick={handleEditSubmit}>
-            Salvar Alterações
+          <button style={{ padding: "8px 16px", borderRadius: "99px", background: "var(--accent-primary)", color: "#fff", border: "none", fontWeight: 600, cursor: "pointer", opacity: isUpdating ? 0.7 : 1 }} onClick={handleEditSubmit} disabled={isUpdating}>
+            {isUpdating ? "Salvando..." : "Salvar Alterações"}
           </button>
         }
       >
         <div className={styles.form}>
-          <Input id="edit-title" name="title" label="Título" value={formTitle} onChange={(e) => setFormTitle(e.target.value)} />
-          <Input id="edit-url" name="url" label="URL de Destino" value={formUrl} onChange={(e) => setFormUrl(e.target.value)} />
-          <div style={{ display: 'flex', flexDirection: 'column', gap: '1rem', marginTop: '1rem' }}>
-            <Toggle checked={formEnabled} onChange={setFormEnabled} label="Habilitado" />
-            <Toggle checked={formPool} onChange={setFormPool} label="No Pool de Rotação" />
-          </div>
+          {formError && <div style={{ color: "var(--danger)", fontSize: "0.875rem" }}>{formError}</div>}
+          {updateError && <div style={{ color: "var(--danger)", fontSize: "0.875rem" }}>{updateError}</div>}
+          <Input id="edit-title" name="title" label="Título" value={formTitle} onChange={(e) => setFormTitle(e.target.value)} disabled={isUpdating} />
+          <Input id="edit-url" name="url" label="URL de Destino" value={formUrl} onChange={(e) => setFormUrl(e.target.value)} disabled={isUpdating} />
         </div>
       </SharedModal>
 

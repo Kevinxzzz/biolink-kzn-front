@@ -1,85 +1,90 @@
-import { useState } from "react";
+import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { linkService } from "@/service/linkService";
 import type { Link } from "@/types/linkType";
 
 export function useCreateLink() {
-  const [isCreating, setIsCreating] = useState(false);
-  const [error, setError] = useState<string | null>(null);
+  const queryClient = useQueryClient();
 
-  const create = async (data: { title: string; url: string; isEnabled: boolean; rotationPool: boolean }) => {
-    setIsCreating(true);
-    setError(null);
-    try {
-      const newLink = await linkService.createLink(data);
-      return newLink;
-    } catch (err) {
-      const msg = err instanceof Error ? err.message : "Erro ao criar link.";
-      setError(msg);
-      throw new Error(msg);
-    } finally {
-      setIsCreating(false);
-    }
+  const mutation = useMutation({
+    mutationFn: (data: { title: string; url: string }) => linkService.createLink(data),
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ["links"] });
+    },
+  });
+
+  return {
+    create: mutation.mutateAsync,
+    isCreating: mutation.isPending,
+    error: mutation.error instanceof Error ? mutation.error.message : null,
   };
-
-  return { create, isCreating, error };
 }
 
 export function useUpdateLink() {
-  const [isUpdating, setIsUpdating] = useState(false);
-  const [error, setError] = useState<string | null>(null);
+  const queryClient = useQueryClient();
 
-  const update = async (id: string, data: Partial<Omit<Link, "id" | "clicks" | "order" | "isActive">>) => {
-    setIsUpdating(true);
-    setError(null);
-    try {
-      const updatedLink = await linkService.updateLink(id, data);
-      return updatedLink;
-    } catch (err) {
-      const msg = err instanceof Error ? err.message : "Erro ao atualizar link.";
-      setError(msg);
-      throw new Error(msg);
-    } finally {
-      setIsUpdating(false);
-    }
+  const mutation = useMutation({
+    mutationFn: ({ id, data }: { id: string; data: Partial<Omit<Link, "id" | "countClicks" | "order" | "active">> }) =>
+      linkService.updateLink(id, data),
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ["links"] });
+    },
+  });
+
+  return {
+    update: (id: string, data: Partial<Omit<Link, "id" | "countClicks" | "order" | "active">>) =>
+      mutation.mutateAsync({ id, data }),
+    isUpdating: mutation.isPending,
+    error: mutation.error instanceof Error ? mutation.error.message : null,
   };
-
-  return { update, isUpdating, error };
 }
 
 export function useDeleteLink() {
-  const [isDeleting, setIsDeleting] = useState(false);
-  const [error, setError] = useState<string | null>(null);
+  const queryClient = useQueryClient();
 
-  const remove = async (id: string) => {
-    setIsDeleting(true);
-    setError(null);
-    try {
-      await linkService.deleteLink(id);
-    } catch (err) {
-      const msg = err instanceof Error ? err.message : "Erro ao excluir link.";
-      setError(msg);
-      throw new Error(msg);
-    } finally {
-      setIsDeleting(false);
-    }
+  const mutation = useMutation({
+    mutationFn: (id: string) => linkService.deleteLink(id),
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ["links"] });
+    },
+  });
+
+  return {
+    remove: mutation.mutateAsync,
+    isDeleting: mutation.isPending,
+    error: mutation.error instanceof Error ? mutation.error.message : null,
   };
+}
 
-  return { remove, isDeleting, error };
+export function useActivateLink() {
+  const queryClient = useQueryClient();
+
+  const mutation = useMutation({
+    mutationFn: (id: string) => linkService.activateLink(id),
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ["links"] });
+    },
+  });
+
+  return {
+    activate: mutation.mutateAsync,
+    isActivating: mutation.isPending,
+    error: mutation.error instanceof Error ? mutation.error.message : null,
+  };
 }
 
 export function useReorderLinks() {
-  const [isReordering, setIsReordering] = useState(false);
+  const queryClient = useQueryClient();
 
-  const reorder = async (newOrderIds: string[]) => {
-    setIsReordering(true);
-    try {
-      await linkService.reorderLinks(newOrderIds);
-    } catch {
-      // Background action, usually silent failure or toast in UI
-    } finally {
-      setIsReordering(false);
-    }
+  const mutation = useMutation({
+    mutationFn: (newOrderIds: string[]) => linkService.reorderLinks(newOrderIds),
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ["links"] });
+    },
+  });
+
+  return {
+    reorder: mutation.mutateAsync,
+    isReordering: mutation.isPending,
+    error: mutation.error instanceof Error ? mutation.error.message : null,
   };
-
-  return { reorder, isReordering };
 }
