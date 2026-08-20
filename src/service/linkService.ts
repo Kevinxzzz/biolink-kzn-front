@@ -1,80 +1,59 @@
 import type { Link, ScheduledChange, RotationSettings } from "@/types/linkType";
-import { MOCK_LINKS, MOCK_SCHEDULED_CHANGES, MOCK_ROTATION_SETTINGS, MOCK_LINK_DELAY } from "./mocks/linkMocks";
-
-// Fake database instance for the session
-let linksDb = [...MOCK_LINKS];
-let scheduledChangesDb = [...MOCK_SCHEDULED_CHANGES];
-let rotationSettingsDb = { ...MOCK_ROTATION_SETTINGS };
-
-const delay = () => new Promise((res) => setTimeout(res, MOCK_LINK_DELAY));
+import { httpClient } from "./httpClient";
 
 export const linkService = {
   async getLinks(): Promise<Link[]> {
-    await delay();
-    return [...linksDb].sort((a, b) => a.order - b.order);
+    const response = await httpClient.get<{ data: Link[] }>("/links");
+    return response.data.data;
   },
 
-  async createLink(data: Omit<Link, "id" | "clicks" | "order" | "isActive">): Promise<Link> {
-    await delay();
-    const newLink: Link = {
-      ...data,
-      id: `lnk_${Date.now()}`,
-      clicks: 0,
-      order: linksDb.length + 1,
-      isActive: false,
-    };
-    linksDb.push(newLink);
-    return newLink;
+  async createLink(data: { title: string; url: string }): Promise<Link> {
+    const response = await httpClient.post<{ data: Link }>("/links", data);
+    return response.data.data;
   },
 
-  async updateLink(id: string, data: Partial<Omit<Link, "id" | "clicks" | "order" | "isActive">>): Promise<Link> {
-    await delay();
-    const idx = linksDb.findIndex((l) => l.id === id);
-    if (idx === -1) throw new Error("Link not found");
-    linksDb[idx] = { ...linksDb[idx], ...data };
-    return linksDb[idx];
+  async updateLink(id: string, data: { title?: string; url?: string }): Promise<Link> {
+    const response = await httpClient.patch<{ data: Link }>(`/links/${id}`, data);
+    return response.data.data;
   },
 
   async deleteLink(id: string): Promise<void> {
-    await delay();
-    linksDb = linksDb.filter((l) => l.id !== id);
+    await httpClient.delete(`/links/${id}`);
+  },
+
+  async activateLink(id: string): Promise<Link> {
+    const response = await httpClient.patch<{ data: Link }>(`/links/${id}/activate`);
+    return response.data.data;
   },
 
   async reorderLinks(newOrderIds: string[]): Promise<Link[]> {
-    await delay();
-    const orderMap = new Map(newOrderIds.map((id, index) => [id, index + 1]));
-    linksDb = linksDb.map((link) => ({
-      ...link,
-      order: orderMap.get(link.id) ?? link.order,
+    const orderPayload = newOrderIds.map((id, index) => ({
+      id,
+      order: index + 1,
     }));
-    return this.getLinks();
+    const response = await httpClient.patch<{ data: Link[] }>("/links/reorder", {
+      links: orderPayload,
+    });
+    return response.data.data;
   },
 
+  // TODO: The rotation logic is NOT part of this iteration according to plan.
+  // Mocks retained here temporarily if needed by other components, but ideally will be refactored when rotation is done.
   async getRotationSettings(): Promise<RotationSettings> {
-    await delay();
-    return { ...rotationSettingsDb };
+    return { isActive: false, intervalMinutes: 10 };
   },
 
   async updateRotationSettings(data: Partial<RotationSettings>): Promise<RotationSettings> {
-    await delay();
-    rotationSettingsDb = { ...rotationSettingsDb, ...data };
-    return { ...rotationSettingsDb };
+    return { isActive: false, intervalMinutes: 10, ...data };
   },
 
   async getScheduledChanges(): Promise<ScheduledChange[]> {
-    await delay();
-    return [...scheduledChangesDb];
+    return [];
   },
 
   async createScheduledChange(linkId: string, scheduledAt: string): Promise<ScheduledChange> {
-    await delay();
-    const sc: ScheduledChange = { id: `sch_${Date.now()}`, linkId, scheduledAt };
-    scheduledChangesDb.push(sc);
-    return sc;
+    return { id: "mock", linkId, scheduledAt };
   },
 
-  async deleteScheduledChange(id: string): Promise<void> {
-    await delay();
-    scheduledChangesDb = scheduledChangesDb.filter((s) => s.id !== id);
-  }
+  async deleteScheduledChange(_id: string): Promise<void> {}
 };

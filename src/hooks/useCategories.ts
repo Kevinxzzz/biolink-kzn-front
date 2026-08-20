@@ -1,15 +1,15 @@
 import { useQuery } from "@tanstack/react-query";
-import { linkService } from "@/service/linkService";
+import { categoryService } from "@/service/categoryService";
 
-export function useLinks() {
+export function useCategories() {
   const { data, isLoading, error, refetch } = useQuery({
-    queryKey: ["links"],
-    queryFn: linkService.getLinks,
+    queryKey: ["categories"],
+    queryFn: categoryService.getCategories,
     refetchOnMount: true,
   });
 
   return {
-    links: data || [],
+    categories: data || [],
     isLoading,
     error: error instanceof Error ? error.message : null,
     refetch,
