@@ -1,26 +1,15 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { DashboardLayout } from "@/components/layout/DashboardLayout";
 import { SharedModal } from "@/components/ui/SharedModal";
 import { ConfirmDialog } from "@/components/ui/ConfirmDialog";
 import { EmptyState } from "@/components/ui/EmptyState";
 import { Input } from "@/components/ui/Input";
+import { useCategories } from "@/hooks/useCategories";
+import type { Category } from "@/types/categoryType";
 
 import styles from "./categories.module.scss";
-
-// Tipagem temporária para o frontend (será movida para types/ futuramente)
-interface Category {
-  id: string;
-  name: string;
-  rotationType: "LIMITCLICKS" | "TIMER" | "NONE";
-}
-
-// Mock inicial
-const INITIAL_CATEGORIES: Category[] = [
-  { id: "1", name: "Free Fire", rotationType: "LIMITCLICKS" },
-  { id: "2", name: "eFootball", rotationType: "TIMER" }
-];
 
 function CategoryItem({ category, onEdit, onDelete }: { category: Category; onEdit: (c: Category) => void; onDelete: (c: Category) => void }) {
   return (
@@ -29,7 +18,7 @@ function CategoryItem({ category, onEdit, onDelete }: { category: Category; onEd
         <div className={styles.categoryInfo}>
           <div className={styles.categoryTitle}>
             {category.name}
-            {category.rotationType !== "NONE" && (
+            {category.rotationType && category.rotationType !== "MANUAL" && (
               <span className={styles.rotationBadge}>
                 Rotação: {category.rotationType}
               </span>
@@ -54,7 +43,8 @@ function CategoryItem({ category, onEdit, onDelete }: { category: Category; onEd
 }
 
 export default function CategoriesPage() {
-  const [categories, setCategories] = useState<Category[]>(INITIAL_CATEGORIES);
+  const { categories: fetchedCategories, isLoading, error: fetchError } = useCategories();
+  const [localCategories, setLocalCategories] = useState<Category[]>([]);
   const [isCreateModalOpen, setIsCreateModalOpen] = useState(false);
   const [isEditModalOpen, setIsEditModalOpen] = useState(false);
   const [deleteConfirmCategory, setDeleteConfirmCategory] = useState<Category | null>(null);
@@ -63,6 +53,12 @@ export default function CategoriesPage() {
   // Form State
   const [formName, setFormName] = useState("");
   const [formError, setFormError] = useState<string | null>(null);
+
+  useEffect(() => {
+    if (fetchedCategories && !isLoading) {
+      setLocalCategories(fetchedCategories);
+    }
+  }, [fetchedCategories, isLoading]);
 
   const handleCreateSubmit = () => {
     setFormError(null);
@@ -74,10 +70,10 @@ export default function CategoriesPage() {
     const newCategory: Category = {
       id: Math.random().toString(36).substring(2, 9),
       name: formName.trim(),
-      rotationType: "NONE"
+      rotationType: "MANUAL"
     };
 
-    setCategories([...categories, newCategory]);
+    setLocalCategories([...localCategories, newCategory]);
     setIsCreateModalOpen(false);
   };
 
@@ -89,28 +85,32 @@ export default function CategoriesPage() {
       return;
     }
 
-    setCategories(categories.map(c => c.id === editingCategory.id ? { ...c, name: formName.trim() } : c));
+    setLocalCategories(localCategories.map(c => c.id === editingCategory.id ? { ...c, name: formName.trim() } : c));
     setIsEditModalOpen(false);
   };
 
   const handleDelete = () => {
     if (!deleteConfirmCategory) return;
-    setCategories(categories.filter(c => c.id !== deleteConfirmCategory.id));
+    setLocalCategories(localCategories.filter(c => c.id !== deleteConfirmCategory.id));
     setDeleteConfirmCategory(null);
   };
 
   const openCreateModal = () => {
-    setFormName(""); 
+    setFormName("");
     setFormError(null);
     setIsCreateModalOpen(true);
   };
 
   const openEditModal = (category: Category) => {
     setEditingCategory(category);
-    setFormName(category.name); 
+    setFormName(category.name);
     setFormError(null);
     setIsEditModalOpen(true);
   };
+
+  if (isLoading) {
+    return <DashboardLayout pageTitle="Categorias"><div className="loadingState" style={{ display: 'flex', justifyContent: 'center', padding: '3rem' }}>Carregando categorias...</div></DashboardLayout>;
+  }
 
   return (
     <DashboardLayout pageTitle="Gerenciamento de Categorias">
@@ -124,17 +124,23 @@ export default function CategoriesPage() {
         </button>
       </div>
 
-      {categories.length === 0 ? (
+      {fetchError && (
+        <div role="alert" style={{ marginBottom: "1rem", color: "var(--danger)", padding: "1rem", background: "rgba(239, 68, 68, 0.1)", borderRadius: "8px" }}>
+          <span>{fetchError}</span>
+        </div>
+      )}
+
+      {localCategories.length === 0 ? (
         <EmptyState
           title="Nenhuma categoria encontrada"
           description="Você ainda não possui categorias cadastradas. Adicione a sua primeira categoria para organizar seus links."
           actionLabel="Adicionar Categoria"
           onAction={openCreateModal}
-          icon={<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={2} strokeLinecap="round"><path d="M4 9h16M4 15h16M10 3L8 21M16 3l-2 18"/></svg>}
+          icon={<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={2} strokeLinecap="round"><path d="M4 9h16M4 15h16M10 3L8 21M16 3l-2 18" /></svg>}
         />
       ) : (
         <div className={styles.categoriesList}>
-          {categories.map(category => (
+          {localCategories.map(category => (
             <CategoryItem
               key={category.id}
               category={category}
