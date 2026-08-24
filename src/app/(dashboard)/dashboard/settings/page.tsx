@@ -6,11 +6,11 @@ import { Input } from "@/components/ui/Input";
 import { Select } from "@/components/ui/Select";
 import { IPhoneTimerPicker, TimerValue } from "@/components/ui/IPhoneTimerPicker";
 import { useSettings } from "@/hooks/useSettings";
-import { useRotationSettings } from "@/hooks/useRotationSettings";
+import { useCategories } from "@/hooks/useCategories";
+import { useCategoryRotation } from "@/hooks/useCategoryRotation";
 import { useLinks } from "@/hooks/useLinks";
+import type { ToggleType, UpdateCategoryRotationPayload } from "@/types/categoryType";
 import styles from "./settings.module.scss";
-
-type RotationType = "MANUAL" | "TIMER" | "SCHEDULE" | "LIMITCLICKS";
 
 const ROTATION_TYPE_OPTIONS = [
   { value: "MANUAL", label: "Manual (sem rotação automática)" },
@@ -21,13 +21,22 @@ const ROTATION_TYPE_OPTIONS = [
 
 export default function SettingsPage() {
   const { companySettings, userProfile, isLoading: isSettingsLoading, isSaving: isSettingsSaving, updateCompany } = useSettings();
-  const { settings: rotationSettings, isLoading: isRotationLoading, isSaving: isRotationSaving, updateSettings: updateRotation } = useRotationSettings();
+  const { categories, isLoading: isCategoriesLoading } = useCategories();
+  const efootballCategory = categories.find(c => c.name === "efootball");
+  
+  const { 
+    rotation: rotationSettings, 
+    isLoading: isRotationLoading, 
+    isSaving: isRotationSaving, 
+    updateRotation 
+  } = useCategoryRotation(efootballCategory?.id);
+  
   const { links } = useLinks();
 
   const [formCompany, setFormCompany] = useState({ name: "", email: "", phone: "" });
 
   // Rotation State
-  const [rotationType, setRotationType] = useState<RotationType>("MANUAL");
+  const [rotationType, setRotationType] = useState<ToggleType>("MANUAL");
   const [timerValue, setTimerValue] = useState<TimerValue>({
     months: 0,
     days: 0,
@@ -51,14 +60,19 @@ export default function SettingsPage() {
 
   useEffect(() => {
     if (rotationSettings) {
-      if (rotationSettings.isActive) {
-        setRotationType("TIMER");
-        const totalMins = rotationSettings.intervalMinutes || 60;
+      setRotationType(rotationSettings.toggleType);
+      
+      if (rotationSettings.toggleType === "TIMER" && rotationSettings.timerInMinutes) {
+        const totalMins = rotationSettings.timerInMinutes;
         const hrs = Math.floor(totalMins / 60);
         const mins = totalMins % 60;
         setTimerValue({ months: 0, days: 0, hours: hrs, minutes: mins, seconds: 0 });
       } else {
-        setRotationType("MANUAL");
+        setTimerValue({ months: 0, days: 0, hours: 1, minutes: 0, seconds: 0 });
+      }
+
+      if (rotationSettings.toggleType === "LIMITCLICKS" && rotationSettings.limitClicks) {
+        setLimitClicks(rotationSettings.limitClicks);
       }
     }
   }, [rotationSettings]);
@@ -77,21 +91,27 @@ export default function SettingsPage() {
 
   const handleSaveRotation = async () => {
     try {
-      const totalMinutesFromTimer =
-        timerValue.months * 30 * 24 * 60 +
-        timerValue.days * 24 * 60 +
-        timerValue.hours * 60 +
-        timerValue.minutes +
-        Math.round(timerValue.seconds / 60);
+      const payload: UpdateCategoryRotationPayload = { toggleType: rotationType };
 
-      await updateRotation({
-        isActive: rotationType !== "MANUAL",
-        intervalMinutes: totalMinutesFromTimer > 0 ? totalMinutesFromTimer : 60,
-      });
+      if (rotationType === "TIMER") {
+        const totalMinutesFromTimer =
+          timerValue.months * 30 * 24 * 60 +
+          timerValue.days * 24 * 60 +
+          timerValue.hours * 60 +
+          timerValue.minutes +
+          Math.round(timerValue.seconds / 60);
+        payload.timerInMinutes = totalMinutesFromTimer > 0 ? totalMinutesFromTimer : 60;
+      }
+
+      if (rotationType === "LIMITCLICKS") {
+        payload.limitClicks = limitClicks;
+      }
+
+      await updateRotation(payload);
     } catch { }
   };
 
-  const isLoading = isSettingsLoading || isRotationLoading;
+  const isLoading = isSettingsLoading || isCategoriesLoading || isRotationLoading;
 
   if (isLoading) {
     return (
@@ -147,7 +167,7 @@ export default function SettingsPage() {
                 name="rotationType"
                 label="Tipo de Rotação"
                 value={rotationType}
-                onChange={(e) => setRotationType(e.target.value as RotationType)}
+                onChange={(e) => setRotationType(e.target.value as ToggleType)}
                 options={ROTATION_TYPE_OPTIONS}
               />
             </div>
