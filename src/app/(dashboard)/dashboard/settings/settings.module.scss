@@ -109,6 +109,54 @@
   font-weight: $weight-medium;
 }
 
+.typeConfigContainer {
+  display: flex;
+  flex-direction: column;
+  gap: $space-lg;
+  margin-top: $space-sm;
+  padding-top: $space-lg;
+  border-top: 1px dashed var(--border-subtle);
+  animation: fadeIn 0.3s ease;
+}
+
+.manualBox {
+  display: flex;
+  flex-direction: column;
+  gap: $space-xs;
+  padding: $space-lg;
+  background: var(--accent-glow);
+  border: 1px solid var(--border-accent);
+  border-radius: $radius-xl;
+}
+
+.manualBadge {
+  display: inline-flex;
+  align-items: center;
+  gap: $space-2xs;
+  font-size: $text-sm;
+  font-weight: $weight-semibold;
+  color: var(--accent-secondary);
+}
+
+.manualText {
+  font-size: $text-sm;
+  color: var(--text-secondary);
+  line-height: 1.5;
+}
+
+.hintBox {
+  display: flex;
+  align-items: center;
+  gap: $space-xs;
+  font-size: $text-xs;
+  color: var(--text-secondary);
+  background: var(--bg-glass);
+  padding: $space-sm $space-md;
+  border-radius: $radius-md;
+  border: 1px solid var(--border-subtle);
+}
+
+
 .saveButton {
   align-self: flex-end;
   padding: $space-sm $space-xl;

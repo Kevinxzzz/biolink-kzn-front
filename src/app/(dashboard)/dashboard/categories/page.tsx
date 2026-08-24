@@ -18,11 +18,6 @@ function CategoryItem({ category, onEdit, onDelete }: { category: Category; onEd
         <div className={styles.categoryInfo}>
           <div className={styles.categoryTitle}>
             {category.name}
-            {category.rotationType && category.rotationType !== "MANUAL" && (
-              <span className={styles.rotationBadge}>
-                Rotação: {category.rotationType}
-              </span>
-            )}
           </div>
         </div>
       </div>
@@ -69,8 +64,7 @@ export default function CategoriesPage() {
 
     const newCategory: Category = {
       id: Math.random().toString(36).substring(2, 9),
-      name: formName.trim(),
-      rotationType: "MANUAL"
+      name: formName.trim()
     };
 
     setLocalCategories([...localCategories, newCategory]);
