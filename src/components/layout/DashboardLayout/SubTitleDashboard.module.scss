@@ -1,0 +1,22 @@
+@use '../../../styles/spacing' as *;
+@use '../../../styles/typography' as *;
+
+.header {
+  display: flex;
+  flex-direction: column;
+  gap: $space-2xs;
+  padding-bottom: $space-md;
+  border-bottom: 1px solid var(--border-subtle);
+  width: 100%;
+}
+
+.subtitle {
+  font-size: $text-lg;
+  font-weight: $weight-semibold;
+  color: var(--text-primary);
+}
+
+.description {
+  font-size: $text-sm;
+  color: var(--text-secondary);
+}
