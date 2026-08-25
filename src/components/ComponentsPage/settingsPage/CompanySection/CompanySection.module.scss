@@ -15,10 +15,14 @@
   background: var(--bg-elevated);
   border: 1px solid var(--border-subtle);
   border-radius: $radius-xl;
-  padding: $space-xl;
+  padding: $space-lg $space-md;
   width: 100%;
   max-width: 720px;
   margin-inline: auto;
+
+  @include sm {
+    padding: $space-xl;
+  }
 }
 
 .formGrid {

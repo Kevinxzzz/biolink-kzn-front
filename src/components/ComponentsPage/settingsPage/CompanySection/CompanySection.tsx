@@ -35,6 +35,15 @@ export function CompanySection({ companySettings, isSaving, onSave }: CompanySec
     }
   }, [companySettings]);
 
+  const initialName = companySettings?.name || "";
+  const initialEmail = companySettings?.email || "";
+  const initialPhone = companySettings?.phone || "";
+
+  const hasChanges =
+    formCompany.name !== initialName ||
+    formCompany.email !== initialEmail ||
+    formCompany.phone !== initialPhone;
+
   const handleSave = async () => {
     try {
       await onSave(formCompany);
@@ -79,14 +88,16 @@ export function CompanySection({ companySettings, isSaving, onSave }: CompanySec
             onChange={(e) => setFormCompany({ ...formCompany, phone: e.target.value })}
           />
         </div>
-        <button
-          className={styles.saveButton}
-          onClick={handleSave}
-          disabled={isSaving}
-          type="button"
-        >
-          {isSaving ? "Salvando..." : "Salvar Dados da Empresa"}
-        </button>
+        {hasChanges && (
+          <button
+            className={styles.saveButton}
+            onClick={handleSave}
+            disabled={isSaving}
+            type="button"
+          >
+            {isSaving ? "Salvando..." : "Salvar Dados da Empresa"}
+          </button>
+        )}
       </div>
     </section>
   );

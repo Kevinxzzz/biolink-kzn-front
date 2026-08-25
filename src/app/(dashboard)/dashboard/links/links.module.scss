@@ -2,246 +2,28 @@
 @use '../../../../styles/typography' as *;
 @use '../../../../styles/mixins' as *;
 
-.pageHeader {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  margin-bottom: $space-2xl;
-  flex-wrap: wrap;
-  gap: $space-md;
-}
-
-.pageDescription {
-  font-size: $text-base;
-  color: var(--text-secondary);
-}
-
-.createButton {
-  display: inline-flex;
-  align-items: center;
-  gap: $space-xs;
-  padding: $space-sm $space-lg;
-  font-size: $text-sm;
-  font-weight: $weight-semibold;
-  color: #ffffff;
-  background: var(--accent-primary);
-  border: none;
-  border-radius: $radius-pill;
-  cursor: pointer;
-  transition: all 0.2s ease;
-  white-space: nowrap;
-
-  &:hover {
-    transform: translateY(-1px);
-    box-shadow: 0 4px 16px var(--accent-glow-strong);
-  }
-}
-
-// ============================================
-// Draggable List Container
-// ============================================
-.linksList {
+.page {
   display: flex;
   flex-direction: column;
-  gap: $space-sm;
+  gap: $space-lg;
+  width: 100%;
 }
 
-// ============================================
-// Single Link Item (Draggable)
-// ============================================
-.linkItem {
+.alert {
   display: flex;
-  align-items: stretch;
-  background: var(--bg-elevated);
-  border: 1px solid var(--border-subtle);
-  border-radius: $radius-xl;
+  align-items: center;
+  gap: $space-sm;
   padding: $space-md;
-  transition: box-shadow 0.2s ease, border-color 0.2s ease;
-
-  &:hover {
-    border-color: var(--border-accent);
-  }
-}
-
-.dragHandle {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  padding: 0 $space-sm;
-  color: var(--text-muted);
-  cursor: grab;
-  touch-action: none;
-  
-  &:active {
-    cursor: grabbing;
-  }
-
-  svg {
-    width: 20px;
-    height: 20px;
-  }
-}
-
-.linkContent {
-  flex: 1;
-  display: flex;
-  flex-direction: column;
-  gap: $space-sm;
-  padding: 0 $space-md;
-  border-left: 1px solid var(--border-subtle);
-  border-right: 1px solid var(--border-subtle);
-  min-width: 0;
-
-  @include md {
-    flex-direction: row;
-    align-items: center;
-    justify-content: space-between;
-  }
-}
-
-.linkInfo {
-  display: flex;
-  flex-direction: column;
-  gap: $space-2xs;
-  min-width: 0;
-}
-
-.linkTitle {
-  font-size: $text-base;
-  font-weight: $weight-semibold;
-  color: var(--text-primary);
-  display: flex;
-  align-items: center;
-  gap: $space-xs;
-}
-
-.activeBadge {
-  font-size: 0.65rem;
-  font-weight: $weight-bold;
-  text-transform: uppercase;
-  letter-spacing: $tracking-wider;
-  color: #22c55e;
-  background: rgba(34, 197, 94, 0.1);
-  padding: 2px 6px;
-  border-radius: 4px;
-  display: inline-flex;
-  align-items: center;
-  gap: 4px;
-
-  &::before {
-    content: '';
-    display: block;
-    width: 4px;
-    height: 4px;
-    background: #22c55e;
-    border-radius: 50%;
-    animation: pulse 2s infinite;
-  }
-}
-
-.linkUrl {
+  border-radius: $radius-lg;
   font-size: $text-sm;
-  color: var(--text-secondary);
-  font-family: monospace;
-  white-space: nowrap;
-  overflow: hidden;
-  text-overflow: ellipsis;
+  line-height: $leading-normal;
+  margin-bottom: $space-md;
 }
 
-.linkMetrics {
-  display: flex;
-  align-items: center;
-  gap: $space-lg;
-
-  @include md {
-    justify-content: flex-end;
-  }
-}
-
-.metric {
-  display: flex;
-  flex-direction: column;
-  gap: 2px;
-}
-
-.metricLabel {
-  font-size: 0.65rem;
-  font-weight: $weight-bold;
-  text-transform: uppercase;
-  letter-spacing: $tracking-wider;
-  color: var(--text-muted);
-}
-
-.metricValue {
-  font-size: $text-sm;
-  font-weight: $weight-semibold;
-  color: var(--text-primary);
-}
-
-.toggles {
-  display: flex;
-  flex-direction: column;
-  gap: $space-sm;
-}
-
-// ============================================
-// Actions
-// ============================================
-.actions {
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  gap: $space-xs;
-  padding-left: $space-md;
-}
-
-.iconButton {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  width: 32px;
-  height: 32px;
-  border-radius: $radius-md;
-  background: transparent;
-  border: none;
-  cursor: pointer;
-  transition: all 0.2s ease;
-
-  svg {
-    width: 16px;
-    height: 16px;
-  }
-}
-
-.editButton {
-  color: var(--text-secondary);
-  &:hover {
-    background: var(--bg-primary);
-    color: var(--text-primary);
-  }
-}
-
-.deleteButton {
+.alertError {
+  background: rgba(239, 68, 68, 0.1);
+  border: 1px solid rgba(239, 68, 68, 0.2);
   color: #ef4444;
-  &:hover {
-    background: rgba(239, 68, 68, 0.1);
-  }
-}
-
-// ============================================
-// Modals & Forms
-// ============================================
-.form {
-  display: flex;
-  flex-direction: column;
-  gap: $space-lg;
-  padding-top: $space-md;
-}
-
-@keyframes pulse {
-  0% { transform: scale(1); opacity: 1; }
-  50% { transform: scale(1.5); opacity: 0.5; }
-  100% { transform: scale(1); opacity: 1; }
 }
 
 .loadingState {

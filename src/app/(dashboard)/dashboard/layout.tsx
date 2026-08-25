@@ -82,8 +82,9 @@ export default function DashboardLayoutRoute({
         display: "flex",
         alignItems: "center",
         justifyContent: "center",
-        height: "100vh",
-        width: "100vw",
+        minHeight: "100dvh",
+        width: "100%",
+        maxWidth: "100%",
         backgroundColor: "var(--bg-primary, #0c0a09)",
         color: "var(--text-primary, #f5f5f4)",
         fontFamily: "var(--font-inter, sans-serif)"
