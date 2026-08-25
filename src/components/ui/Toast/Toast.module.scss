@@ -1,0 +1,399 @@
+@use '../../../styles/spacing' as *;
+@use '../../../styles/typography' as *;
+@use '../../../styles/tokens' as *;
+@use '../../../styles/mixins' as *;
+
+// ============================================
+// Toast Container
+// ============================================
+
+.toastContainer {
+  position: fixed;
+  z-index: 9999;
+  display: flex;
+  flex-direction: column;
+  gap: $space-sm;
+  pointer-events: none;
+  width: calc(100% - 2rem);
+  max-width: 420px;
+  padding: 0;
+  box-sizing: border-box;
+
+  // Responsive safe-area & positioning
+  &.top-right {
+    top: calc(env(safe-area-inset-top, 0px) + #{$space-lg});
+    right: $space-lg;
+
+    @media (max-width: $breakpoint-md) {
+      top: calc(env(safe-area-inset-top, 0px) + #{$space-md});
+      right: 50%;
+      transform: translateX(50%);
+      width: calc(100% - 1.5rem);
+    }
+  }
+
+  &.top-left {
+    top: calc(env(safe-area-inset-top, 0px) + #{$space-lg});
+    left: $space-lg;
+
+    @media (max-width: $breakpoint-md) {
+      top: calc(env(safe-area-inset-top, 0px) + #{$space-md});
+      left: 50%;
+      transform: translateX(-50%);
+      width: calc(100% - 1.5rem);
+    }
+  }
+
+  &.top-center {
+    top: calc(env(safe-area-inset-top, 0px) + #{$space-lg});
+    left: 50%;
+    transform: translateX(-50%);
+
+    @media (max-width: $breakpoint-md) {
+      top: calc(env(safe-area-inset-top, 0px) + #{$space-md});
+      width: calc(100% - 1.5rem);
+    }
+  }
+
+  &.bottom-right {
+    bottom: calc(env(safe-area-inset-bottom, 0px) + #{$space-lg});
+    right: $space-lg;
+    flex-direction: column-reverse;
+
+    @media (max-width: $breakpoint-md) {
+      bottom: calc(env(safe-area-inset-bottom, 0px) + #{$space-md});
+      right: 50%;
+      transform: translateX(50%);
+      width: calc(100% - 1.5rem);
+    }
+  }
+
+  &.bottom-left {
+    bottom: calc(env(safe-area-inset-bottom, 0px) + #{$space-lg});
+    left: $space-lg;
+    flex-direction: column-reverse;
+
+    @media (max-width: $breakpoint-md) {
+      bottom: calc(env(safe-area-inset-bottom, 0px) + #{$space-md});
+      left: 50%;
+      transform: translateX(-50%);
+      width: calc(100% - 1.5rem);
+    }
+  }
+
+  &.bottom-center {
+    bottom: calc(env(safe-area-inset-bottom, 0px) + #{$space-lg});
+    left: 50%;
+    transform: translateX(-50%);
+    flex-direction: column-reverse;
+
+    @media (max-width: $breakpoint-md) {
+      bottom: calc(env(safe-area-inset-bottom, 0px) + #{$space-md});
+      width: calc(100% - 1.5rem);
+    }
+  }
+}
+
+// ============================================
+// Toast Item / Pop-out card
+// ============================================
+
+.toastItem {
+  pointer-events: auto;
+  position: relative;
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  border-radius: $radius-lg;
+  border: 1px solid var(--border-subtle);
+  background: var(--bg-glass);
+  backdrop-filter: blur(20px) saturate(180%);
+  -webkit-backdrop-filter: blur(20px) saturate(180%);
+  box-shadow: 
+    0 12px 36px rgba(0, 0, 0, 0.35),
+    0 4px 12px rgba(0, 0, 0, 0.15),
+    0 0 0 1px var(--border-subtle);
+  color: var(--text-primary);
+  user-select: none;
+  cursor: default;
+  transition: transform 0.25s cubic-bezier(0.16, 1, 0.3, 1),
+              opacity 0.2s ease,
+              box-shadow 0.2s ease,
+              border-color 0.2s ease;
+  animation: toastPopIn 0.35s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+
+  @include reduced-motion {
+    animation: none;
+    transition: none;
+  }
+
+  &.isLeaving {
+    animation: toastPopOut 0.25s cubic-bezier(0.4, 0, 1, 1) forwards;
+  }
+
+  &:hover {
+    box-shadow: 
+      0 16px 44px rgba(0, 0, 0, 0.45),
+      0 6px 16px rgba(0, 0, 0, 0.2),
+      0 0 0 1px var(--border-accent);
+  }
+}
+
+// Light theme adjustment for box-shadow & border
+[data-theme="light"] .toastItem {
+  background: rgba(255, 255, 255, 0.88);
+  box-shadow: 
+    0 12px 32px rgba(0, 0, 0, 0.08),
+    0 4px 12px rgba(0, 0, 0, 0.04),
+    0 0 0 1px rgba(0, 0, 0, 0.06);
+
+  &:hover {
+    box-shadow: 
+      0 16px 40px rgba(0, 0, 0, 0.12),
+      0 6px 16px rgba(0, 0, 0, 0.06),
+      0 0 0 1px var(--border-accent);
+  }
+}
+
+// ============================================
+// Toast Body & Content
+// ============================================
+
+.toastBody {
+  display: flex;
+  align-items: flex-start;
+  gap: $space-md;
+  padding: $space-md $space-md $space-md $space-md;
+}
+
+.iconWrapper {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  width: 36px;
+  height: 36px;
+  border-radius: $radius-md;
+  position: relative;
+
+  svg {
+    width: 20px;
+    height: 20px;
+    stroke-width: 2.25px;
+  }
+}
+
+.contentWrapper {
+  display: flex;
+  flex-direction: column;
+  gap: $space-2xs;
+  flex: 1;
+  min-width: 0;
+  padding-top: 1px;
+}
+
+.title {
+  font-size: $text-sm;
+  font-weight: $weight-semibold;
+  color: var(--text-primary);
+  line-height: $leading-tight;
+  letter-spacing: $tracking-wide;
+}
+
+.description {
+  font-size: $text-xs;
+  font-weight: $weight-regular;
+  color: var(--text-secondary);
+  line-height: $leading-normal;
+  word-break: break-word;
+}
+
+.actionButton {
+  margin-top: $space-xs;
+  align-self: flex-start;
+  padding: 4px $space-sm;
+  font-size: $text-xs;
+  font-weight: $weight-semibold;
+  border-radius: $radius-pill;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  background: var(--accent-glow);
+  color: var(--accent-primary);
+  border: 1px solid var(--border-accent);
+
+  &:hover {
+    background: var(--accent-primary);
+    color: #ffffff;
+  }
+
+  &.actionPrimary {
+    background: var(--accent-primary);
+    color: #ffffff;
+    border: none;
+
+    &:hover {
+      opacity: 0.9;
+    }
+  }
+}
+
+.closeButton {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  width: 28px;
+  height: 28px;
+  margin-top: -2px;
+  margin-right: -4px;
+  border-radius: $radius-sm;
+  background: transparent;
+  border: none;
+  color: var(--text-muted);
+  cursor: pointer;
+  transition: color 0.15s ease, background-color 0.15s ease;
+
+  &:hover {
+    color: var(--text-primary);
+    background: var(--accent-glow);
+  }
+
+  svg {
+    width: 16px;
+    height: 16px;
+  }
+}
+
+// ============================================
+// Progress Bar
+// ============================================
+
+.progressBar {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  height: 3px;
+  background: rgba(255, 255, 255, 0.08);
+  overflow: hidden;
+}
+
+.progressFill {
+  height: 100%;
+  width: 100%;
+  transform-origin: left;
+  transition: transform linear;
+}
+
+// ============================================
+// Type Variants
+// ============================================
+
+// Success
+.typeSuccess {
+  border-left: 3px solid #10b981;
+
+  .iconWrapper {
+    background: rgba(16, 185, 129, 0.12);
+    color: #10b981;
+  }
+
+  .progressFill {
+    background: #10b981;
+  }
+}
+
+// Error
+.typeError {
+  border-left: 3px solid #ef4444;
+
+  .iconWrapper {
+    background: rgba(239, 68, 68, 0.12);
+    color: #ef4444;
+  }
+
+  .progressFill {
+    background: #ef4444;
+  }
+}
+
+// Warning
+.typeWarning {
+  border-left: 3px solid #f59e0b;
+
+  .iconWrapper {
+    background: rgba(245, 158, 11, 0.14);
+    color: #f59e0b;
+  }
+
+  .progressFill {
+    background: #f59e0b;
+  }
+}
+
+// Info
+.typeInfo {
+  border-left: 3px solid var(--accent-primary);
+
+  .iconWrapper {
+    background: var(--accent-glow-strong);
+    color: var(--accent-secondary);
+  }
+
+  .progressFill {
+    background: var(--accent-primary);
+  }
+}
+
+// Loading
+.typeLoading {
+  border-left: 3px solid var(--accent-primary);
+
+  .iconWrapper {
+    background: var(--accent-glow-strong);
+    color: var(--accent-secondary);
+  }
+
+  .spinner {
+    animation: toastSpin 0.9s linear infinite;
+  }
+}
+
+// ============================================
+// Keyframe Animations
+// ============================================
+
+@keyframes toastPopIn {
+  0% {
+    opacity: 0;
+    transform: scale(0.88) translateY(-12px);
+  }
+  70% {
+    transform: scale(1.02) translateY(2px);
+  }
+  100% {
+    opacity: 1;
+    transform: scale(1) translateY(0);
+  }
+}
+
+@keyframes toastPopOut {
+  0% {
+    opacity: 1;
+    transform: scale(1) translateY(0);
+  }
+  100% {
+    opacity: 0;
+    transform: scale(0.9) translateY(-10px);
+  }
+}
+
+@keyframes toastSpin {
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(360deg);
+  }
+}

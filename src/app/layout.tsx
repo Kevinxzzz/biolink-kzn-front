@@ -42,6 +42,7 @@ export const metadata: Metadata = {
 };
 
 import { QueryProvider } from "@/providers/QueryProvider";
+import { ToastContainer } from "@/components/ui/Toast";
 
 export default function RootLayout({
   children,
@@ -51,7 +52,10 @@ export default function RootLayout({
   return (
     <html lang="pt-BR" className={inter.variable} data-theme="dark">
       <body>
-        <QueryProvider>{children}</QueryProvider>
+        <QueryProvider>
+          {children}
+          <ToastContainer position="top-right" />
+        </QueryProvider>
       </body>
     </html>
   );
