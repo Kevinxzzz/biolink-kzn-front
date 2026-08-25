@@ -51,9 +51,37 @@ export function RotationSection({ rotationSettings, isSaving, onSave }: Rotation
 
       if (rotationSettings.toggleType === "LIMITCLICKS" && rotationSettings.limitClicks) {
         setLimitClicks(rotationSettings.limitClicks);
+      } else {
+        setLimitClicks(1000);
       }
     }
   }, [rotationSettings]);
+
+  // Check if there are unsaved modifications
+  const initialType = rotationSettings?.toggleType || "MANUAL";
+  const initialTimerMinutes =
+    rotationSettings?.toggleType === "TIMER" && rotationSettings?.timerInMinutes
+      ? rotationSettings.timerInMinutes
+      : 60;
+  const initialLimitClicks =
+    rotationSettings?.toggleType === "LIMITCLICKS" && rotationSettings?.limitClicks
+      ? rotationSettings.limitClicks
+      : 1000;
+
+  const currentTimerMinutes =
+    timerValue.months * 30 * 24 * 60 +
+    timerValue.days * 24 * 60 +
+    timerValue.hours * 60 +
+    timerValue.minutes +
+    Math.round(timerValue.seconds / 60);
+
+  const hasTypeChanged = rotationType !== initialType;
+  const hasTimerChanged =
+    rotationType === "TIMER" && currentTimerMinutes !== initialTimerMinutes;
+  const hasLimitClicksChanged =
+    rotationType === "LIMITCLICKS" && limitClicks !== initialLimitClicks;
+
+  const hasChanges = hasTypeChanged || hasTimerChanged || hasLimitClicksChanged;
 
   const handleSaveRotation = async () => {
     try {
@@ -114,14 +142,16 @@ export function RotationSection({ rotationSettings, isSaving, onSave }: Rotation
           {rotationType === "MANUAL" && <ManualConfig />}
         </div>
 
-        <button
-          className={styles.saveButton}
-          onClick={handleSaveRotation}
-          disabled={isSaving}
-          type="button"
-        >
-          {isSaving ? "Salvando..." : "Salvar Configuração"}
-        </button>
+        {hasChanges && (
+          <button
+            className={styles.saveButton}
+            onClick={handleSaveRotation}
+            disabled={isSaving}
+            type="button"
+          >
+            {isSaving ? "Salvando..." : "Salvar Configuração"}
+          </button>
+        )}
       </div>
     </section>
   );
