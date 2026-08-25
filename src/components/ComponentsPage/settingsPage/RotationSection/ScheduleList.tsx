@@ -6,9 +6,10 @@ import styles from "./ScheduleConfig.module.scss";
 interface ScheduleListProps {
   schedules: Schedule[];
   onEdit: (schedule: Schedule) => void;
+  onDelete: (schedule: Schedule) => void;
 }
 
-export function ScheduleList({ schedules, onEdit }: ScheduleListProps) {
+export function ScheduleList({ schedules, onEdit, onDelete }: ScheduleListProps) {
   return (
     <div className={`${styles.fullWidth} ${styles.scheduleListContainer}`}>
       <h3 className={styles.scheduleListTitle}>Agendamentos Cadastrados</h3>
@@ -45,6 +46,13 @@ export function ScheduleList({ schedules, onEdit }: ScheduleListProps) {
                   type="button"
                 >
                   Editar
+                </button>
+                <button
+                  className={styles.deleteButton}
+                  onClick={() => onDelete(schedule)}
+                  type="button"
+                >
+                  Excluir
                 </button>
               </div>
             </div>

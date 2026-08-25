@@ -36,3 +36,20 @@ export function useUpdateSchedule() {
     error: mutation.error instanceof Error ? mutation.error.message : null,
   };
 }
+
+export function useDeleteSchedule() {
+  const queryClient = useQueryClient();
+
+  const mutation = useMutation({
+    mutationFn: (id: string) => scheduleService.deleteSchedule(id),
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ["schedules"] });
+    },
+  });
+
+  return {
+    remove: mutation.mutateAsync,
+    isDeleting: mutation.isPending,
+    error: mutation.error instanceof Error ? mutation.error.message : null,
+  };
+}

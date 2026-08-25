@@ -6,10 +6,11 @@ import { Input } from "@/components/ui/Input";
 import { toast } from "@/components/ui/Toast";
 import { useLinks } from "@/hooks/useLinks";
 import { useSchedules } from "@/hooks/useSchedules";
-import { useCreateSchedule, useUpdateSchedule } from "@/hooks/useScheduleMutations";
+import { useCreateSchedule, useUpdateSchedule, useDeleteSchedule } from "@/hooks/useScheduleMutations";
 import type { Schedule } from "@/types/scheduleType";
 import { ScheduleList } from "./ScheduleList";
 import { ScheduleEditModal } from "./ScheduleEditModal";
+import { ConfirmDialog } from "@/components/ui/ConfirmDialog";
 import styles from "./ScheduleConfig.module.scss";
 
 export function ScheduleConfig() {
@@ -17,10 +18,12 @@ export function ScheduleConfig() {
   const { schedules } = useSchedules();
   const { create: createSchedule, isCreating } = useCreateSchedule();
   const { update: updateSchedule, isUpdating } = useUpdateSchedule();
+  const { remove: deleteSchedule, isDeleting } = useDeleteSchedule();
 
   const [scheduledLinkId, setScheduledLinkId] = useState<string>("");
   const [scheduledDate, setScheduledDate] = useState<string>("");
   const [editingSchedule, setEditingSchedule] = useState<Schedule | null>(null);
+  const [deletingSchedule, setDeletingSchedule] = useState<Schedule | null>(null);
 
   useEffect(() => {
     if (links && links.length > 0 && !scheduledLinkId) {
@@ -40,6 +43,19 @@ export function ScheduleConfig() {
     } catch (error) {
       const msg = error instanceof Error ? error.message : "Tente novamente.";
       toast.error(msg, { title: "Erro ao criar agendamento." });
+    }
+  };
+
+  const handleDeleteConfirm = async () => {
+    if (!deletingSchedule) return;
+    try {
+      await deleteSchedule(deletingSchedule.id);
+      toast.success("Agendamento excluído com sucesso!");
+    } catch (error) {
+      const msg = error instanceof Error ? error.message : "Tente novamente.";
+      toast.error(msg, { title: "Erro ao excluir agendamento." });
+    } finally {
+      setDeletingSchedule(null);
     }
   };
 
@@ -94,6 +110,7 @@ export function ScheduleConfig() {
       <ScheduleList
         schedules={schedules}
         onEdit={(schedule) => setEditingSchedule(schedule)}
+        onDelete={(schedule) => setDeletingSchedule(schedule)}
       />
 
       <ScheduleEditModal
@@ -102,6 +119,17 @@ export function ScheduleConfig() {
         isUpdating={isUpdating}
         onClose={() => setEditingSchedule(null)}
         onUpdate={updateSchedule}
+      />
+
+      <ConfirmDialog
+        isOpen={!!deletingSchedule}
+        onClose={() => setDeletingSchedule(null)}
+        onConfirm={handleDeleteConfirm}
+        title="Excluir Agendamento"
+        description="Tem certeza que deseja excluir este agendamento? Esta ação não pode ser desfeita."
+        confirmText="Excluir"
+        isDestructive={true}
+        isLoading={isDeleting}
       />
     </div>
   );

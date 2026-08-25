@@ -15,5 +15,9 @@ export const scheduleService = {
   async updateSchedule(id: string, data: UpdateSchedulePayload): Promise<Schedule> {
     const response = await httpClient.patch<{ data: Schedule }>(`/schedules/${id}`, data);
     return response.data.data;
+  },
+
+  async deleteSchedule(id: string): Promise<void> {
+    await httpClient.delete(`/schedules/${id}`);
   }
 };
