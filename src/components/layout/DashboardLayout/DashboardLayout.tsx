@@ -60,7 +60,7 @@ const NAV_ITEMS = [
 ];
 
 interface DashboardLayoutProps {
-  children: React.ReactNode;
+  children?: React.ReactNode;
   pageTitle: string;
 }
 
