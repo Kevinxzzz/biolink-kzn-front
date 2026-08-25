@@ -1,6 +1,7 @@
 "use client";
 
 import { useState } from "react";
+import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { ThemeToggle } from "@/components/ui/ThemeToggle";
 import styles from "./DashboardLayout.module.scss";
@@ -60,7 +61,7 @@ const NAV_ITEMS = [
 ];
 
 interface DashboardLayoutProps {
-  children: React.ReactNode;
+  children?: React.ReactNode;
   pageTitle: string;
 }
 
@@ -82,9 +83,9 @@ export function DashboardLayout({ children, pageTitle }: DashboardLayoutProps) {
       {/* Sidebar */}
       <aside className={`${styles.sidebar} ${sidebarOpen ? styles.sidebarOpen : ""}`}>
         <div className={styles.sidebarHeader}>
-          <a href="/dashboard" className={styles.sidebarLogo}>
+          <Link href="/dashboard" className={styles.sidebarLogo} onClick={closeSidebar}>
             K<span className={styles.sidebarLogoAccent}>Z</span>N
-          </a>
+          </Link>
           <button
             className={styles.sidebarClose}
             onClick={closeSidebar}
@@ -101,7 +102,7 @@ export function DashboardLayout({ children, pageTitle }: DashboardLayoutProps) {
           {NAV_ITEMS.map((item) => {
             const isActive = pathname === item.href;
             return (
-              <a
+              <Link
                 key={item.href}
                 href={item.href}
                 className={`${styles.navItem} ${isActive ? styles.navItemActive : ""}`}
@@ -109,7 +110,7 @@ export function DashboardLayout({ children, pageTitle }: DashboardLayoutProps) {
               >
                 {item.icon}
                 <span>{item.label}</span>
-              </a>
+              </Link>
             );
           })}
         </nav>

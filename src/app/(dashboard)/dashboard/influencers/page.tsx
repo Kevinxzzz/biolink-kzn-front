@@ -2,6 +2,7 @@
 
 import { useState } from "react";
 import { DashboardLayout } from "@/components/layout/DashboardLayout";
+import { ComingSoon } from "@/components/ui/ComingSoon";
 import { useInfluencers } from "@/hooks/useInfluencers";
 import { useUpdateInfluencer, useCreateInfluencer } from "@/hooks/useInfluencerMutations";
 import { SharedModal } from "@/components/ui/SharedModal";
@@ -15,6 +16,7 @@ import type { Influencer, InfluencerPlatform } from "@/types/influencerType";
 import styles from "./influencers.module.scss";
 
 export default function InfluencersPage() {
+  /*
   const { influencers, isLoading, refetch } = useInfluencers();
   const { updateStatus, updatePlatforms, isUpdating } = useUpdateInfluencer();
   const { create, isCreating } = useCreateInfluencer();
@@ -122,9 +124,17 @@ export default function InfluencersPage() {
   if (isLoading) {
     return <DashboardLayout pageTitle="Influenciadores"><div className={styles.loadingState}><div className={styles.spinner} /></div></DashboardLayout>;
   }
+  */
 
   return (
     <DashboardLayout pageTitle="Influenciadores">
+      <ComingSoon
+        title="Conteúdo disponível em breve"
+        description="O gerenciamento de influenciadores e acompanhamento de métricas dedicadas estará disponível em breve."
+        badge="Em desenvolvimento"
+      />
+
+      {/*
       <div className={styles.pageHeader}>
         <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", flexWrap: "wrap", gap: "1rem" }}>
           <p className={styles.pageDescription}>Acompanhe e gerencie os influenciadores associados à sua empresa.</p>
@@ -224,7 +234,6 @@ export default function InfluencersPage() {
         </div>
       )}
 
-      {/* Manage Platforms Modal */}
       <SharedModal isOpen={!!editingInfluencer} onClose={() => setEditingInfluencer(null)} title="Gerenciar Plataformas" description="Adicione as URLs das redes sociais deste influenciador."
         footer={
           <button style={{ padding: "8px 16px", borderRadius: "99px", background: "var(--accent-primary)", color: "#fff", border: "none", fontWeight: 600, cursor: "pointer" }} onClick={handleSavePlatforms} disabled={isUpdating}>
@@ -263,7 +272,6 @@ export default function InfluencersPage() {
         </div>
       </SharedModal>
 
-      {/* Create Influencer Modal */}
       <SharedModal isOpen={isCreateModalOpen} onClose={() => setIsCreateModalOpen(false)} title="Adicionar influenciador"
         footer={
           <button style={{ padding: "8px 16px", borderRadius: "99px", background: "var(--accent-primary)", color: "#fff", border: "none", fontWeight: 600, cursor: "pointer" }} onClick={handleCreateSubmit} disabled={isCreating}>
@@ -308,6 +316,7 @@ export default function InfluencersPage() {
           </div>
         </div>
       </SharedModal>
+      */}
     </DashboardLayout>
   );
 }

@@ -1,0 +1,41 @@
+@use '../../../styles/spacing' as *;
+@use '../../../styles/typography' as *;
+@use '../../../styles/mixins' as *;
+
+.form {
+  display: flex;
+  flex-direction: column;
+  gap: $space-lg;
+  padding-top: $space-md;
+}
+
+.errorMessage {
+  color: #ef4444;
+  font-size: $text-sm;
+  background: rgba(239, 68, 68, 0.08);
+  border: 1px solid rgba(239, 68, 68, 0.2);
+  padding: $space-sm $space-md;
+  border-radius: $radius-md;
+}
+
+.submitButton {
+  padding: $space-sm $space-xl;
+  border-radius: $radius-pill;
+  background: var(--accent-primary);
+  color: #ffffff;
+  border: none;
+  font-size: $text-sm;
+  font-weight: $weight-semibold;
+  cursor: pointer;
+  transition: all 0.2s ease;
+
+  &:hover:not(:disabled) {
+    box-shadow: 0 4px 16px var(--accent-glow-strong);
+    transform: translateY(-1px);
+  }
+
+  &:disabled {
+    opacity: 0.7;
+    cursor: not-allowed;
+  }
+}

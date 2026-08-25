@@ -2,12 +2,12 @@
 
 import { useState } from "react";
 import { DashboardLayout } from "@/components/layout/DashboardLayout";
+import { ComingSoon } from "@/components/ui/ComingSoon";
 import { useInvitations } from "@/hooks/useInvitations";
 import type { InvitationToken } from "@/types/invitationType";
 import styles from "./invitations.module.scss";
 
-
-
+/*
 function statusLabel(status: string): string {
   const map: Record<string, string> = {
     VALID: "Ativo",
@@ -39,8 +39,10 @@ function formatDate(dateString: string): string {
     year: "numeric",
   });
 }
+*/
 
 export default function InvitationsPage() {
+  /*
   const { invitations, isLoading, create, revoke } = useInvitations();
   const [showCreateModal, setShowCreateModal] = useState(false);
   const [isCreating, setIsCreating] = useState(false);
@@ -77,10 +79,17 @@ export default function InvitationsPage() {
   const inviteLink = generatedToken
     ? `${window.location.origin}/register/invite/${generatedToken.token}`
     : "";
+  */
 
   return (
     <DashboardLayout pageTitle="Tokens de convite">
-      {/* Header */}
+      <ComingSoon
+        title="Conteúdo disponível em breve"
+        description="O gerenciamento de convites e permissões de membros da empresa estará disponível em breve."
+        badge="Em desenvolvimento"
+      />
+
+      {/*
       <div className={styles.pageHeader}>
         <p className={styles.pageDescription}>
           Gere e gerencie convites para adicionar membros à sua empresa.
@@ -93,7 +102,6 @@ export default function InvitationsPage() {
         </button>
       </div>
 
-      {/* Generated token feedback */}
       {generatedToken && (
         <div className={styles.generatedToken}>
           <div className={styles.generatedTitle}>
@@ -160,7 +168,6 @@ export default function InvitationsPage() {
         </div>
       )}
 
-      {/* Table */}
       {isLoading ? (
         <div className={styles.loadingState}>
           <div className={styles.loadingSpinner} />
@@ -214,7 +221,6 @@ export default function InvitationsPage() {
         </div>
       )}
 
-      {/* Create Modal */}
       {showCreateModal && (
         <div className={styles.modalOverlay} onClick={() => setShowCreateModal(false)}>
           <div className={styles.modal} onClick={(e) => e.stopPropagation()}>
@@ -248,6 +254,7 @@ export default function InvitationsPage() {
           </div>
         </div>
       )}
+      */}
     </DashboardLayout>
   );
 }

@@ -2,12 +2,14 @@
 
 import { useState } from "react";
 import { DashboardLayout } from "@/components/layout/DashboardLayout";
+import { ComingSoon } from "@/components/ui/ComingSoon";
 import { StatCard } from "@/components/ui/StatCard";
 import { useDashboard } from "@/hooks/useDashboard";
 import type { DashboardPeriodFilter } from "@/types/analyticsType";
 import { ResponsiveContainer, LineChart, Line, XAxis, YAxis, Tooltip, CartesianGrid } from "recharts";
 import styles from "./dashboard.module.scss";
 
+/*
 // Custom Tooltip for Recharts
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
 const CustomTooltip = ({ active, payload, label }: { active?: boolean; payload?: any; label?: string }) => {
@@ -32,8 +34,10 @@ const CustomTooltip = ({ active, payload, label }: { active?: boolean; payload?:
   }
   return null;
 };
+*/
 
 export default function DashboardOverviewPage() {
+  /*
   const [period, setPeriod] = useState<DashboardPeriodFilter>("7days");
   const [linkFilter, setLinkFilter] = useState("all");
   const [influencerFilter, setInfluencerFilter] = useState("all");
@@ -49,12 +53,18 @@ export default function DashboardOverviewPage() {
       </DashboardLayout>
     );
   }
+  */
 
   return (
     <DashboardLayout pageTitle="Visão Geral">
-      <div className={styles.page}>
+      <ComingSoon
+        title="Conteúdo disponível em breve"
+        description="O painel de métricas, gráficos e visão geral do sistema estará disponível em breve."
+        badge="Em desenvolvimento"
+      />
 
-        {/* Header & Filters */}
+      {/*
+      <div className={styles.page}>
         <div className={styles.header}>
           <h1 className={styles.pageTitle}>Analytics</h1>
           <div className={styles.filters}>
@@ -75,7 +85,6 @@ export default function DashboardOverviewPage() {
           </div>
         </div>
 
-        {/* Stats Grid */}
         <div className={styles.statsGrid}>
           <StatCard
             title="Total de Cliques"
@@ -101,7 +110,6 @@ export default function DashboardOverviewPage() {
           />
         </div>
 
-        {/* Chart Section */}
         <div className={styles.chartSection}>
           <div className={styles.sectionHeader}>
             <h2 className={styles.sectionTitle}>Evolução de Cliques</h2>
@@ -124,10 +132,7 @@ export default function DashboardOverviewPage() {
           </div>
         </div>
 
-        {/* Bottom Grid */}
         <div className={styles.bottomGrid}>
-
-          {/* Top Links */}
           <div className={styles.widget}>
             <h3 className={styles.widgetTitle}>Links Mais Acessados</h3>
             <div className={styles.list}>
@@ -146,7 +151,6 @@ export default function DashboardOverviewPage() {
             </div>
           </div>
 
-          {/* Top Influencers */}
           <div className={styles.widget}>
             <h3 className={styles.widgetTitle}>Top Influenciadores</h3>
             <div className={styles.list}>
@@ -164,7 +168,6 @@ export default function DashboardOverviewPage() {
             </div>
           </div>
 
-          {/* System Status / Active Link */}
           <div className={`${styles.widget} ${styles.statusWidget}`}>
             <h3 className={styles.widgetTitle}>Status do Sistema</h3>
 
@@ -183,9 +186,9 @@ export default function DashboardOverviewPage() {
               <span>Rotação automática: <strong>Ativada</strong></span>
             </div>
           </div>
-
         </div>
       </div>
+      */}
     </DashboardLayout>
   );
 }
