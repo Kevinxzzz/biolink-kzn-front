@@ -1,4 +1,4 @@
 export { LinksHeader } from "./LinksHeader";
-export { LinksList, SortableLinkItem } from "./LinksList";
+export { LinksList } from "./LinksList";
 export { CreateLinkModal } from "./CreateLinkModal";
 export { EditLinkModal } from "./EditLinkModal";

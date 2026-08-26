@@ -1,4 +1,4 @@
-export const AUTH_EXPIRED_EVENT = 'auth:expired';
+const AUTH_EXPIRED_EVENT = 'auth:expired';
 
 /**
  * Dispara um evento global customizado indicando que a sessão/token expirou.
