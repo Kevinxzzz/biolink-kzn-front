@@ -21,16 +21,25 @@ interface BenefitsTabsProps {
 export function BenefitsTabs({ benefits, autoPlayInterval = 5000 }: BenefitsTabsProps) {
   const [activeIndex, setActiveIndex] = useState(0);
   const [isPaused, setIsPaused] = useState(false);
+  const tabsContainerRef = useRef<HTMLDivElement>(null);
   const tabRefs = useRef<(HTMLButtonElement | null)[]>([]);
 
-  // Function to smoothly scroll the active tab into center of the carousel
+  // Function to smoothly scroll the active tab into center of the carousel container ONLY (never scrolling the page)
   const scrollToTab = useCallback((index: number) => {
+    const container = tabsContainerRef.current;
     const tabElement = tabRefs.current[index];
-    if (tabElement) {
-      tabElement.scrollIntoView({
+    if (container && tabElement) {
+      const containerRect = container.getBoundingClientRect();
+      const tabRect = tabElement.getBoundingClientRect();
+
+      const targetScrollLeft =
+        container.scrollLeft +
+        (tabRect.left - containerRect.left) -
+        (container.clientWidth / 2 - tabElement.clientWidth / 2);
+
+      container.scrollTo({
+        left: targetScrollLeft,
         behavior: "smooth",
-        block: "nearest",
-        inline: "center",
       });
     }
   }, []);
@@ -63,7 +72,7 @@ export function BenefitsTabs({ benefits, autoPlayInterval = 5000 }: BenefitsTabs
       onTouchStart={() => setIsPaused(true)}
       onTouchEnd={() => setIsPaused(false)}
     >
-      <div className={styles.tabs} role="tablist">
+      <div className={styles.tabs} role="tablist" ref={tabsContainerRef}>
         {benefits.map((benefit, index) => (
           <BenefitItem
             key={benefit.id}
