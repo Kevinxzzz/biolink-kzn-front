@@ -37,7 +37,7 @@ export function getErrorMessage(error: unknown, fallback = 'Erro inesperado. Ten
 
 // ── Instância Axios ─────────────────────────────────────────
 const httpClient = axios.create({
-  baseURL: process.env.NEXT_PUBLIC_API_URL || 'http://localhost:3000',
+  baseURL: process.env.NEXT_PUBLIC_API_URL,
   headers: {
     'Content-Type': 'application/json',
     Accept: 'application/json',
