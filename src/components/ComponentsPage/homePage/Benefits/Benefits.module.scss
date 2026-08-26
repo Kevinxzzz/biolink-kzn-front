@@ -18,6 +18,7 @@
 .title {
   font-size: $text-2xl;
   margin-bottom: $space-xs;
+  font-weight: $weight-bold;
 
   @include md {
     font-size: $text-3xl;
@@ -45,52 +46,63 @@
   }
 }
 
-// Main Container: 2-column side-by-side on all screens with adaptive sizing
+// Main Container
+// Mobile / iPad: Column (Tabs horizontal carousel above, Main Card below)
+// Desktop (>= 1024px): Row (Side-by-side 2-column)
 .container {
   display: flex;
-  flex-direction: row;
-  align-items: stretch;
-  gap: $space-xs;
-  min-height: 280px;
-
-  @include sm {
-    gap: $space-sm;
-    min-height: 320px;
-  }
+  flex-direction: column;
+  gap: $space-md;
+  width: 100%;
 
   @include md {
-    gap: $space-md;
-    min-height: 380px;
+    gap: $space-lg;
   }
 
   @include lg {
+    flex-direction: row;
+    align-items: stretch;
     gap: $space-2xl;
-    min-height: 480px;
+    min-height: 440px;
   }
 }
 
-// Tabs Container (Left Column)
+// Tabs Container
+// Mobile / iPad: Horizontal sliding carousel with touch scroll
+// Desktop: Vertical column
 .tabs {
   display: flex;
-  flex-direction: column;
-  justify-content: center;
-  gap: $space-2xs;
-  width: 44%;
-  flex-shrink: 0;
+  flex-direction: row;
+  align-items: center;
+  gap: $space-xs;
+  width: 100%;
+  overflow-x: auto;
+  overflow-y: hidden;
+  scroll-snap-type: x mandatory;
+  -webkit-overflow-scrolling: touch;
+  scrollbar-width: none; // Firefox
+  padding: 4px;
+  margin: -4px;
 
-  @include sm {
-    width: 42%;
-    gap: $space-xs;
+  &::-webkit-scrollbar {
+    display: none; // Chrome/Safari
   }
 
-  @include md {
-    width: 40%;
-    gap: $space-xs;
+  @include sm {
+    gap: $space-sm;
   }
 
   @include lg {
-    width: 38%;
+    flex-direction: column;
+    justify-content: center;
+    align-items: stretch;
     gap: $space-sm;
+    width: 38%;
+    flex-shrink: 0;
+    overflow-x: visible;
+    padding: 0;
+    margin: 0;
+    scroll-snap-type: none;
   }
 }
 
@@ -98,33 +110,39 @@
 .tabItem {
   display: flex;
   align-items: center;
-  gap: $space-xs;
-  padding: $space-xs;
-  border-radius: $radius-md;
-  border-left: 2px solid transparent;
-  background: transparent;
+  gap: $space-sm;
+  padding: $space-sm $space-md;
+  border-radius: $radius-lg;
+  border: 1px solid var(--border-subtle);
+  border-left: 3px solid transparent;
+  background: var(--bg-primary);
   text-align: left;
   cursor: pointer;
   transition: all 0.25s ease;
   position: relative;
   overflow: hidden;
-  width: 100%;
+  flex: 0 0 auto;
+  scroll-snap-align: start;
+  min-width: 180px;
 
   @include sm {
-    gap: $space-sm;
-    padding: $space-sm;
-    border-radius: $radius-lg;
-    border-left-width: 3px;
+    min-width: 210px;
+    padding: $space-md;
+    gap: $space-md;
   }
 
   @include md {
-    padding: $space-sm $space-md;
-    gap: $space-md;
+    min-width: 240px;
   }
 
   @include lg {
+    width: 100%;
+    min-width: unset;
+    flex: none;
+    background: transparent;
+    border: none;
+    border-left: 2px solid transparent;
     padding: $space-lg;
-    gap: $space-md;
   }
 
   &::before {
@@ -140,12 +158,19 @@
 
   &:hover {
     &::before {
-      opacity: 0.5;
+      opacity: 0.6;
     }
   }
 
   &.active {
+    border-color: var(--border-subtle);
     border-left-color: var(--accent-primary);
+    background: var(--bg-elevated);
+
+    @include lg {
+      border-color: transparent;
+      border-left-color: var(--accent-primary);
+    }
 
     &::before {
       opacity: 1;
@@ -164,10 +189,10 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  width: 32px;
-  height: 32px;
-  min-width: 32px;
-  border-radius: $radius-sm;
+  width: 36px;
+  height: 36px;
+  min-width: 36px;
+  border-radius: $radius-md;
   background: var(--bg-primary);
   border: 1px solid var(--border-subtle);
   color: var(--text-secondary);
@@ -175,26 +200,14 @@
   flex-shrink: 0;
 
   svg {
-    width: 16px;
-    height: 16px;
+    width: 18px;
+    height: 18px;
   }
 
   @include sm {
-    width: 38px;
-    height: 38px;
-    min-width: 38px;
-    border-radius: $radius-md;
-
-    svg {
-      width: 18px;
-      height: 18px;
-    }
-  }
-
-  @include md {
-    width: 42px;
-    height: 42px;
-    min-width: 42px;
+    width: 40px;
+    height: 40px;
+    min-width: 40px;
 
     svg {
       width: 20px;
@@ -227,18 +240,16 @@
   font-weight: $weight-semibold;
   color: var(--text-primary);
   line-height: $leading-snug;
-  @include truncate(1);
+  white-space: nowrap;
 
   @include sm {
     font-size: $text-sm;
   }
 
-  @include md {
-    font-size: $text-base;
-  }
-
   @include lg {
     font-size: $text-lg;
+    white-space: normal;
+    @include truncate(1);
   }
 }
 
@@ -246,64 +257,68 @@
   font-size: 0.6875rem; // ~11px
   color: var(--text-secondary);
   line-height: $leading-tight;
-  display: none;
-  @include truncate(1);
+  white-space: nowrap;
 
   @include sm {
-    display: -webkit-box;
     font-size: $text-xs;
   }
 
   @include lg {
-    display: -webkit-box;
     font-size: $text-sm;
+    white-space: normal;
     @include truncate(2);
   }
 }
 
-// Content Area (Right Column)
+// Content Area (Main Card)
 .contentArea {
   position: relative;
-  flex: 1;
-  min-width: 0;
+  width: 100%;
+  min-height: 240px;
   background: var(--bg-elevated);
-  border-radius: $radius-lg;
+  border-radius: $radius-xl;
   border: 1px solid var(--border-subtle);
   overflow: hidden;
   display: flex;
   align-items: center;
-  justify-content: center;
+
+  @include sm {
+    min-height: 260px;
+  }
 
   @include md {
-    border-radius: $radius-xl;
+    min-height: 300px;
+    border-radius: $radius-2xl;
   }
 
   @include lg {
-    border-radius: $radius-2xl;
+    flex: 1;
+    min-height: 440px;
   }
 }
 
 .contentInner {
   position: absolute;
-  inset: $space-sm;
+  inset: 0;
+  padding: $space-lg;
   display: flex;
   flex-direction: column;
   justify-content: center;
   opacity: 0;
   transition: opacity 0.35s ease;
   pointer-events: none;
-  overflow-y: auto;
+  overflow: hidden;
 
   @include sm {
-    inset: $space-md;
+    padding: $space-xl;
   }
 
   @include md {
-    inset: $space-lg;
+    padding: $space-2xl;
   }
 
   @include lg {
-    inset: $space-xl;
+    padding: $space-2xl;
   }
 
   &.active {
@@ -312,25 +327,135 @@
   }
 }
 
+// Pure Background Glow (Behind Text)
+.cardGlow {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  z-index: 0;
+  overflow: hidden;
+
+  &::before {
+    content: '';
+    position: absolute;
+    top: -15%;
+    right: -15%;
+    width: 65%;
+    height: 65%;
+    border-radius: 50%;
+    background: var(--accent-primary);
+    filter: blur(45px);
+    opacity: 0.22;
+    animation: blobFloat 9s infinite ease-in-out;
+  }
+
+  &::after {
+    content: '';
+    position: absolute;
+    bottom: -15%;
+    left: -15%;
+    width: 55%;
+    height: 55%;
+    border-radius: 50%;
+    background: var(--accent-secondary);
+    filter: blur(50px);
+    opacity: 0.18;
+    animation: blobFloatReverse 11s infinite ease-in-out;
+  }
+}
+
+// Subtle Watermark Icon (Behind Text)
+.watermarkIcon {
+  position: absolute;
+  right: -10px;
+  bottom: -15px;
+  width: 110px;
+  height: 110px;
+  color: var(--accent-primary);
+  opacity: 0.05;
+  pointer-events: none;
+  z-index: 0;
+  transform: rotate(-10deg);
+
+  @include sm {
+    width: 140px;
+    height: 140px;
+    right: -10px;
+    bottom: -15px;
+    opacity: 0.06;
+  }
+
+  @include md {
+    width: 180px;
+    height: 180px;
+    right: -15px;
+    bottom: -20px;
+    opacity: 0.07;
+  }
+
+  @include lg {
+    width: 220px;
+    height: 220px;
+    right: -20px;
+    bottom: -25px;
+    opacity: 0.08;
+  }
+
+  svg {
+    width: 100%;
+    height: 100%;
+  }
+}
+
+// Content Text Body
+.contentBody {
+  position: relative;
+  z-index: 1;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  max-width: 650px;
+}
+
+.contentBadge {
+  display: inline-flex;
+  align-items: center;
+  width: fit-content;
+  padding: 3px 10px;
+  border-radius: $radius-pill;
+  font-size: 0.6875rem; // 11px
+  font-weight: $weight-medium;
+  color: var(--accent-primary);
+  background: var(--accent-glow);
+  border: 1px solid var(--border-subtle);
+  margin-bottom: $space-xs;
+  letter-spacing: 0.02em;
+
+  @include md {
+    padding: 4px 12px;
+    font-size: $text-xs;
+    margin-bottom: $space-sm;
+  }
+}
+
 .contentTitle {
-  font-size: $text-sm;
+  font-size: $text-lg;
   font-weight: $weight-bold;
-  margin-bottom: $space-2xs;
+  margin-bottom: $space-xs;
   color: var(--text-primary);
   line-height: $leading-snug;
 
   @include sm {
-    font-size: $text-base;
-    margin-bottom: $space-xs;
+    font-size: $text-xl;
   }
 
   @include md {
-    font-size: $text-xl;
+    font-size: $text-2xl;
     margin-bottom: $space-sm;
   }
 
   @include lg {
-    font-size: $text-2xl;
+    font-size: $text-3xl;
     margin-bottom: $space-md;
   }
 }
@@ -338,78 +463,15 @@
 .contentDescription {
   font-size: $text-xs;
   color: var(--text-secondary);
-  line-height: 1.4;
+  line-height: 1.5;
 
   @include sm {
-    font-size: $text-xs;
-    line-height: $leading-normal;
-  }
-
-  @include md {
     font-size: $text-sm;
     line-height: $leading-relaxed;
   }
 
-  @include lg {
+  @include md {
     font-size: $text-base;
     line-height: $leading-relaxed;
-  }
-}
-
-.illustration {
-  margin-top: $space-2xs;
-  align-self: center;
-  width: 70px;
-  height: 70px;
-  position: relative;
-  flex-shrink: 0;
-
-  @include sm {
-    width: 90px;
-    height: 90px;
-    margin-top: $space-xs;
-  }
-
-  @include md {
-    width: 130px;
-    height: 130px;
-    margin-top: $space-sm;
-  }
-
-  @include lg {
-    width: 180px;
-    height: 180px;
-    margin-top: auto;
-  }
-
-  // Abstract decorative illustration glowing blobs
-  &::before,
-  &::after {
-    content: '';
-    position: absolute;
-    border-radius: 50%;
-    filter: blur(25px);
-    opacity: 0.45;
-
-    @include md {
-      filter: blur(35px);
-      opacity: 0.5;
-    }
-
-    @include lg {
-      filter: blur(40px);
-    }
-  }
-
-  &::before {
-    inset: 10%;
-    background: var(--accent-primary);
-    animation: blobFloat 8s infinite;
-  }
-
-  &::after {
-    inset: 20% -10% -10% 20%;
-    background: var(--accent-secondary);
-    animation: blobFloatReverse 10s infinite;
   }
 }
