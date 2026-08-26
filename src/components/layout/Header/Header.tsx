@@ -2,6 +2,7 @@
 
 import { useState } from "react";
 import { useScroll } from "@/hooks/useScroll";
+import { useAuth } from "@/hooks/useAuth";
 import { ThemeToggle } from "@/components/ui/ThemeToggle";
 import { ButtonLink } from "@/components/ui/Button";
 import styles from "./Header.module.scss";
@@ -54,6 +55,7 @@ const NAV_LINKS = [
 
 export function Header() {
   const { isScrolled } = useScroll(60);
+  const { isAuthenticated } = useAuth();
   const [mobileOpen, setMobileOpen] = useState(false);
 
   const headerClasses = [
@@ -85,9 +87,26 @@ export function Header() {
             <div className={styles.desktopOnly}>
               <ThemeToggle />
             </div>
+
+            {isAuthenticated && (
+              <ButtonLink
+                href="/dashboard"
+                variant="secondary"
+                size="sm"
+                className={styles.desktopOnly}
+              >
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={2} strokeLinecap="round" strokeLinejoin="round" width="16" height="16" aria-hidden="true">
+                  <rect x="3" y="3" width="7" height="7" /><rect x="14" y="3" width="7" height="7" />
+                  <rect x="14" y="14" width="7" height="7" /><rect x="3" y="14" width="7" height="7" />
+                </svg>
+                Dashboard
+              </ButtonLink>
+            )}
+
             <ButtonLink href="#cta" variant="primary" size="sm" className={styles.desktopOnly}>
               Entrar no Grupo
             </ButtonLink>
+
             <button
               className={styles.menuButton}
               onClick={() => setMobileOpen(true)}
@@ -118,6 +137,7 @@ export function Header() {
             <line x1="6" y1="6" x2="18" y2="18" />
           </svg>
         </button>
+
         {NAV_LINKS.map((link) => (
           <a
             key={link.href}
@@ -129,7 +149,25 @@ export function Header() {
             <span>{link.label}</span>
           </a>
         ))}
+
         <ThemeToggle showLabel />
+
+        {isAuthenticated && (
+          <ButtonLink
+            href="/dashboard"
+            variant="secondary"
+            size="lg"
+            onClick={closeMobile}
+            className={styles.mobileDashboardBtn}
+          >
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={2} strokeLinecap="round" strokeLinejoin="round" width="18" height="18" aria-hidden="true">
+              <rect x="3" y="3" width="7" height="7" /><rect x="14" y="3" width="7" height="7" />
+              <rect x="14" y="14" width="7" height="7" /><rect x="3" y="14" width="7" height="7" />
+            </svg>
+            <span>Dashboard</span>
+          </ButtonLink>
+        )}
+
         <ButtonLink href="#cta" variant="primary" size="lg" onClick={closeMobile}>
           Entrar no Grupo
         </ButtonLink>

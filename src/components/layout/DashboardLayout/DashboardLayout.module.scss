@@ -124,8 +124,35 @@
 }
 
 .sidebarFooter {
-  padding: $space-lg $space-md;
+  display: flex;
+  flex-direction: column;
+  gap: $space-xs;
+  padding: $space-md $space-sm;
   border-top: 1px solid var(--border-subtle);
+}
+
+.homeButton {
+  display: flex;
+  align-items: center;
+  gap: $space-md;
+  padding: $space-sm $space-md;
+  font-size: $text-sm;
+  font-weight: $weight-medium;
+  color: var(--text-secondary);
+  text-decoration: none;
+  border-radius: $radius-md;
+  transition: color 0.15s ease, background 0.15s ease;
+
+  &:hover {
+    color: var(--text-primary);
+    background: var(--accent-glow);
+  }
+
+  svg {
+    width: 20px;
+    height: 20px;
+    flex-shrink: 0;
+  }
 }
 
 // ============================================
