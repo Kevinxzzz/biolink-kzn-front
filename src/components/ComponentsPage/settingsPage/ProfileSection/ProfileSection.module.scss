@@ -1,0 +1,52 @@
+@use '../../../../styles/spacing' as *;
+@use '../../../../styles/typography' as *;
+@use '../../../../styles/mixins' as *;
+
+.section {
+  display: flex;
+  flex-direction: column;
+  gap: $space-xl;
+}
+
+.sectionContent {
+  display: flex;
+  flex-direction: column;
+  gap: $space-xl;
+  background: var(--bg-elevated);
+  border: 1px solid var(--border-subtle);
+  border-radius: $radius-xl;
+  padding: $space-xl;
+  width: 100%;
+  max-width: 720px;
+  margin-inline: auto;
+}
+
+.formGrid {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: $space-lg;
+
+  @include md {
+    grid-template-columns: 1fr 1fr;
+  }
+}
+
+.intervalText {
+  font-size: $text-sm;
+  color: var(--text-primary);
+  font-weight: $weight-medium;
+  display: block;
+  margin-bottom: 4px;
+}
+
+.roleBadge {
+  display: inline-flex;
+  align-items: center;
+  padding: 4px 12px;
+  font-size: 0.75rem;
+  font-weight: $weight-bold;
+  color: var(--accent-primary);
+  background: var(--accent-glow);
+  border-radius: $radius-pill;
+  margin-top: 8px;
+}

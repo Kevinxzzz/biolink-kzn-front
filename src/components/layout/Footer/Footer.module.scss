@@ -1,0 +1,83 @@
+@use '../../../styles/spacing' as *;
+@use '../../../styles/typography' as *;
+@use '../../../styles/mixins' as *;
+
+.footer {
+  border-top: 1px solid var(--border-subtle);
+  background: var(--bg-primary);
+  padding: $space-xl 0 $space-lg;
+
+  @include md {
+    padding: $space-2xl 0 $space-xl;
+  }
+
+  @include lg {
+    padding: $space-3xl 0 $space-xl;
+  }
+}
+
+.inner {
+  display: flex;
+  flex-direction: column;
+  gap: $space-lg;
+
+  @include md {
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+    gap: $space-xl;
+  }
+}
+
+.logo {
+  font-size: $text-xl;
+  font-weight: $weight-extrabold;
+  letter-spacing: $tracking-tight;
+  color: var(--text-primary);
+  text-decoration: none;
+
+  @include md {
+    font-size: $text-2xl;
+  }
+}
+
+.logoAccent {
+  color: var(--accent-primary);
+}
+
+.links {
+  display: flex;
+  gap: $space-md;
+  flex-wrap: wrap;
+
+  @include md {
+    gap: $space-lg;
+  }
+}
+
+.link {
+  font-size: $text-xs;
+  color: var(--text-secondary);
+  transition: color 0.2s ease;
+  text-decoration: none;
+
+  @include md {
+    font-size: $text-sm;
+  }
+
+  &:hover {
+    color: var(--text-primary);
+  }
+}
+
+.copy {
+  margin-top: $space-lg;
+  text-align: center;
+  font-size: 0.6875rem; // ~11px
+  color: var(--text-muted);
+
+  @include md {
+    font-size: $text-xs;
+    margin-top: $space-2xl;
+  }
+}

@@ -1,0 +1,43 @@
+@use '../../../../styles/spacing' as *;
+@use '../../../../styles/typography' as *;
+@use '../../../../styles/mixins' as *;
+
+.pageHeader {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: $space-2xl;
+  flex-wrap: wrap;
+  gap: $space-md;
+}
+
+.pageDescription {
+  font-size: $text-base;
+  color: var(--text-secondary);
+}
+
+.createButton {
+  display: inline-flex;
+  align-items: center;
+  gap: $space-xs;
+  padding: $space-sm $space-lg;
+  font-size: $text-sm;
+  font-weight: $weight-semibold;
+  color: #ffffff;
+  background: var(--accent-primary);
+  border: none;
+  border-radius: $radius-pill;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  white-space: nowrap;
+
+  &:hover {
+    transform: translateY(-1px);
+    box-shadow: 0 4px 16px var(--accent-glow-strong);
+  }
+
+  svg {
+    width: 18px;
+    height: 18px;
+  }
+}

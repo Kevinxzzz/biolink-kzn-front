@@ -1,0 +1,217 @@
+@use '../../../../styles/spacing' as *;
+@use '../../../../styles/typography' as *;
+@use '../../../../styles/mixins' as *;
+
+.formGrid {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: $space-lg;
+
+  @include md {
+    grid-template-columns: 1fr 1fr;
+  }
+}
+
+.fullWidth {
+  grid-column: 1 / -1;
+}
+
+.hintBox {
+  display: flex;
+  align-items: center;
+  gap: $space-xs;
+  font-size: $text-xs;
+  color: var(--text-secondary);
+  background: var(--bg-glass);
+  padding: $space-sm $space-md;
+  border-radius: $radius-md;
+  border: 1px solid var(--border-subtle);
+}
+
+.createButton {
+  align-self: flex-end;
+  padding: $space-sm $space-xl;
+  font-size: $text-sm;
+  font-weight: $weight-semibold;
+  color: #ffffff;
+  background: var(--accent-primary);
+  border: none;
+  border-radius: $radius-pill;
+  cursor: pointer;
+  transition: all 0.2s ease;
+
+  &:hover:not(:disabled) {
+    opacity: 0.9;
+  }
+
+  &:disabled {
+    opacity: 0.7;
+    cursor: not-allowed;
+  }
+}
+
+// ============================================
+// Schedules List
+// ============================================
+
+.scheduleListContainer {
+  display: flex;
+  flex-direction: column;
+  gap: $space-md;
+  margin-top: $space-lg;
+  border-top: 1px solid var(--border-subtle);
+  padding-top: $space-lg;
+}
+
+.scheduleListTitle {
+  font-size: $text-base;
+  font-weight: $weight-semibold;
+  color: var(--text-primary);
+}
+
+.emptyText {
+  font-size: $text-sm;
+  color: var(--text-secondary);
+}
+
+.scheduleList {
+  display: flex;
+  flex-direction: column;
+  gap: $space-sm;
+}
+
+.scheduleItem {
+  display: flex;
+  flex-direction: column;
+  gap: $space-sm;
+  padding: $space-md;
+  background: var(--bg-primary);
+  border: 1px solid var(--border-subtle);
+  border-radius: $radius-lg;
+
+  @include md {
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-between;
+  }
+}
+
+.scheduleItemInfo {
+  display: flex;
+  flex-direction: column;
+  gap: $space-2xs;
+}
+
+.scheduleItemDate {
+  font-size: $text-sm;
+  font-weight: $weight-semibold;
+  color: var(--text-primary);
+}
+
+.scheduleItemLink {
+  font-size: $text-xs;
+  color: var(--text-secondary);
+}
+
+.scheduleItemActions {
+  display: flex;
+  align-items: center;
+  gap: $space-sm;
+
+  @include md {
+    margin-left: auto;
+  }
+}
+
+.statusBadge {
+  display: inline-flex;
+  align-items: center;
+  padding: 2px 8px;
+  font-size: $text-xs;
+  font-weight: $weight-semibold;
+  border-radius: $radius-pill;
+
+  &.active {
+    color: #10b981;
+    background: rgba(16, 185, 129, 0.12);
+  }
+
+  &.inactive {
+    color: var(--text-secondary);
+    background: var(--bg-elevated);
+    border: 1px solid var(--border-subtle);
+  }
+}
+
+.editButton {
+  padding: $space-2xs $space-sm;
+  font-size: $text-xs;
+  font-weight: $weight-medium;
+  color: var(--text-primary);
+  background: var(--bg-elevated);
+  border: 1px solid var(--border-subtle);
+  border-radius: $radius-md;
+  cursor: pointer;
+  transition: all 0.2s ease;
+
+  &:hover:not(:disabled) {
+    border-color: var(--accent-primary);
+    color: var(--accent-primary);
+  }
+
+  &:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+  }
+}
+
+.deleteButton {
+  padding: $space-2xs $space-sm;
+  font-size: $text-xs;
+  font-weight: $weight-medium;
+  color: var(--text-primary);
+  background: var(--bg-elevated);
+  border: 1px solid var(--border-subtle);
+  border-radius: $radius-md;
+  cursor: pointer;
+  transition: all 0.2s ease;
+
+  &:hover:not(:disabled) {
+    border-color: #ef4444;
+    color: #ef4444;
+  }
+
+  &:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+  }
+}
+
+.modalForm {
+  display: flex;
+  flex-direction: column;
+  gap: $space-md;
+}
+
+.modalSaveButton {
+  width: 100%;
+  margin-top: $space-md;
+  padding: $space-sm $space-xl;
+  font-size: $text-sm;
+  font-weight: $weight-semibold;
+  color: #ffffff;
+  background: var(--accent-primary);
+  border: none;
+  border-radius: $radius-pill;
+  cursor: pointer;
+  transition: all 0.2s ease;
+
+  &:hover:not(:disabled) {
+    opacity: 0.9;
+  }
+
+  &:disabled {
+    opacity: 0.7;
+    cursor: not-allowed;
+  }
+}

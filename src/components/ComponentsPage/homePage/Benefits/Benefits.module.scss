@@ -1,0 +1,477 @@
+@use '../../../../styles/spacing' as *;
+@use '../../../../styles/typography' as *;
+@use '../../../../styles/mixins' as *;
+
+.header {
+  text-align: center;
+  margin-bottom: $space-xl;
+
+  @include md {
+    margin-bottom: $space-2xl;
+  }
+
+  @include lg {
+    margin-bottom: $space-3xl;
+  }
+}
+
+.title {
+  font-size: $text-2xl;
+  margin-bottom: $space-xs;
+  font-weight: $weight-bold;
+
+  @include md {
+    font-size: $text-3xl;
+    margin-bottom: $space-sm;
+  }
+
+  @include lg {
+    font-size: $text-4xl;
+    margin-bottom: $space-md;
+  }
+}
+
+.subtitle {
+  color: var(--text-secondary);
+  font-size: $text-xs;
+  max-width: 600px;
+  margin: 0 auto;
+
+  @include md {
+    font-size: $text-sm;
+  }
+
+  @include lg {
+    font-size: $text-base;
+  }
+}
+
+// Main Container
+// Mobile / iPad: Column (Tabs horizontal carousel above, Main Card below)
+// Desktop (>= 1024px): Row (Side-by-side 2-column)
+.container {
+  display: flex;
+  flex-direction: column;
+  gap: $space-md;
+  width: 100%;
+
+  @include md {
+    gap: $space-lg;
+  }
+
+  @include lg {
+    flex-direction: row;
+    align-items: stretch;
+    gap: $space-2xl;
+    min-height: 440px;
+  }
+}
+
+// Tabs Container
+// Mobile / iPad: Horizontal sliding carousel with touch scroll
+// Desktop: Vertical column
+.tabs {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  gap: $space-xs;
+  width: 100%;
+  overflow-x: auto;
+  overflow-y: hidden;
+  scroll-snap-type: x mandatory;
+  -webkit-overflow-scrolling: touch;
+  scrollbar-width: none; // Firefox
+  padding: 4px;
+  margin: -4px;
+
+  &::-webkit-scrollbar {
+    display: none; // Chrome/Safari
+  }
+
+  @include sm {
+    gap: $space-sm;
+  }
+
+  @include lg {
+    flex-direction: column;
+    justify-content: center;
+    align-items: stretch;
+    gap: $space-sm;
+    width: 38%;
+    flex-shrink: 0;
+    overflow-x: visible;
+    padding: 0;
+    margin: 0;
+    scroll-snap-type: none;
+  }
+}
+
+// Individual Tab Item Button
+.tabItem {
+  display: flex;
+  align-items: center;
+  gap: $space-sm;
+  padding: $space-sm $space-md;
+  border-radius: $radius-lg;
+  border: 1px solid var(--border-subtle);
+  border-left: 3px solid transparent;
+  background: var(--bg-primary);
+  text-align: left;
+  cursor: pointer;
+  transition: all 0.25s ease;
+  position: relative;
+  overflow: hidden;
+  flex: 0 0 auto;
+  scroll-snap-align: start;
+  min-width: 180px;
+
+  @include sm {
+    min-width: 210px;
+    padding: $space-md;
+    gap: $space-md;
+  }
+
+  @include md {
+    min-width: 240px;
+  }
+
+  @include lg {
+    width: 100%;
+    min-width: unset;
+    flex: none;
+    background: transparent;
+    border: none;
+    border-left: 2px solid transparent;
+    padding: $space-lg;
+  }
+
+  &::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: var(--bg-elevated);
+    opacity: 0;
+    transition: opacity 0.25s ease;
+    z-index: -1;
+    border-radius: inherit;
+  }
+
+  &:hover {
+    &::before {
+      opacity: 0.6;
+    }
+  }
+
+  &.active {
+    border-color: var(--border-subtle);
+    border-left-color: var(--accent-primary);
+    background: var(--bg-elevated);
+
+    @include lg {
+      border-color: transparent;
+      border-left-color: var(--accent-primary);
+    }
+
+    &::before {
+      opacity: 1;
+    }
+
+    .iconWrapper {
+      background: var(--accent-primary);
+      color: #ffffff;
+      border-color: var(--accent-primary);
+      box-shadow: 0 0 16px var(--accent-glow);
+    }
+  }
+}
+
+.iconWrapper {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 36px;
+  height: 36px;
+  min-width: 36px;
+  border-radius: $radius-md;
+  background: var(--bg-primary);
+  border: 1px solid var(--border-subtle);
+  color: var(--text-secondary);
+  transition: all 0.25s ease;
+  flex-shrink: 0;
+
+  svg {
+    width: 18px;
+    height: 18px;
+  }
+
+  @include sm {
+    width: 40px;
+    height: 40px;
+    min-width: 40px;
+
+    svg {
+      width: 20px;
+      height: 20px;
+    }
+  }
+
+  @include lg {
+    width: 48px;
+    height: 48px;
+    min-width: 48px;
+
+    svg {
+      width: 24px;
+      height: 24px;
+    }
+  }
+}
+
+.tabText {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  min-width: 0;
+  flex: 1;
+}
+
+.tabTitle {
+  font-size: $text-xs;
+  font-weight: $weight-semibold;
+  color: var(--text-primary);
+  line-height: $leading-snug;
+  white-space: nowrap;
+
+  @include sm {
+    font-size: $text-sm;
+  }
+
+  @include lg {
+    font-size: $text-lg;
+    white-space: normal;
+    @include truncate(1);
+  }
+}
+
+.tabSubtitle {
+  font-size: 0.6875rem; // ~11px
+  color: var(--text-secondary);
+  line-height: $leading-tight;
+  white-space: nowrap;
+
+  @include sm {
+    font-size: $text-xs;
+  }
+
+  @include lg {
+    font-size: $text-sm;
+    white-space: normal;
+    @include truncate(2);
+  }
+}
+
+// Content Area (Main Card)
+.contentArea {
+  position: relative;
+  width: 100%;
+  min-height: 240px;
+  background: var(--bg-elevated);
+  border-radius: $radius-xl;
+  border: 1px solid var(--border-subtle);
+  overflow: hidden;
+  display: flex;
+  align-items: center;
+
+  @include sm {
+    min-height: 260px;
+  }
+
+  @include md {
+    min-height: 300px;
+    border-radius: $radius-2xl;
+  }
+
+  @include lg {
+    flex: 1;
+    min-height: 440px;
+  }
+}
+
+.contentInner {
+  position: absolute;
+  inset: 0;
+  padding: $space-lg;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  opacity: 0;
+  transition: opacity 0.35s ease;
+  pointer-events: none;
+  overflow: hidden;
+
+  @include sm {
+    padding: $space-xl;
+  }
+
+  @include md {
+    padding: $space-2xl;
+  }
+
+  @include lg {
+    padding: $space-2xl;
+  }
+
+  &.active {
+    opacity: 1;
+    pointer-events: auto;
+  }
+}
+
+// Pure Background Glow (Behind Text)
+.cardGlow {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  z-index: 0;
+  overflow: hidden;
+
+  &::before {
+    content: '';
+    position: absolute;
+    top: -15%;
+    right: -15%;
+    width: 65%;
+    height: 65%;
+    border-radius: 50%;
+    background: var(--accent-primary);
+    filter: blur(45px);
+    opacity: 0.22;
+    animation: blobFloat 9s infinite ease-in-out;
+  }
+
+  &::after {
+    content: '';
+    position: absolute;
+    bottom: -15%;
+    left: -15%;
+    width: 55%;
+    height: 55%;
+    border-radius: 50%;
+    background: var(--accent-secondary);
+    filter: blur(50px);
+    opacity: 0.18;
+    animation: blobFloatReverse 11s infinite ease-in-out;
+  }
+}
+
+// Subtle Watermark Icon (Behind Text)
+.watermarkIcon {
+  position: absolute;
+  right: -10px;
+  bottom: -15px;
+  width: 110px;
+  height: 110px;
+  color: var(--accent-primary);
+  opacity: 0.05;
+  pointer-events: none;
+  z-index: 0;
+  transform: rotate(-10deg);
+
+  @include sm {
+    width: 140px;
+    height: 140px;
+    right: -10px;
+    bottom: -15px;
+    opacity: 0.06;
+  }
+
+  @include md {
+    width: 180px;
+    height: 180px;
+    right: -15px;
+    bottom: -20px;
+    opacity: 0.07;
+  }
+
+  @include lg {
+    width: 220px;
+    height: 220px;
+    right: -20px;
+    bottom: -25px;
+    opacity: 0.08;
+  }
+
+  svg {
+    width: 100%;
+    height: 100%;
+  }
+}
+
+// Content Text Body
+.contentBody {
+  position: relative;
+  z-index: 1;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  max-width: 650px;
+}
+
+.contentBadge {
+  display: inline-flex;
+  align-items: center;
+  width: fit-content;
+  padding: 3px 10px;
+  border-radius: $radius-pill;
+  font-size: 0.6875rem; // 11px
+  font-weight: $weight-medium;
+  color: var(--accent-primary);
+  background: var(--accent-glow);
+  border: 1px solid var(--border-subtle);
+  margin-bottom: $space-xs;
+  letter-spacing: 0.02em;
+
+  @include md {
+    padding: 4px 12px;
+    font-size: $text-xs;
+    margin-bottom: $space-sm;
+  }
+}
+
+.contentTitle {
+  font-size: $text-lg;
+  font-weight: $weight-bold;
+  margin-bottom: $space-xs;
+  color: var(--text-primary);
+  line-height: $leading-snug;
+
+  @include sm {
+    font-size: $text-xl;
+  }
+
+  @include md {
+    font-size: $text-2xl;
+    margin-bottom: $space-sm;
+  }
+
+  @include lg {
+    font-size: $text-3xl;
+    margin-bottom: $space-md;
+  }
+}
+
+.contentDescription {
+  font-size: $text-xs;
+  color: var(--text-secondary);
+  line-height: 1.5;
+
+  @include sm {
+    font-size: $text-sm;
+    line-height: $leading-relaxed;
+  }
+
+  @include md {
+    font-size: $text-base;
+    line-height: $leading-relaxed;
+  }
+}

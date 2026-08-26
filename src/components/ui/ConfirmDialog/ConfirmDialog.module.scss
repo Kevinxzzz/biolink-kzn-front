@@ -1,0 +1,85 @@
+@use '../../../styles/spacing' as *;
+@use '../../../styles/typography' as *;
+
+.container {
+  display: flex;
+  flex-direction: column;
+  gap: $space-xl;
+}
+
+.description {
+  font-size: $text-base;
+  color: var(--text-secondary);
+  line-height: 1.5;
+}
+
+.actions {
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  gap: $space-sm;
+}
+
+.cancelButton {
+  padding: $space-sm $space-lg;
+  font-size: $text-sm;
+  font-weight: $weight-medium;
+  color: var(--text-secondary);
+  background: transparent;
+  border: 1px solid var(--border-subtle);
+  border-radius: 9999px;
+  cursor: pointer;
+  transition: all 0.2s ease;
+
+  &:hover:not(:disabled) {
+    color: var(--text-primary);
+    border-color: var(--border-accent);
+  }
+
+  &:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+  }
+}
+
+.confirmButton {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: $space-xs;
+  padding: $space-sm $space-lg;
+  font-size: $text-sm;
+  font-weight: $weight-semibold;
+  color: #ffffff;
+  border: none;
+  border-radius: 9999px;
+  cursor: pointer;
+  transition: opacity 0.2s ease;
+
+  &:hover:not(:disabled) {
+    opacity: 0.9;
+  }
+
+  &:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+  }
+}
+
+.primary {
+  background: var(--accent-primary);
+}
+
+.destructive {
+  background: #ef4444;
+}
+
+.spinner {
+  display: inline-block;
+  width: 14px;
+  height: 14px;
+  border: 2px solid rgba(255, 255, 255, 0.3);
+  border-top-color: #ffffff;
+  border-radius: 50%;
+  animation: spin 0.6s linear infinite;
+}

@@ -1,0 +1,1 @@
+export { FloatingBackground } from "./FloatingBackground";
