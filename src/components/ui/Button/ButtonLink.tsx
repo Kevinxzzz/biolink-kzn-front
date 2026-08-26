@@ -1,3 +1,4 @@
+import Link from "next/link";
 import styles from "./Button.module.scss";
 
 type ButtonLinkVariant = "primary" | "secondary" | "ghost";
@@ -7,6 +8,7 @@ interface ButtonLinkProps extends React.AnchorHTMLAttributes<HTMLAnchorElement> 
   variant?: ButtonLinkVariant;
   size?: ButtonLinkSize;
   children: React.ReactNode;
+  href: string;
 }
 
 export function ButtonLink({
@@ -14,6 +16,7 @@ export function ButtonLink({
   size = "md",
   children,
   className,
+  href,
   ...props
 }: ButtonLinkProps) {
   const classes = [
@@ -25,8 +28,18 @@ export function ButtonLink({
     .filter(Boolean)
     .join(" ");
 
+  const isInternal = href.startsWith("/") || href.startsWith("#");
+
+  if (isInternal) {
+    return (
+      <Link href={href} className={classes} {...props}>
+        {children}
+      </Link>
+    );
+  }
+
   return (
-    <a className={classes} {...props}>
+    <a href={href} className={classes} {...props}>
       {children}
     </a>
   );

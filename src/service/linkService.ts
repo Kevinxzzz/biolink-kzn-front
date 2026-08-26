@@ -39,6 +39,11 @@ export const linkService = {
 
   // TODO: The rotation logic is NOT part of this iteration according to plan.
   // Mocks retained here temporarily if needed by other components, but ideally will be refactored when rotation is done.
+  getEfootballRedirectUrl(): string {
+    const baseUrl = process.env.NEXT_PUBLIC_API_URL || "http://localhost:3000";
+    return `${baseUrl}/links/redirect/kzngg/efootball`;
+  },
+
   async getRotationSettings(): Promise<RotationSettings> {
     return { isActive: false, intervalMinutes: 10 };
   },

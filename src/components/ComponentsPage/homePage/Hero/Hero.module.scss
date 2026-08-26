@@ -26,18 +26,34 @@
   display: flex;
   flex-direction: column;
   align-items: center;
-  gap: $space-xl;
+  gap: $space-md;
   max-width: 800px;
   margin-inline: auto;
+
+  @include sm {
+    gap: $space-lg;
+  }
+
+  @include lg {
+    gap: $space-xl;
+  }
 }
 
 .title {
-  font-size: $text-hero;
+  font-size: clamp(1.75rem, 7vw, 2.25rem);
   font-weight: $weight-extrabold;
   line-height: $leading-tight;
   letter-spacing: $tracking-tight;
   color: var(--text-primary);
   margin: 0;
+
+  @include sm {
+    font-size: clamp(2.25rem, 6vw, 3.25rem);
+  }
+
+  @include lg {
+    font-size: $text-hero;
+  }
 
   span {
     background: linear-gradient(135deg, var(--accent-primary), var(--accent-secondary));
@@ -49,26 +65,47 @@
 }
 
 .description {
-  font-size: $text-xl;
+  font-size: $text-sm;
   color: var(--text-secondary);
-  line-height: $leading-relaxed;
+  line-height: $leading-normal;
   max-width: 600px;
   margin: 0;
 
+  @include sm {
+    font-size: $text-base;
+    line-height: $leading-relaxed;
+  }
+
   @include md {
-    font-size: $text-2xl;
+    font-size: $text-lg;
+  }
+
+  @include lg {
+    font-size: $text-xl;
   }
 }
 
 .cta {
   display: flex;
   flex-direction: column;
-  gap: $space-md;
-  align-items: center;
-  margin-top: $space-lg;
+  gap: $space-sm;
+  align-items: stretch;
+  width: 100%;
+  max-width: 280px;
+  margin-top: $space-sm;
 
-  @include md {
+  @include sm {
     flex-direction: row;
+    align-items: center;
+    justify-content: center;
+    max-width: none;
+    width: auto;
+    gap: $space-md;
+    margin-top: $space-md;
+  }
+
+  @include lg {
     gap: $space-lg;
+    margin-top: $space-lg;
   }
 }

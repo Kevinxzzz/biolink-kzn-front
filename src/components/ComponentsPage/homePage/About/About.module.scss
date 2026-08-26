@@ -4,97 +4,447 @@
 
 .header {
   text-align: center;
-  margin-bottom: $space-3xl;
+  margin-bottom: $space-xl;
+
+  @include md {
+    margin-bottom: $space-2xl;
+  }
+
+  @include lg {
+    margin-bottom: $space-3xl;
+  }
 }
 
 .title {
-  font-size: $text-4xl;
-  margin-bottom: $space-md;
+  font-size: $text-2xl;
+  margin-bottom: $space-xs;
+  font-weight: $weight-bold;
+
+  @include md {
+    font-size: $text-3xl;
+    margin-bottom: $space-sm;
+  }
+
+  @include lg {
+    font-size: $text-4xl;
+    margin-bottom: $space-md;
+  }
 }
 
 .subtitle {
   color: var(--text-secondary);
+  font-size: $text-xs;
   max-width: 600px;
   margin: 0 auto;
-}
-
-.grid {
-  display: grid;
-  grid-template-columns: 1fr;
-  gap: $space-xl;
 
   @include md {
-    grid-template-columns: repeat(3, 1fr);
+    font-size: $text-sm;
+  }
+
+  @include lg {
+    font-size: $text-base;
   }
 }
 
-.card {
-  position: relative;
-  padding: $space-2xl;
-  background: var(--bg-elevated);
-  border-radius: $radius-2xl;
-  border: 1px solid var(--border-subtle);
-  overflow: hidden;
-  transition: transform 0.3s ease, box-shadow 0.3s ease;
+.wrapper {
   display: flex;
   flex-direction: column;
-  align-items: flex-start;
+  align-items: center;
+  width: 100%;
+  max-width: $container-max-width;
+  margin: 0 auto;
+}
+
+// Mobile & iPad: Segmented Pill Controller
+.segmentedControl {
+  display: flex;
+  align-items: center;
+  gap: $space-xs;
+  background: var(--bg-elevated);
+  padding: 4px;
+  border-radius: $radius-pill;
+  border: 1px solid var(--border-subtle);
+  margin-bottom: $space-lg;
+  width: 100%;
+  max-width: 360px;
+  justify-content: space-between;
+
+  @include sm {
+    max-width: 420px;
+    padding: 6px;
+    gap: $space-sm;
+  }
+
+  @include lg {
+    display: none; // Desktop uses full 3-column grid
+  }
+}
+
+.segmentButton {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  flex: 1;
+  padding: $space-xs $space-sm;
+  border-radius: $radius-pill;
+  border: 1px solid transparent;
+  background: transparent;
+  color: var(--text-secondary);
+  font-size: $text-xs;
+  font-weight: $weight-medium;
+  cursor: pointer;
+  transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+  white-space: nowrap;
+
+  @include sm {
+    font-size: $text-sm;
+    padding: $space-xs $space-md;
+  }
+
+  &:hover {
+    color: var(--text-primary);
+  }
+
+  &.activeSegment {
+    background: var(--bg-primary);
+    color: var(--text-primary);
+    border-color: var(--border-subtle);
+    box-shadow: 0 4px 16px rgba(0, 0, 0, 0.15);
+
+    .segmentNumber {
+      color: var(--accent-primary);
+      background: var(--accent-glow);
+    }
+  }
+}
+
+.segmentNumber {
+  font-size: 0.625rem; // 10px
+  font-weight: $weight-bold;
+  color: var(--text-muted);
+  background: var(--bg-elevated);
+  padding: 1px 5px;
+  border-radius: $radius-pill;
+  transition: all 0.25s ease;
+}
+
+.segmentTitle {
+  font-weight: $weight-semibold;
+}
+
+// Deck Container
+.deckContainer {
+  position: relative;
+  width: 100%;
+  min-height: 250px;
+
+  @include sm {
+    min-height: 270px;
+  }
+
+  @include lg {
+    min-height: unset;
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: $space-xl;
+  }
+}
+
+// Card
+.card {
+  position: absolute;
+  inset: 0;
+  padding: $space-lg;
+  background: var(--bg-elevated);
+  border-radius: $radius-xl;
+  border: 1px solid var(--border-subtle);
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
   gap: $space-md;
-  z-index: 1;
+  opacity: 0;
+  visibility: hidden;
+  transform: scale(0.96) translateY(8px);
+  transition: all 0.35s cubic-bezier(0.4, 0, 0.2, 1);
+  pointer-events: none;
+
+  @include sm {
+    padding: $space-xl;
+  }
+
+  &.cardActive {
+    opacity: 1;
+    visibility: visible;
+    transform: scale(1) translateY(0);
+    pointer-events: auto;
+    box-shadow: 0 12px 36px rgba(0, 0, 0, 0.18);
+  }
+
+  @include lg {
+    position: relative;
+    inset: unset;
+    opacity: 1;
+    visibility: visible;
+    transform: none;
+    pointer-events: auto;
+    padding: $space-2xl;
+    border-radius: $radius-2xl;
+    min-height: 340px;
+    transition: transform 0.3s ease, box-shadow 0.3s ease, border-color 0.3s ease;
+
+    &:hover {
+      transform: translateY(-6px);
+      border-color: var(--border-accent);
+      box-shadow: 0 16px 48px rgba(0, 0, 0, 0.24);
+
+      .iconWrapper {
+        background: var(--accent-primary);
+        color: #ffffff;
+        transform: scale(1.08) rotate(3deg);
+        box-shadow: 0 0 20px var(--accent-glow-strong);
+      }
+    }
+  }
+}
+
+// Background Ambient Glow inside Card
+.cardGlow {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  z-index: 0;
+  overflow: hidden;
 
   &::before {
     content: '';
     position: absolute;
-    inset: 0;
-    background: radial-gradient(800px circle at top left,
-        var(--accent-glow),
-        transparent 40%);
-    z-index: -1;
-    opacity: 0;
-    transition: opacity 0.5s ease;
+    top: -20%;
+    right: -20%;
+    width: 60%;
+    height: 60%;
+    border-radius: 50%;
+    background: var(--accent-primary);
+    filter: blur(40px);
+    opacity: 0.18;
   }
 
-  &:hover {
-    transform: translateY(-4px);
-    box-shadow: 0 12px 40px rgba(0, 0, 0, 0.2);
-
-    &::before {
-      opacity: 1;
-    }
-
-    .iconWrapper {
-      color: var(--accent-primary);
-      transform: scale(1.1);
-    }
+  &::after {
+    content: '';
+    position: absolute;
+    bottom: -20%;
+    left: -20%;
+    width: 50%;
+    height: 50%;
+    border-radius: 50%;
+    background: var(--accent-secondary);
+    filter: blur(45px);
+    opacity: 0.14;
   }
+}
+
+// Top Metadata Row
+.cardHeader {
+  position: relative;
+  z-index: 1;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  width: 100%;
+}
+
+.tagWrapper {
+  display: flex;
+  align-items: center;
+  gap: $space-xs;
+}
+
+.numberBadge {
+  font-size: 0.6875rem;
+  font-weight: $weight-extrabold;
+  color: var(--accent-primary);
+  background: var(--accent-glow);
+  border: 1px solid var(--border-subtle);
+  padding: 2px 8px;
+  border-radius: $radius-pill;
+  letter-spacing: 0.05em;
+}
+
+.pillarTag {
+  font-size: $text-xs;
+  color: var(--text-secondary);
+  font-weight: $weight-medium;
 }
 
 .iconWrapper {
   display: flex;
   align-items: center;
   justify-content: center;
-  width: 56px;
-  height: 56px;
-  border-radius: $radius-lg;
+  width: 40px;
+  height: 40px;
+  border-radius: $radius-md;
   background: var(--bg-primary);
   border: 1px solid var(--border-subtle);
-  color: var(--text-secondary);
-  transition: all 0.3s ease;
+  color: var(--accent-primary);
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  flex-shrink: 0;
+
+  @include sm {
+    width: 46px;
+    height: 46px;
+    border-radius: $radius-lg;
+  }
+
+  @include lg {
+    width: 52px;
+    height: 52px;
+  }
 
   svg {
-    width: 28px;
-    height: 28px;
+    width: 20px;
+    height: 20px;
+
+    @include sm {
+      width: 22px;
+      height: 22px;
+    }
+
+    @include lg {
+      width: 26px;
+      height: 26px;
+    }
   }
 }
 
+// Card Body
+.cardBody {
+  position: relative;
+  z-index: 1;
+  display: flex;
+  flex-direction: column;
+  gap: $space-xs;
+}
+
 .cardTitle {
-  font-size: $text-xl;
+  font-size: $text-lg;
   font-weight: $weight-bold;
   color: var(--text-primary);
+  line-height: $leading-snug;
+
+  @include sm {
+    font-size: $text-xl;
+  }
+
+  @include lg {
+    font-size: $text-2xl;
+  }
 }
 
 .cardDescription {
-  font-size: $text-base;
+  font-size: $text-xs;
   color: var(--text-secondary);
-  line-height: $leading-relaxed;
+  line-height: 1.5;
+
+  @include sm {
+    font-size: $text-sm;
+    line-height: $leading-relaxed;
+  }
+
+  @include lg {
+    font-size: $text-base;
+    line-height: $leading-relaxed;
+  }
+}
+
+// Watermark Icon
+.watermarkIcon {
+  position: absolute;
+  right: -10px;
+  bottom: -15px;
+  width: 100px;
+  height: 100px;
+  color: var(--accent-primary);
+  opacity: 0.04;
+  pointer-events: none;
+  z-index: 0;
+  transform: rotate(-10deg);
+
+  @include sm {
+    width: 130px;
+    height: 130px;
+  }
+
+  @include lg {
+    width: 160px;
+    height: 160px;
+    opacity: 0.05;
+  }
+
+  svg {
+    width: 100%;
+    height: 100%;
+  }
+}
+
+// Pagination Controls (Mobile & iPad)
+.deckPagination {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: $space-md;
+  margin-top: $space-md;
+  width: 100%;
+
+  @include lg {
+    display: none; // Hidden on desktop
+  }
+}
+
+.navArrow {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  background: var(--bg-elevated);
+  border: 1px solid var(--border-subtle);
+  color: var(--text-secondary);
+  cursor: pointer;
+  transition: all 0.2s ease;
+
+  &:hover {
+    color: var(--text-primary);
+    border-color: var(--accent-primary);
+    background: var(--bg-primary);
+  }
+
+  svg {
+    width: 16px;
+    height: 16px;
+  }
+}
+
+.dotsGroup {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.dot {
+  width: 8px;
+  height: 8px;
+  border-radius: $radius-pill;
+  background: var(--border-subtle);
+  border: none;
+  cursor: pointer;
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  padding: 0;
+
+  &.activeDot {
+    width: 24px;
+    background: var(--accent-primary);
+    box-shadow: 0 0 10px var(--accent-glow);
+  }
 }
