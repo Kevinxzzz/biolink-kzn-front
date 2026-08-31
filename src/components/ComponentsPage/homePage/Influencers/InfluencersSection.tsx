@@ -8,27 +8,67 @@ import { FadeIn } from "@/components/animations/FadeIn";
 import { InfluencerCard } from "./InfluencerCard";
 import styles from "./Influencers.module.scss";
 
-// Mock data
 const INFLUENCERS = [
-  { id: "1", name: "Gabriel", image: "https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&q=80&w=800", platforms: { instagram: "#", tiktok: "#" } },
-  { id: "2", name: "Lucas", image: "https://images.unsplash.com/photo-1506794778202-cad84cf45f1d?auto=format&fit=crop&q=80&w=800", platforms: { youtube: "#", instagram: "#" } },
-  { id: "3", name: "Matheus", image: "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?auto=format&fit=crop&q=80&w=800", platforms: { tiktok: "#" } },
-  { id: "4", name: "Pedro", image: "https://images.unsplash.com/photo-1519085360753-af0119f7cbe7?auto=format&fit=crop&q=80&w=800", platforms: { instagram: "#", youtube: "#", tiktok: "#" } },
-  { id: "5", name: "João", image: "https://images.unsplash.com/photo-1492562080023-ab3db95bfbce?auto=format&fit=crop&q=80&w=800", platforms: { instagram: "#" } },
-  { id: "6", name: "Thiago", image: "https://images.unsplash.com/photo-1500648767791-00dcc994a43e?auto=format&fit=crop&q=80&w=800", platforms: { youtube: "#", tiktok: "#" } },
-  { id: "7", name: "Felipe", image: "https://images.unsplash.com/photo-1531427186611-ecfd6d936c79?auto=format&fit=crop&q=80&w=800", platforms: { instagram: "#", tiktok: "#" } },
-  { id: "8", name: "Rafael", image: "https://images.unsplash.com/photo-1528892952291-009c663ce843?auto=format&fit=crop&q=80&w=800", platforms: { youtube: "#" } },
+  {
+    id: "jb-efootball",
+    name: "JB EFOOTBALL",
+    image: "/Influencers/JB-INFLUENCER.jpg",
+    platforms: {
+      youtube: "https://youtube.com/@jotabeesports?si=xdppB5CQTjImjnXa",
+      tiktok: "https://www.tiktok.com/@jotabeesports?is_from_webapp=1&sender_device=pc",
+      instagram: "https://www.instagram.com/jbefootballbrasil?utm_source=ig_web_button_share_sheet&igsi=ZDNlZDc0MzIxNw==",
+    },
+  },
+  {
+    id: "kadu",
+    name: "KADU",
+    image: "/Influencers/KADU-INFLUENCER.jpg",
+    platforms: {
+      tiktok: "https://www.tiktok.com/@kadu_goat?is_from_webapp=1&sender_device=pc",
+      instagram: "https://www.instagram.com/kadu_goat?utm_source=ig_web_button_share_sheet&igsi=ZDNlZDc0MzIxNw==",
+    },
+  },
+  {
+    id: "jotavxzz",
+    name: "JOTAVXZZ",
+    image: "/Influencers/JV-INFLUENCER.jpg",
+    platforms: {
+      youtube: "https://youtube.com/@jotav_xzz?si=W5YtPThxcBim4nWF",
+      tiktok: "https://www.tiktok.com/@jotav.xzz?is_from_webapp=1&sender_device=pc",
+      instagram: "https://www.instagram.com/jotav.xzz?utm_source=ig_web_button_share_sheet&igsi=ZDNlZDc0MzIxNw==",
+    },
+  },
+  {
+    id: "thg",
+    name: "THG",
+    image: "/Influencers/THG-INFLUENCER.jpg",
+    platforms: {
+      youtube: "https://youtube.com/@thg_efootball5?si=xck1zKF_VHWreTj0",
+      instagram: "https://www.instagram.com/thg_efootball?utm_source=ig_web_button_share_sheet&igsi=ZDNlZDc0MzIxNw==",
+      tiktok: "https://www.tiktok.com/@thg_efootball?is_from_webapp=1&sender_device=pc",
+    },
+  },
+  {
+    id: "el-mysterio",
+    name: "EL MYSTERIO",
+    image: "/Influencers/ELMYSTERIO-INFLUENCER.JPEG",
+    platforms: {
+      youtube: "https://youtube.com/@el_mysterioo?si=YkmPysSMBY1VOhxV",
+      tiktok: "https://www.tiktok.com/@el_mysterioo?is_from_webapp=1&sender_device=pc",
+      instagram: "https://www.instagram.com/el_mysterioo?utm_source=ig_web_button_share_sheet&igsi=ZDNlZDc0MzIxNw==",
+    },
+  },
 ];
 
 export function InfluencersSection() {
   const [isDesktop, setIsDesktop] = useState(true);
-  
+
   // Only initialize embla if we're not on desktop
   const [emblaRef] = useEmblaCarousel(
-    { 
+    {
       align: "start",
       containScroll: "trimSnaps",
-      active: !isDesktop 
+      active: !isDesktop
     },
     [Autoplay({ delay: 4000, stopOnInteraction: true })]
   );
@@ -37,7 +77,7 @@ export function InfluencersSection() {
     const checkWidth = () => {
       setIsDesktop(window.innerWidth >= 1024);
     };
-    
+
     checkWidth();
     window.addEventListener('resize', checkWidth);
     return () => window.removeEventListener('resize', checkWidth);
@@ -49,7 +89,7 @@ export function InfluencersSection() {
         <FadeIn>
           <h2 className={styles.title}>Quem já faz parte</h2>
           <p className={styles.subtitle}>
-            Junte-se aos maiores influenciadores de eFootball do Brasil que já confiam 
+            Junte-se aos maiores influenciadores de eFootball do Brasil que já confiam
             na KZN para elevar o nível de suas gameplays.
           </p>
         </FadeIn>
@@ -58,16 +98,16 @@ export function InfluencersSection() {
       <div className={styles.carousel} ref={emblaRef}>
         <div className={styles.carouselContainer}>
           {INFLUENCERS.map((influencer, index) => (
-            <FadeIn 
-              key={influencer.id} 
-              delay={isDesktop ? index * 100 : 0} 
+            <FadeIn
+              key={influencer.id}
+              delay={isDesktop ? index * 100 : 0}
               className={styles.carouselSlide}
             >
-              <InfluencerCard 
-                name={influencer.name} 
-                image={influencer.image} 
+              <InfluencerCard
+                name={influencer.name}
+                image={influencer.image}
                 // eslint-disable-next-line @typescript-eslint/no-explicit-any
-                platforms={influencer.platforms as any} 
+                platforms={influencer.platforms as any}
               />
             </FadeIn>
           ))}

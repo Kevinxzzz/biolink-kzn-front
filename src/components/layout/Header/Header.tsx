@@ -30,7 +30,7 @@ const NAV_LINKS = [
     ),
   },
   {
-    label: "Sobre",
+    label: "Nos conheça",
     href: "#about",
     icon: (
       <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={2} strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
@@ -81,6 +81,16 @@ export function Header() {
                 {link.label}
               </a>
             ))}
+          </nav>
+
+          {/* Quick links for Mobile and iPad */}
+          <nav className={styles.mobileNav} aria-label="Navegação rápida">
+            <a href="#about" className={styles.mobileQuickLink}>
+              <span>Nos conheça</span>
+            </a>
+            <a href="#faq" className={styles.mobileQuickLink}>
+              <span>Dúvidas</span>
+            </a>
           </nav>
 
           <div className={styles.actions}>
