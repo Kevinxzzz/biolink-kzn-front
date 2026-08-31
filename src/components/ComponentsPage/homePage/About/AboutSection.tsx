@@ -5,12 +5,12 @@ import styles from "./About.module.scss";
 
 const ABOUT_PILLARS: AboutPillar[] = [
   {
-    id: "missao",
+    id: "proposito",
     number: "01",
-    tag: "Propósito",
-    title: "Missão",
+    tag: "Diretriz",
+    title: "Propósito",
     description:
-      "Entregar contas de altíssimo nível para jogadores que buscam dominar o eFootball, garantindo segurança total e suporte excepcional em cada etapa.",
+      "Oferecer produtos e serviços para gamers de forma simples e segura, proporcionando uma experiência de compra organizada, com atendimento rápido e suporte em todas as etapas.",
     icon: (
       <svg fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor">
         <path strokeLinecap="round" strokeLinejoin="round" d="M15.362 5.214A8.252 8.252 0 0 1 12 21 8.25 8.25 0 0 1 6.038 7.047 8.287 8.287 0 0 0 9 9.601a8.983 8.983 0 0 1 3.361-6.867 8.21 8.21 0 0 0 3 2.48Z" />
@@ -19,12 +19,12 @@ const ABOUT_PILLARS: AboutPillar[] = [
     ),
   },
   {
-    id: "valores",
+    id: "compromissos",
     number: "02",
     tag: "Compromisso",
-    title: "Valores",
+    title: "Compromissos",
     description:
-      "Transparência nas negociações, segurança dos dados dos nossos clientes e compromisso inabalável com a qualidade das contas que selecionamos.",
+      "Nosso compromisso é oferecer confiança, transparência e agilidade em cada negociação. Trabalhamos com responsabilidade e respeito para construir relações duradouras com nossa comunidade gamer.",
     icon: (
       <svg fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor">
         <path strokeLinecap="round" strokeLinejoin="round" d="M9 12.75 11.25 15 15 9.75M21 12a9 9 0 1 1-18 0 9 9 0 0 1 18 0Z" />
@@ -37,7 +37,7 @@ const ABOUT_PILLARS: AboutPillar[] = [
     tag: "Visão",
     title: "Objetivo",
     description:
-      "Tornar a KZN a maior referência nacional em contas competitivas de eFootball, construindo a maior comunidade de jogadores de elite do Brasil.",
+      "Construir uma comunidade gamer baseada em confiança e respeito, tornando a experiência de compra mais simples, segura e confiável para todos os jogadores.",
     icon: (
       <svg fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor">
         <path strokeLinecap="round" strokeLinejoin="round" d="M2.25 18 9 11.25l4.306 4.306a11.95 11.95 0 0 1 5.814-5.518l2.74-1.22m0 0-5.94-2.281m5.94 2.28-2.28 5.941" />
@@ -53,8 +53,7 @@ export function AboutSection() {
         <FadeIn>
           <h2 className={styles.title}>Quem somos</h2>
           <p className={styles.subtitle}>
-            A KZN nasceu da paixão pelo eFootball e do desejo de proporcionar 
-            as melhores contas do cenário competitivo.
+            Somos uma equipe apaixonada por games e pelo universo gamer, dedicada a oferecer produtos e serviços para jogadores que buscam melhorar sua experiência nos jogos. Prezamos por segurança, agilidade e praticidade em cada atendimento.
           </p>
         </FadeIn>
       </div>

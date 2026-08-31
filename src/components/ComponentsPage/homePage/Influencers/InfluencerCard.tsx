@@ -9,7 +9,7 @@ type SocialPlatform = "instagram" | "tiktok" | "youtube";
 
 interface InfluencerCardProps {
   name: string;
-  image: string;
+  image?: string | null;
   platforms: Partial<Record<SocialPlatform, string>>;
 }
 
@@ -17,7 +17,7 @@ export function InfluencerCard({ name, image, platforms }: InfluencerCardProps) 
   const [isActive, setIsActive] = useState(false);
 
   return (
-    <div 
+    <div
       className={`${styles.card} ${isActive ? styles.isActive : ""}`}
       onClick={() => setIsActive(!isActive)}
       role="button"
@@ -31,7 +31,7 @@ export function InfluencerCard({ name, image, platforms }: InfluencerCardProps) 
       }}
     >
       <ProfileImage src={image} alt={`Foto de ${name}`} />
-      
+
       <div className={styles.overlay}>
         <h3 className={styles.name}>{name}</h3>
         <SocialLinks platforms={platforms} />

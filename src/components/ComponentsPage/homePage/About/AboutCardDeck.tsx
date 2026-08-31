@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import styles from "./About.module.scss";
 
 export interface AboutPillar {
@@ -14,17 +14,32 @@ export interface AboutPillar {
 
 interface AboutCardDeckProps {
   pillars: AboutPillar[];
+  autoPlayInterval?: number;
 }
 
-export function AboutCardDeck({ pillars }: AboutCardDeckProps) {
+export function AboutCardDeck({ pillars, autoPlayInterval = 5000 }: AboutCardDeckProps) {
   const [activeIndex, setActiveIndex] = useState(0);
+  const [isPaused, setIsPaused] = useState(false);
   const [touchStartX, setTouchStartX] = useState<number | null>(null);
 
+  // Auto-progression timer (identical to Benefits section)
+  useEffect(() => {
+    if (isPaused || pillars.length <= 1) return;
+
+    const timer = setInterval(() => {
+      setActiveIndex((prev) => (prev + 1) % pillars.length);
+    }, autoPlayInterval);
+
+    return () => clearInterval(timer);
+  }, [isPaused, pillars.length, autoPlayInterval]);
+
   const handleTouchStart = (e: React.TouchEvent) => {
+    setIsPaused(true);
     setTouchStartX(e.targetTouches[0].clientX);
   };
 
   const handleTouchEnd = (e: React.TouchEvent) => {
+    setIsPaused(false);
     if (touchStartX === null) return;
     const touchEndX = e.changedTouches[0].clientX;
     const diff = touchStartX - touchEndX;
@@ -40,7 +55,11 @@ export function AboutCardDeck({ pillars }: AboutCardDeckProps) {
   };
 
   return (
-    <div className={styles.wrapper}>
+    <div
+      className={styles.wrapper}
+      onMouseEnter={() => setIsPaused(true)}
+      onMouseLeave={() => setIsPaused(false)}
+    >
       {/* Mobile & iPad: Segmented Pill Controller */}
       <div className={styles.segmentedControl} role="tablist">
         {pillars.map((pillar, index) => {

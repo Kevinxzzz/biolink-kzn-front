@@ -8,8 +8,20 @@
   left: 0;
   right: 0;
   z-index: 100;
-  padding: $space-md $space-lg;
+  padding: $space-xs $space-md;
   transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+
+  @include sm {
+    padding: $space-sm $space-lg;
+  }
+
+  @include md {
+    padding: $space-md $space-xl;
+  }
+
+  @include lg {
+    padding: $space-md $space-lg;
+  }
 
   @include reduced-motion {
     transition: none;
@@ -20,11 +32,22 @@
   display: flex;
   align-items: center;
   justify-content: space-between;
+  gap: $space-sm;
   max-width: $container-max-width;
   margin-inline: auto;
-  padding: $space-sm $space-lg;
+  padding: $space-xs $space-md;
   border-radius: $radius-pill;
   transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+
+  @include sm {
+    padding: $space-sm $space-lg;
+    gap: $space-md;
+  }
+
+  @include md {
+    padding: $space-sm $space-xl;
+    gap: $space-lg;
+  }
 
   @include reduced-motion {
     transition: none;
@@ -48,6 +71,7 @@
   color: var(--text-primary);
   text-decoration: none;
   z-index: 10;
+  flex-shrink: 0;
 }
 
 .logoAccent {
@@ -73,6 +97,107 @@
 
   &:hover {
     color: var(--text-primary);
+  }
+}
+
+// Quick Navigation for Mobile & iPad (< 1024px)
+.mobileNav {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: $space-xs;
+
+  @include sm {
+    gap: $space-sm;
+  }
+
+  @include md {
+    gap: $space-lg;
+  }
+
+  @include lg {
+    display: none;
+  }
+}
+
+.mobileQuickLink {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0.15rem 0.35rem;
+  font-size: 0.725rem; // ~11.5px
+  font-weight: $weight-bold;
+  letter-spacing: $tracking-wide;
+  text-decoration: none;
+  background: transparent;
+  border: none;
+  white-space: nowrap;
+  user-select: none;
+  transition: transform 0.25s cubic-bezier(0.4, 0, 0.2, 1), opacity 0.25s ease;
+
+  @include sm {
+    font-size: $text-xs; // 12px
+    padding: 0.2rem 0.5rem;
+  }
+
+  @include md {
+    font-size: 0.8125rem; // 13px
+    padding: 0.25rem 0.65rem;
+  }
+
+  span {
+    // Solid purple/lilac base with synchronized animated light flash / beam
+    background: linear-gradient(
+      110deg,
+      var(--accent-secondary) 0%,
+      var(--accent-secondary) 40%,
+      #fae8ff 50%,
+      var(--accent-secondary) 60%,
+      var(--accent-secondary) 100%
+    );
+    background-size: 200% 100%;
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+    color: transparent;
+    animation: textLightBeam 4s infinite linear;
+    filter: drop-shadow(0 0 2px rgba(250, 232, 255, 0.6))
+      drop-shadow(0 0 8px rgba(192, 132, 252, 0.55))
+      drop-shadow(0 0 16px rgba(139, 92, 246, 0.35));
+    transition: filter 0.3s ease;
+  }
+
+  &:hover {
+    transform: translateY(-1px) scale(1.04);
+
+    span {
+      filter: drop-shadow(0 0 3px rgba(250, 232, 255, 0.9))
+        drop-shadow(0 0 12px rgba(192, 132, 252, 0.85))
+        drop-shadow(0 0 22px rgba(168, 85, 247, 0.6));
+    }
+  }
+
+  &:active {
+    transform: translateY(0) scale(0.96);
+  }
+
+  @include reduced-motion {
+    span {
+      animation: none;
+      background: var(--accent-secondary);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+    }
+  }
+}
+
+@keyframes textLightBeam {
+  0% {
+    background-position: 200% 0;
+  }
+  100% {
+    background-position: -200% 0;
   }
 }
 
