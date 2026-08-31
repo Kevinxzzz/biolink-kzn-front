@@ -2,20 +2,29 @@ import Image from "next/image";
 import styles from "./Influencers.module.scss";
 
 interface ProfileImageProps {
-  src: string;
+  src?: string | null;
   alt: string;
 }
 
 export function ProfileImage({ src, alt }: ProfileImageProps) {
   return (
     <div className={styles.imageWrapper}>
-      <Image
-        src={src}
-        alt={alt}
-        fill
-        sizes="(max-width: 768px) 85vw, (max-width: 1024px) 45vw, 25vw"
-        priority={false}
-      />
+      {src ? (
+        <Image
+          src={src}
+          alt={alt}
+          fill
+          sizes="(max-width: 768px) 85vw, (max-width: 1024px) 50vw, 30vw"
+          priority={false}
+        />
+      ) : (
+        <div className={styles.placeholderAvatar}>
+          <div className={styles.placeholderGlow} />
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={1.5} className={styles.placeholderIcon}>
+            <path strokeLinecap="round" strokeLinejoin="round" d="M15.75 6a3.75 3.75 0 1 1-7.5 0 3.75 3.75 0 0 1 7.5 0ZM4.501 20.118a7.5 7.5 0 0 1 14.998 0A17.933 17.933 0 0 1 12 21.75c-2.676 0-5.216-.584-7.499-1.632Z" />
+          </svg>
+        </div>
+      )}
     </div>
   );
 }
