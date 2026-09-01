@@ -30,19 +30,26 @@
 }
 
 .logo {
-  font-size: $text-xl;
-  font-weight: $weight-extrabold;
-  letter-spacing: $tracking-tight;
-  color: var(--text-primary);
+  display: flex;
+  align-items: center;
   text-decoration: none;
+  transition: opacity 0.2s ease, transform 0.2s ease;
 
-  @include md {
-    font-size: $text-2xl;
+  &:hover {
+    opacity: 0.9;
+    transform: scale(1.02);
   }
 }
 
-.logoAccent {
-  color: var(--accent-primary);
+.logoImage {
+  height: 32px;
+  width: auto;
+  object-fit: contain;
+  display: block;
+
+  @include md {
+    height: 38px;
+  }
 }
 
 .links {

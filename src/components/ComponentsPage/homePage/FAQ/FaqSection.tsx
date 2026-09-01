@@ -6,14 +6,23 @@ import { FadeIn } from "@/components/animations/FadeIn";
 import { FaqItem } from "./FaqItem";
 import styles from "./Faq.module.scss";
 
+
 const FAQ_DATA = [
   {
     question: "Como recebo a minha conta após a compra?",
-    answer: "Assim que o pagamento é aprovado, nosso sistema automatizado envia os dados de acesso diretamente para o seu e-mail cadastrado em até 5 minutos. Junto com os dados, enviamos um tutorial passo a passo de como vincular a conta de forma segura."
+    answer: "Assim que o pagamento é aprovado, nosso sistema verifica e envia os dados para o seu e-mail enviado durante o atendimento em até 5 minutos. Junto com os dados, enviamos um tutorial passo a passo de como vincular a conta de forma segura."
   },
   {
-    question: "É seguro comprar contas de eFootball?",
-    answer: "Sim! Na KZN garantimos 100% de segurança. Todas as nossas contas passam por um rigoroso processo de verificação. Além disso, oferecemos suporte total durante o processo de transferência para o seu Konami ID."
+    question: "Vocês fazem trocas?",
+    answer: "Sim, mas aceitando sua conta como uma parte do pagamento em outra melhor."
+  },
+  {
+    question: "Compram contas com Play Games/ Game Center?",
+    answer: "Não. Priorizamos a segurança de nossos clientes. Por isso, trabalhamos somente com contas que possuem vínculo exclusivo com a KONAMI ID."
+  },
+  {
+    question: "Quais formas de pagamento?",
+    answer: "Aceitamos Pix (com aprovação imediata), Cartão de Crédito em até 12x (processado via Stripe/Mercado Pago)."
   },
   {
     question: "Posso jogar em qualquer plataforma (Mobile/Console)?",
@@ -21,12 +30,8 @@ const FAQ_DATA = [
   },
   {
     question: "E se eu tiver problemas para acessar a conta?",
-    answer: "Nosso suporte VIP funciona 24/7. Caso você tenha qualquer dificuldade no acesso ou na vinculação da conta, basta entrar em contato através dos nossos canais oficiais (WhatsApp ou E-mail) que resolveremos imediatamente."
+    answer: "Caso tenha qualquer problema, dificuldade ou dúvida relacionada ao acesso da sua conta, você poderá contar com nosso suporte especializado para auxiliar em todo o processo e encontrar a solução para você."
   },
-  {
-    question: "Quais formas de pagamento vocês aceitam?",
-    answer: "Aceitamos Pix (com aprovação imediata), Cartão de Crédito em até 12x (processado via Stripe/Mercado Pago) e Boleto Bancário (pode levar até 2 dias úteis para compensação)."
-  }
 ];
 
 export function FaqSection() {
@@ -42,7 +47,7 @@ export function FaqSection() {
         <FadeIn>
           <h2 className={styles.title}>Dúvidas Frequentes</h2>
           <p className={styles.subtitle}>
-            Tudo o que você precisa saber sobre nosso processo de compra, 
+            Tudo o que você precisa saber sobre nosso processo de compra,
             segurança e entrega.
           </p>
         </FadeIn>

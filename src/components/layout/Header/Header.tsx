@@ -1,5 +1,6 @@
 "use client";
 
+import Image from "next/image";
 import { useState } from "react";
 import { useScroll } from "@/hooks/useScroll";
 import { useAuth } from "@/hooks/useAuth";
@@ -72,7 +73,14 @@ export function Header() {
       <header className={headerClasses}>
         <div className={styles.inner}>
           <a href="#" className={styles.logo} aria-label="KZN - Página inicial">
-            K<span className={styles.logoAccent}>Z</span>N
+            <Image
+              src="/logos/KZN-ROXO.png"
+              alt="KZN"
+              width={118}
+              height={50}
+              priority
+              className={styles.logoImage}
+            />
           </a>
 
           <nav className={styles.nav} aria-label="Navegação principal">
