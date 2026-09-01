@@ -1,3 +1,5 @@
+import Link from "next/link";
+import Image from "next/image";
 import { SectionWrapper } from "@/components/ui/SectionWrapper";
 import styles from "./Footer.module.scss";
 
@@ -7,7 +9,13 @@ export function Footer() {
       <SectionWrapper as="div">
         <div className={styles.inner}>
           <a href="#" className={styles.logo} aria-label="KZN">
-            K<span className={styles.logoAccent}>Z</span>N
+            <Image
+              src="/logos/KZN-ROXO.png"
+              alt="KZN"
+              width={120}
+              height={51}
+              className={styles.logoImage}
+            />
           </a>
           
           <div className={styles.links}>
@@ -15,8 +23,8 @@ export function Footer() {
             <a href="#benefits" className={styles.link}>Benefícios</a>
             <a href="#about" className={styles.link}>Sobre Nós</a>
             <a href="#faq" className={styles.link}>FAQ</a>
-            <a href="#" className={styles.link}>Termos de Uso</a>
-            <a href="#" className={styles.link}>Privacidade</a>
+            <Link href="/termos-de-uso" className={styles.link}>Termos de Uso</Link>
+            <Link href="/politica-de-privacidade" className={styles.link}>Privacidade</Link>
           </div>
         </div>
         

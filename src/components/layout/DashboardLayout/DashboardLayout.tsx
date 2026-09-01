@@ -2,6 +2,7 @@
 
 import { useState } from "react";
 import Link from "next/link";
+import Image from "next/image";
 import { usePathname } from "next/navigation";
 import { ThemeToggle } from "@/components/ui/ThemeToggle";
 import styles from "./DashboardLayout.module.scss";
@@ -84,7 +85,14 @@ export function DashboardLayout({ children, pageTitle }: DashboardLayoutProps) {
       <aside className={`${styles.sidebar} ${sidebarOpen ? styles.sidebarOpen : ""}`}>
         <div className={styles.sidebarHeader}>
           <Link href="/dashboard" className={styles.sidebarLogo} onClick={closeSidebar}>
-            K<span className={styles.sidebarLogoAccent}>Z</span>N
+            <Image
+              src="/logos/KZN-ROXO.png"
+              alt="KZN"
+              width={100}
+              height={42}
+              priority
+              className={styles.sidebarLogoImage}
+            />
           </Link>
           <button
             className={styles.sidebarClose}
