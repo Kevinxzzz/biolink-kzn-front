@@ -1,5 +1,6 @@
 import { FloatingBackground } from "@/components/animations/FloatingBackground";
 import Link from "next/link";
+import Image from "next/image";
 import styles from "./AuthLayout.module.scss";
 
 interface AuthLayoutProps {
@@ -20,7 +21,14 @@ export function AuthLayout({
       <FloatingBackground />
 
       <Link href="/" className={styles.logo} aria-label="KZN - Página inicial">
-        K<span className={styles.logoAccent}>Z</span>N
+        <Image
+          src="/logos/KZN-ROXO.png"
+          alt="KZN"
+          width={150}
+          height={63}
+          priority
+          className={styles.logoImage}
+        />
       </Link>
 
       <div className={styles.content}>
