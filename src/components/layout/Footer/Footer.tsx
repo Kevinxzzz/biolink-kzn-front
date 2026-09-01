@@ -1,3 +1,4 @@
+import Link from "next/link";
 import { SectionWrapper } from "@/components/ui/SectionWrapper";
 import styles from "./Footer.module.scss";
 
@@ -15,8 +16,8 @@ export function Footer() {
             <a href="#benefits" className={styles.link}>Benefícios</a>
             <a href="#about" className={styles.link}>Sobre Nós</a>
             <a href="#faq" className={styles.link}>FAQ</a>
-            <a href="#" className={styles.link}>Termos de Uso</a>
-            <a href="#" className={styles.link}>Privacidade</a>
+            <Link href="/termos-de-uso" className={styles.link}>Termos de Uso</Link>
+            <Link href="/politica-de-privacidade" className={styles.link}>Privacidade</Link>
           </div>
         </div>
         
