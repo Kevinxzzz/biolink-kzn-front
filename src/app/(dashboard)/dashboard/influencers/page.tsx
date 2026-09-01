@@ -115,7 +115,7 @@ export default function InfluencersPage() {
 
   const handleCopyLink = async (influencer: Influencer) => {
     const slug = influencer.slug || generateSlug(influencer.name);
-    const link = `${process.env.API_URL || "http://localhost:3000"}/${slug}`;
+    const link = `${process.env.NEXT_PUBLIC_API_URL || "http://localhost:3000"}/${slug}`;
     await navigator.clipboard.writeText(link);
     setCopiedId(influencer.id);
     setTimeout(() => setCopiedId(null), 2000);

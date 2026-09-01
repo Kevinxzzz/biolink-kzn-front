@@ -15,21 +15,31 @@
 .logo {
   display: flex;
   align-items: center;
+  justify-content: center;
   margin-bottom: $space-2xl;
-  font-size: $text-3xl;
-  font-weight: $weight-extrabold;
-  letter-spacing: $tracking-tight;
-  color: var(--text-primary);
   text-decoration: none;
   animation: fadeInUp 0.5s ease both;
+  transition: opacity 0.2s ease, transform 0.2s ease;
+
+  &:hover {
+    opacity: 0.9;
+    transform: scale(1.03);
+  }
 
   @include reduced-motion {
     animation: none;
   }
 }
 
-.logoAccent {
-  color: var(--accent-primary);
+.logoImage {
+  height: 48px;
+  width: auto;
+  object-fit: contain;
+  display: block;
+
+  @include sm {
+    height: 54px;
+  }
 }
 
 .content {
