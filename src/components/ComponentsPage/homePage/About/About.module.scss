@@ -59,20 +59,27 @@
 .segmentedControl {
   display: flex;
   align-items: center;
-  gap: $space-xs;
+  gap: 3px;
   background: var(--bg-elevated);
-  padding: 4px;
+  padding: 3px;
   border-radius: $radius-pill;
   border: 1px solid var(--border-subtle);
   margin-bottom: $space-lg;
   width: 100%;
-  max-width: 360px;
-  justify-content: space-between;
+  max-width: min(100%, 335px);
+  margin-inline: auto;
+  box-sizing: border-box;
 
   @include sm {
-    max-width: 420px;
-    padding: 6px;
-    gap: $space-sm;
+    max-width: 380px;
+    padding: 4px;
+    gap: 6px;
+  }
+
+  @include md {
+    max-width: 440px;
+    padding: 5px;
+    gap: 8px;
   }
 
   @include lg {
@@ -84,22 +91,30 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  gap: 6px;
+  gap: 4px;
   flex: 1;
-  padding: $space-xs $space-sm;
+  min-width: 0;
+  padding: 0.35rem 0.25rem;
   border-radius: $radius-pill;
   border: 1px solid transparent;
   background: transparent;
   color: var(--text-secondary);
-  font-size: $text-xs;
+  font-size: 0.6875rem; // 11px
   font-weight: $weight-medium;
   cursor: pointer;
   transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
   white-space: nowrap;
 
   @include sm {
-    font-size: $text-sm;
-    padding: $space-xs $space-md;
+    font-size: $text-xs; // 12px
+    padding: 0.35rem 0.5rem;
+    gap: 5px;
+  }
+
+  @include md {
+    font-size: 0.8125rem; // 13px
+    padding: 0.45rem 0.75rem;
+    gap: 6px;
   }
 
   &:hover {
@@ -120,27 +135,46 @@
 }
 
 .segmentNumber {
-  font-size: 0.625rem; // 10px
+  font-size: 0.5625rem; // 9px
   font-weight: $weight-bold;
   color: var(--text-muted);
   background: var(--bg-elevated);
-  padding: 1px 5px;
+  padding: 1px 4px;
   border-radius: $radius-pill;
   transition: all 0.25s ease;
+  flex-shrink: 0;
+
+  @include sm {
+    font-size: 0.625rem; // 10px
+    padding: 1px 5px;
+  }
+
+  @include md {
+    font-size: 0.6875rem; // 11px
+    padding: 2px 6px;
+  }
 }
 
 .segmentTitle {
   font-weight: $weight-semibold;
+  letter-spacing: -0.02em;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
 }
 
 // Deck Container
 .deckContainer {
   position: relative;
   width: 100%;
-  min-height: 250px;
+  min-height: 280px;
 
   @include sm {
-    min-height: 270px;
+    min-height: 260px;
+  }
+
+  @include md {
+    min-height: 240px;
   }
 
   @include lg {
@@ -148,6 +182,7 @@
     display: grid;
     grid-template-columns: repeat(3, 1fr);
     gap: $space-xl;
+    align-items: stretch;
   }
 }
 
@@ -162,7 +197,7 @@
   overflow: hidden;
   display: flex;
   flex-direction: column;
-  justify-content: space-between;
+  justify-content: flex-start;
   gap: $space-md;
   opacity: 0;
   visibility: hidden;
@@ -172,6 +207,7 @@
 
   @include sm {
     padding: $space-xl;
+    gap: $space-lg;
   }
 
   &.cardActive {
@@ -191,7 +227,9 @@
     pointer-events: auto;
     padding: $space-2xl;
     border-radius: $radius-2xl;
-    min-height: 340px;
+    min-height: auto;
+    height: 100%;
+    gap: $space-xl;
     transition: transform 0.3s ease, box-shadow 0.3s ease, border-color 0.3s ease;
 
     &:hover {
