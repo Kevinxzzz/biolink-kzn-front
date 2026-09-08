@@ -6,12 +6,15 @@ import type { LoginCredentials } from "@/types/authType";
 import * as authService from "@/service/authService";
 import { tokenStorage } from "@/lib/auth/tokenStorage";
 
+import { useQueryClient } from "@tanstack/react-query";
+
 type LoginStatus = "idle" | "loading" | "success" | "error";
 
 export function useLogin() {
   const [status, setStatus] = useState<LoginStatus>("idle");
   const [error, setError] = useState<string | null>(null);
   const router = useRouter();
+  const queryClient = useQueryClient();
 
   const login = async (credentials: LoginCredentials) => {
     setStatus("loading");
@@ -22,6 +25,8 @@ export function useLogin() {
 
       tokenStorage.setAccessToken(response.token);
       setStatus("success");
+      
+      queryClient.removeQueries({ queryKey: ["auth", "me"] });
 
       setTimeout(() => {
         router.push("/dashboard");
