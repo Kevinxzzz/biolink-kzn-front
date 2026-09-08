@@ -1,28 +1,9 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useEffect } from "react";
 import { useRouter } from "next/navigation";
 import { tokenStorage } from "@/lib/auth/tokenStorage";
-import { onAuthExpired } from "@/lib/auth/authEvents";
-
-interface DecodedToken {
-  sub: string;
-  accountType: "USER" | "INFLUENCER";
-  role?: string;
-  exp?: number;
-}
-
-function decodeJWT(token: string): DecodedToken | null {
-  try {
-    const parts = token.split('.');
-    if (parts.length !== 3) return null;
-    const payload = parts[1];
-    const decoded = atob(payload.replace(/-/g, '+').replace(/_/g, '/'));
-    return JSON.parse(decoded);
-  } catch {
-    return null;
-  }
-}
+import { useAuth } from "@/hooks/useAuth";
 
 export default function DashboardLayoutRoute({
   children,
@@ -30,53 +11,31 @@ export default function DashboardLayoutRoute({
   children: React.ReactNode;
 }) {
   const router = useRouter();
-  const [isAuthorized, setIsAuthorized] = useState<boolean>(false);
-  const [loading, setLoading] = useState<boolean>(true);
+  const { isAuthenticated, isLoading, error } = useAuth();
 
   useEffect(() => {
-    // 1. Ouvir o evento de expiração de autenticação (se ocorrer 401 durante a sessão)
-    const unsubscribe = onAuthExpired(() => {
+    if (isLoading) return;
+
+    if (!isAuthenticated) {
+      if (error?.statusCode === 403) {
+        if (error.redirect) {
+          // Se o backend forneceu o redirect, envia o usuário pra lá (mesmo mantendo o token)
+          // Mas como foi barrado aqui, podemos remover o token de acesso localmente por segurança,
+          // dependendo da política. O prompt sugere:
+          // "limpar sessão local -> redirecionar para Application correta"
+          tokenStorage.removeAccessToken();
+          window.location.href = error.redirect;
+          return;
+        }
+      }
+      
+      // Qualquer outro caso não autenticado (incluindo 401, erro sem token, 403 sem redirect)
       tokenStorage.removeAccessToken();
       router.push("/login");
-    });
-
-    // 2. Validar token atual de acesso
-    const token = tokenStorage.getAccessToken();
-
-    if (!token) {
-      router.push("/login");
-      return;
     }
+  }, [isAuthenticated, isLoading, error, router]);
 
-    const decoded = decodeJWT(token);
-
-    if (!decoded) {
-      tokenStorage.removeAccessToken();
-      router.push("/login");
-      return;
-    }
-
-    // Verificar expiração se presente
-    if (decoded.exp && decoded.exp * 1000 < Date.now()) {
-      tokenStorage.removeAccessToken();
-      router.push("/login");
-      return;
-    }
-
-    // Verificar roles permitidas (OWNER, ADMIN)
-    if (!decoded.role || (decoded.role !== "OWNER" && decoded.role !== "ADMIN")) {
-      tokenStorage.removeAccessToken();
-      router.push("/login");
-      return;
-    }
-
-    setIsAuthorized(true);
-    setLoading(false);
-
-    return () => unsubscribe();
-  }, [router]);
-
-  if (loading || !isAuthorized) {
+  if (isLoading || !isAuthenticated) {
     return (
       <div style={{
         display: "flex",

@@ -12,12 +12,14 @@ import { ApiErrorResponse } from '@/types';
 export class ApiError extends Error {
   public readonly statusCode: number;
   public readonly details?: ApiErrorResponse['details'];
+  public readonly redirect?: string;
 
-  constructor(message: string, statusCode: number, details?: ApiErrorResponse['details']) {
+  constructor(message: string, statusCode: number, details?: ApiErrorResponse['details'], redirect?: string) {
     super(message);
     this.name = 'ApiError';
     this.statusCode = statusCode;
     this.details = details;
+    this.redirect = redirect;
   }
 }
 
@@ -94,8 +96,9 @@ httpClient.interceptors.response.use(
 
       const message = data?.message || data?.error || 'Erro inesperado no servidor.';
       const details = data?.details;
+      const redirect = data?.redirect;
 
-      throw new ApiError(message, status, details);
+      throw new ApiError(message, status, details, redirect);
     }
 
     if (error.code === 'ECONNABORTED') {
