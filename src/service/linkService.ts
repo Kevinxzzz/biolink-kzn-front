@@ -37,8 +37,11 @@ export const linkService = {
     return response.data.data;
   },
 
-  // TODO: The rotation logic is NOT part of this iteration according to plan.
-  // Mocks retained here temporarily if needed by other components, but ideally will be refactored when rotation is done.
+  getRedirectUrl(categoryId: string): string {
+    const baseUrl = process.env.NEXT_PUBLIC_API_URL || "http://localhost:3000";
+    return `${baseUrl}/links/redirect/${categoryId}`;
+  },
+
   getEfootballRedirectUrl(): string {
     const baseUrl = process.env.NEXT_PUBLIC_API_URL || "http://localhost:3000";
     return `${baseUrl}/links/redirect/kzngg/efootball`;

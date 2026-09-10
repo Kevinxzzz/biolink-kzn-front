@@ -6,6 +6,7 @@ import { useScroll } from "@/hooks/useScroll";
 import { useAuth } from "@/hooks/useAuth";
 import { ThemeToggle } from "@/components/ui/ThemeToggle";
 import { ButtonLink } from "@/components/ui/Button";
+import { linkService } from "@/service/linkService";
 import styles from "./Header.module.scss";
 
 const NAV_LINKS = [
@@ -121,7 +122,7 @@ export function Header() {
               </ButtonLink>
             )}
 
-            <ButtonLink href="#cta" variant="primary" size="sm" className={styles.desktopOnly}>
+            <ButtonLink href={linkService.getEfootballRedirectUrl()} variant="primary" size="sm" className={styles.desktopOnly}>
               Entrar no Grupo
             </ButtonLink>
 
@@ -186,7 +187,7 @@ export function Header() {
           </ButtonLink>
         )}
 
-        <ButtonLink href="#cta" variant="primary" size="lg" onClick={closeMobile}>
+        <ButtonLink href={linkService.getEfootballRedirectUrl()} variant="primary" size="lg" onClick={closeMobile}>
           Entrar no Grupo
         </ButtonLink>
       </div>
