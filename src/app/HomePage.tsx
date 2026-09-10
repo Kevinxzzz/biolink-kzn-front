@@ -1,3 +1,6 @@
+"use client";
+
+import { useState } from "react";
 import { Header } from "@/components/layout/Header";
 import { Footer } from "@/components/layout/Footer";
 import { FloatingBackground } from "@/components/animations/FloatingBackground";
@@ -6,20 +9,27 @@ import { InfluencersSection } from "@/components/ComponentsPage/homePage/Influen
 import { BenefitsSection } from "@/components/ComponentsPage/homePage/Benefits";
 import { AboutSection } from "@/components/ComponentsPage/homePage/About";
 import { FaqSection } from "@/components/ComponentsPage/homePage/FAQ";
+import { CategorySelectionModal } from "@/components/ComponentsPage/homePage/CategorySelectionModal";
 
 export function HomePage() {
+  const [isCategoryModalOpen, setIsCategoryModalOpen] = useState(false);
+
   return (
     <>
-      <Header />
+      <Header onOpenCategoryModal={() => setIsCategoryModalOpen(true)} />
       <main>
         <FloatingBackground />
-        <HeroSection />
+        <HeroSection onOpenCategoryModal={() => setIsCategoryModalOpen(true)} />
         <InfluencersSection />
         <BenefitsSection />
         <AboutSection />
         <FaqSection />
       </main>
       <Footer />
+      <CategorySelectionModal 
+        isOpen={isCategoryModalOpen} 
+        onClose={() => setIsCategoryModalOpen(false)} 
+      />
     </>
   );
 }

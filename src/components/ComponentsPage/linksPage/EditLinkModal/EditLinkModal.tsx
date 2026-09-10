@@ -3,6 +3,8 @@
 import { useState, useEffect } from "react";
 import { SharedModal } from "@/components/ui/SharedModal";
 import { Input } from "@/components/ui/Input";
+import { Select } from "@/components/ui/Select";
+import { useCategories } from "@/hooks/useCategories";
 import type { Link } from "@/types/linkType";
 import styles from "../LinkModals.module.scss";
 
@@ -12,7 +14,7 @@ interface EditLinkModalProps {
   isUpdating: boolean;
   updateError?: string | null;
   onClose: () => void;
-  onSubmit: (id: string, data: { title: string; url: string }) => Promise<void>;
+  onSubmit: (id: string, data: { title: string; url: string; categoryId?: string }) => Promise<void>;
 }
 
 export function EditLinkModal({
@@ -25,12 +27,16 @@ export function EditLinkModal({
 }: EditLinkModalProps) {
   const [title, setTitle] = useState("");
   const [url, setUrl] = useState("");
+  const [categoryId, setCategoryId] = useState("");
   const [formError, setFormError] = useState<string | null>(null);
+
+  const { categories } = useCategories();
 
   useEffect(() => {
     if (link) {
       setTitle(link.title || "");
       setUrl(link.url || "");
+      setCategoryId(link.categoryId || "");
       setFormError(null);
     }
   }, [link]);
@@ -38,11 +44,11 @@ export function EditLinkModal({
   const handleSubmit = async () => {
     if (!link) return;
     setFormError(null);
-    if (!title.trim() || !url.trim()) {
+    if (!title.trim() || !url.trim() || !categoryId) {
       setFormError("Preencha todos os campos obrigatórios.");
       return;
     }
-    await onSubmit(link.id, { title, url });
+    await onSubmit(link.id, { title, url, categoryId });
   };
 
   return (
@@ -81,6 +87,18 @@ export function EditLinkModal({
           label="URL de Destino"
           value={url}
           onChange={(e) => setUrl(e.target.value)}
+          disabled={isUpdating}
+        />
+        <Select
+          id="edit-link-category"
+          name="category"
+          label="Categoria"
+          value={categoryId}
+          onChange={(e) => setCategoryId(e.target.value)}
+          options={[
+            { value: "", label: "Selecione uma categoria" },
+            ...(categories?.map((cat) => ({ value: cat.id, label: cat.name })) || []),
+          ]}
           disabled={isUpdating}
         />
       </div>

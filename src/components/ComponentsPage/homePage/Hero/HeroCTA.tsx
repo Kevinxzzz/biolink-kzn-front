@@ -1,14 +1,21 @@
-import { ButtonLink } from "@/components/ui/Button";
+import { Button, ButtonLink } from "@/components/ui/Button";
 import { FadeIn } from "@/components/animations/FadeIn";
-import { linkService } from "@/service/linkService";
 import styles from "./Hero.module.scss";
 
-export function HeroCTA() {
+interface HeroCTAProps {
+  onOpenCategoryModal?: () => void;
+}
+
+export function HeroCTA({ onOpenCategoryModal }: HeroCTAProps) {
   return (
     <FadeIn delay={400} className={styles.cta}>
-      <ButtonLink href={linkService.getEfootballRedirectUrl()} variant="primary" size="lg">
+      <Button 
+        variant="primary" 
+        size="lg" 
+        onClick={onOpenCategoryModal}
+      >
         Entrar no Grupo
-      </ButtonLink>
+      </Button>
       <ButtonLink href="#benefits" variant="ghost" size="lg">
         Ver Benefícios
       </ButtonLink>

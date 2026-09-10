@@ -1,10 +1,14 @@
 import { HeroContent } from "./HeroContent";
 import styles from "./Hero.module.scss";
 
-export function HeroSection() {
+interface HeroSectionProps {
+  onOpenCategoryModal?: () => void;
+}
+
+export function HeroSection({ onOpenCategoryModal }: HeroSectionProps) {
   return (
     <section className={styles.hero} id="hero">
-      <HeroContent />
+      <HeroContent onOpenCategoryModal={onOpenCategoryModal} />
     </section>
   );
 }

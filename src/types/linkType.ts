@@ -6,6 +6,7 @@ export interface Link {
   active: boolean;
   order: number;
   inRotationPool: boolean;
+  categoryId?: string;
 }
 
 export interface ScheduledChange {

@@ -6,7 +6,7 @@ export function useCreateLink() {
   const queryClient = useQueryClient();
 
   const mutation = useMutation({
-    mutationFn: (data: { title: string; url: string }) => linkService.createLink(data),
+    mutationFn: (data: { title: string; url: string; categoryId: string }) => linkService.createLink(data),
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ["links"] });
     },
