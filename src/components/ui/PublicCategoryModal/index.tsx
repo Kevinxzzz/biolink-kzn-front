@@ -18,7 +18,7 @@ export function PublicCategoryModal({ isOpen, onClose }: PublicCategoryModalProp
   });
 
   const handleCategoryClick = (categoryId: string) => {
-    window.location.href = linkService.getRedirectUrl(categoryId);
+    window.location.assign(linkService.getRedirectUrl(categoryId));
   };
 
   return (

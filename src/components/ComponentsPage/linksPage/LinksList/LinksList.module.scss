@@ -85,6 +85,125 @@
   word-break: break-word;
 }
 
+.emptyStateTitle {
+  font-size: $text-lg;
+  font-weight: $weight-semibold;
+  color: var(--text-primary);
+}
+
+.emptyStateDesc {
+  font-size: $text-sm;
+  color: var(--text-muted);
+  margin-top: $space-2xs;
+  line-height: $leading-relaxed;
+}
+
+/* Category Groups (Accordion) */
+
+.categoryGroupsList {
+  display: flex;
+  flex-direction: column;
+  gap: $space-lg;
+  width: 100%;
+}
+
+.categoryGroup {
+  background: var(--bg-primary);
+  border: 1px solid var(--border-subtle);
+  border-radius: $radius-2xl;
+  overflow: hidden;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05);
+}
+
+.categoryHeader {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  width: 100%;
+  padding: $space-lg $space-xl;
+  background: var(--bg-elevated);
+  border: none;
+  border-bottom: 1px solid transparent;
+  cursor: pointer;
+  transition: background-color 0.2s ease, border-color 0.2s ease;
+
+  &:hover {
+    background: var(--bg-hover);
+  }
+
+  &:focus-visible {
+    outline: 2px solid var(--accent-primary);
+    outline-offset: -2px;
+  }
+}
+
+.categoryHeaderOpen {
+  border-bottom-color: var(--border-subtle);
+  background: var(--bg-elevated);
+}
+
+.categoryTitle {
+  display: flex;
+  align-items: center;
+  gap: $space-sm;
+  font-size: $text-lg;
+  font-weight: $weight-semibold;
+  color: var(--text-primary);
+}
+
+.categoryCount {
+  font-size: $text-sm;
+  font-weight: $weight-medium;
+  color: var(--text-muted);
+  background: var(--bg-secondary);
+  padding: 2px 8px;
+  border-radius: 9999px;
+}
+
+.chevron {
+  width: 20px;
+  height: 20px;
+  color: var(--text-muted);
+  transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.chevronOpen {
+  transform: rotate(-180deg);
+}
+
+.categoryContent {
+  display: grid;
+  grid-template-rows: 0fr;
+  transition: grid-template-rows 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  background: var(--bg-secondary);
+}
+
+.categoryContentOpen {
+  grid-template-rows: 1fr;
+}
+
+.categoryContentInner {
+  overflow: hidden;
+  padding: 0;
+  opacity: 0;
+  transition: opacity 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.categoryContentOpen .categoryContentInner {
+  opacity: 1;
+  padding: $space-lg;
+}
+
+.emptyCategory {
+  padding: $space-lg;
+  text-align: center;
+  color: var(--text-muted);
+  font-size: $text-sm;
+  background: var(--bg-elevated);
+  border: 1px dashed var(--border-subtle);
+  border-radius: $radius-xl;
+}
+
 .activeBadge {
   font-size: 0.65rem;
   font-weight: $weight-bold;

@@ -7,12 +7,12 @@ export const linkService = {
     return response.data.data;
   },
 
-  async createLink(data: { title: string; url: string }): Promise<Link> {
+  async createLink(data: { title: string; url: string; categoryId: string }): Promise<Link> {
     const response = await httpClient.post<{ data: Link }>("/links", data);
     return response.data.data;
   },
 
-  async updateLink(id: string, data: { title?: string; url?: string }): Promise<Link> {
+  async updateLink(id: string, data: { title?: string; url?: string; categoryId?: string }): Promise<Link> {
     const response = await httpClient.patch<{ data: Link }>(`/links/${id}`, data);
     return response.data.data;
   },

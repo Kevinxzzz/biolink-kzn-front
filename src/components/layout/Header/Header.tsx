@@ -5,8 +5,7 @@ import { useState } from "react";
 import { useScroll } from "@/hooks/useScroll";
 import { useAuth } from "@/hooks/useAuth";
 import { ThemeToggle } from "@/components/ui/ThemeToggle";
-import { ButtonLink } from "@/components/ui/Button";
-import { linkService } from "@/service/linkService";
+import { Button, ButtonLink } from "@/components/ui/Button";
 import styles from "./Header.module.scss";
 
 const NAV_LINKS = [
@@ -55,7 +54,11 @@ const NAV_LINKS = [
   },
 ];
 
-export function Header() {
+interface HeaderProps {
+  onOpenCategoryModal?: () => void;
+}
+
+export function Header({ onOpenCategoryModal }: HeaderProps = {}) {
   const { isScrolled } = useScroll(60);
   const { isAuthenticated } = useAuth();
   const [mobileOpen, setMobileOpen] = useState(false);
@@ -122,9 +125,9 @@ export function Header() {
               </ButtonLink>
             )}
 
-            <ButtonLink href={linkService.getEfootballRedirectUrl()} variant="primary" size="sm" className={styles.desktopOnly}>
+            <Button variant="primary" size="sm" className={styles.desktopOnly} onClick={onOpenCategoryModal}>
               Entrar no Grupo
-            </ButtonLink>
+            </Button>
 
             <button
               className={styles.menuButton}
@@ -187,9 +190,16 @@ export function Header() {
           </ButtonLink>
         )}
 
-        <ButtonLink href={linkService.getEfootballRedirectUrl()} variant="primary" size="lg" onClick={closeMobile}>
+        <Button 
+          variant="primary" 
+          size="lg" 
+          onClick={() => {
+            closeMobile();
+            onOpenCategoryModal?.();
+          }}
+        >
           Entrar no Grupo
-        </ButtonLink>
+        </Button>
       </div>
     </>
   );

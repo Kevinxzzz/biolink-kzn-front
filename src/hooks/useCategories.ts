@@ -15,3 +15,18 @@ export function useCategories() {
     refetch,
   };
 }
+
+export function usePublicCategories() {
+  const { data, isLoading, error, refetch } = useQuery({
+    queryKey: ["public-categories"],
+    queryFn: categoryService.getPublicCategories,
+    refetchOnMount: true,
+  });
+
+  return {
+    categories: data || [],
+    isLoading,
+    error: error instanceof Error ? error.message : null,
+    refetch,
+  };
+}
