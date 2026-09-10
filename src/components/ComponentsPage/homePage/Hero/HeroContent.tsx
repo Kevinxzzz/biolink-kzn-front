@@ -2,7 +2,11 @@ import { FadeIn } from "@/components/animations/FadeIn";
 import { HeroCTA } from "./HeroCTA";
 import styles from "./Hero.module.scss";
 
-export function HeroContent() {
+interface HeroContentProps {
+  onOpenCategoryModal?: () => void;
+}
+
+export function HeroContent({ onOpenCategoryModal }: HeroContentProps) {
   return (
     <div className={styles.inner}>
       <div className={styles.content}>
@@ -19,7 +23,7 @@ export function HeroContent() {
           </p>
         </FadeIn>
         
-        <HeroCTA />
+        <HeroCTA onOpenCategoryModal={onOpenCategoryModal} />
       </div>
     </div>
   );

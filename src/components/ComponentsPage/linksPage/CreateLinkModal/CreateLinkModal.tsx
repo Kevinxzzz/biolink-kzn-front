@@ -3,6 +3,8 @@
 import { useState, useEffect } from "react";
 import { SharedModal } from "@/components/ui/SharedModal";
 import { Input } from "@/components/ui/Input";
+import { Select } from "@/components/ui/Select";
+import { useCategories } from "@/hooks/useCategories";
 import styles from "../LinkModals.module.scss";
 
 interface CreateLinkModalProps {
@@ -10,7 +12,7 @@ interface CreateLinkModalProps {
   isCreating: boolean;
   createError?: string | null;
   onClose: () => void;
-  onSubmit: (data: { title: string; url: string }) => Promise<void>;
+  onSubmit: (data: { title: string; url: string; categoryId: string }) => Promise<void>;
 }
 
 export function CreateLinkModal({
@@ -22,23 +24,27 @@ export function CreateLinkModal({
 }: CreateLinkModalProps) {
   const [title, setTitle] = useState("");
   const [url, setUrl] = useState("");
+  const [categoryId, setCategoryId] = useState("");
   const [formError, setFormError] = useState<string | null>(null);
+
+  const { categories } = useCategories();
 
   useEffect(() => {
     if (isOpen) {
       setTitle("");
       setUrl("");
+      setCategoryId("");
       setFormError(null);
     }
   }, [isOpen]);
 
   const handleSubmit = async () => {
     setFormError(null);
-    if (!title.trim() || !url.trim()) {
+    if (!title.trim() || !url.trim() || !categoryId) {
       setFormError("Preencha todos os campos obrigatórios.");
       return;
     }
-    await onSubmit({ title, url });
+    await onSubmit({ title, url, categoryId });
   };
 
   return (
@@ -79,6 +85,18 @@ export function CreateLinkModal({
           value={url}
           onChange={(e) => setUrl(e.target.value)}
           placeholder="https://"
+          disabled={isCreating}
+        />
+        <Select
+          id="create-link-category"
+          name="category"
+          label="Categoria"
+          value={categoryId}
+          onChange={(e) => setCategoryId(e.target.value)}
+          options={[
+            { value: "", label: "Selecione uma categoria" },
+            ...(categories?.map((cat) => ({ value: cat.id, label: cat.name })) || []),
+          ]}
           disabled={isCreating}
         />
       </div>

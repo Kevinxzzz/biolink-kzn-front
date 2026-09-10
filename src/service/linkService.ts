@@ -7,12 +7,12 @@ export const linkService = {
     return response.data.data;
   },
 
-  async createLink(data: { title: string; url: string }): Promise<Link> {
+  async createLink(data: { title: string; url: string; categoryId: string }): Promise<Link> {
     const response = await httpClient.post<{ data: Link }>("/links", data);
     return response.data.data;
   },
 
-  async updateLink(id: string, data: { title?: string; url?: string }): Promise<Link> {
+  async updateLink(id: string, data: { title?: string; url?: string; categoryId?: string }): Promise<Link> {
     const response = await httpClient.patch<{ data: Link }>(`/links/${id}`, data);
     return response.data.data;
   },
@@ -37,8 +37,11 @@ export const linkService = {
     return response.data.data;
   },
 
-  // TODO: The rotation logic is NOT part of this iteration according to plan.
-  // Mocks retained here temporarily if needed by other components, but ideally will be refactored when rotation is done.
+  getRedirectUrl(categoryId: string): string {
+    const baseUrl = process.env.NEXT_PUBLIC_API_URL || "http://localhost:3000";
+    return `${baseUrl}/links/redirect/${categoryId}`;
+  },
+
   getEfootballRedirectUrl(): string {
     const baseUrl = process.env.NEXT_PUBLIC_API_URL || "http://localhost:3000";
     return `${baseUrl}/links/redirect/kzngg/efootball`;
