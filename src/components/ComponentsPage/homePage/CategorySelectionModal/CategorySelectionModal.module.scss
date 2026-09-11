@@ -1,0 +1,327 @@
+@use '../../../../styles/spacing' as *;
+@use '../../../../styles/typography' as *;
+@use '../../../../styles/mixins' as *;
+
+.overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.85);
+  backdrop-filter: blur(8px);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 1000;
+  padding: $space-lg;
+  animation: fadeIn 0.3s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+
+  @media (max-width: 768px) {
+    padding: 0;
+    align-items: flex-end;
+  }
+}
+
+.modal {
+  width: 100%;
+  max-width: 640px;
+  background: var(--bg-elevated);
+  border: 1px solid var(--border-subtle);
+  border-radius: $radius-2xl;
+  display: flex;
+  flex-direction: column;
+  animation: slideUpScale 0.4s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+  max-height: 85vh;
+  box-shadow: 0 24px 48px rgba(0, 0, 0, 0.4), 0 0 0 1px rgba(255, 255, 255, 0.02) inset;
+  position: relative;
+  overflow: hidden;
+
+  @media (max-width: 768px) {
+    max-height: 92vh;
+    border-radius: $radius-2xl $radius-2xl 0 0;
+    border-bottom: none;
+    animation: slideUpMobile 0.4s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+  }
+
+  @include reduced-motion {
+    animation: none;
+  }
+}
+
+.header {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  padding: $space-2xl $space-2xl $space-xl;
+  
+  @media (max-width: 768px) {
+    padding: $space-xl $space-xl $space-lg;
+  }
+}
+
+.titleGroup {
+  display: flex;
+  flex-direction: column;
+  gap: $space-xs;
+}
+
+.title {
+  font-size: clamp(1.5rem, 5vw, 2rem);
+  font-weight: $weight-bold;
+  color: var(--text-primary);
+  line-height: 1.2;
+  letter-spacing: -0.02em;
+  margin: 0;
+}
+
+.description {
+  font-size: $text-base;
+  color: var(--text-secondary);
+  margin: 0;
+}
+
+.closeButton {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  background: var(--bg-primary);
+  border: 1px solid var(--border-subtle);
+  color: var(--text-muted);
+  cursor: pointer;
+  transition: all 0.2s ease;
+  flex-shrink: 0;
+
+  &:hover {
+    background: var(--bg-glass);
+    color: var(--text-primary);
+    border-color: rgba(255, 255, 255, 0.15);
+    transform: rotate(90deg);
+  }
+
+  &:focus-visible {
+    outline: 2px solid var(--accent-primary);
+    outline-offset: 2px;
+  }
+
+  svg {
+    width: 20px;
+    height: 20px;
+  }
+}
+
+.content {
+  padding: 0 $space-2xl $space-2xl;
+  overflow-y: auto;
+  display: flex;
+  flex-direction: column;
+  flex: 1;
+
+  @media (max-width: 768px) {
+    padding: 0 $space-xl $space-xl;
+  }
+
+  &::-webkit-scrollbar {
+    width: 4px;
+  }
+  &::-webkit-scrollbar-track {
+    background: transparent;
+  }
+  &::-webkit-scrollbar-thumb {
+    background: var(--border-subtle);
+    border-radius: 4px;
+  }
+  &::-webkit-scrollbar-thumb:hover {
+    background: var(--text-muted);
+  }
+}
+
+.selectionGrid {
+  display: flex;
+  flex-direction: column;
+  gap: $space-sm;
+  padding-bottom: $space-md;
+}
+
+.categoryCard {
+  background: var(--bg-primary);
+  border: 1px solid var(--border-subtle);
+  border-radius: $radius-xl;
+  padding: $space-lg $space-xl;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  cursor: pointer;
+  transition: all 0.25s cubic-bezier(0.16, 1, 0.3, 1);
+  position: relative;
+  overflow: hidden;
+  text-align: left;
+  width: 100%;
+  color: var(--text-primary);
+
+  .categoryInfo {
+    display: flex;
+    flex-direction: column;
+    z-index: 2;
+    transition: transform 0.25s ease;
+  }
+
+  .categoryName {
+    font-size: $text-lg;
+    font-weight: $weight-semibold;
+    margin: 0;
+    transition: color 0.2s ease;
+  }
+
+  .arrowIcon {
+    opacity: 0;
+    transform: translateX(-10px);
+    transition: all 0.25s cubic-bezier(0.16, 1, 0.3, 1);
+    color: var(--accent-primary);
+    z-index: 2;
+  }
+
+  /* Efeito de brilho super sutil e elegante */
+  &::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 4px;
+    height: 100%;
+    background: var(--accent-primary);
+    opacity: 0;
+    transition: opacity 0.2s ease;
+  }
+
+  &:hover:not(:disabled) {
+    background: var(--bg-elevated);
+    border-color: rgba(255, 255, 255, 0.15);
+    transform: scale(1.01);
+    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.2);
+
+    .arrowIcon {
+      opacity: 1;
+      transform: translateX(0);
+    }
+    
+    .categoryInfo {
+      transform: translateX(8px);
+    }
+
+    &::before {
+      opacity: 1;
+    }
+  }
+
+  &:active:not(:disabled) {
+    transform: scale(0.99);
+  }
+
+  &:focus-visible {
+    outline: 2px solid var(--accent-primary);
+    outline-offset: 2px;
+  }
+
+  &:disabled {
+    cursor: not-allowed;
+    opacity: 0.7;
+  }
+}
+
+.categoryCardSelected {
+  border-color: var(--accent-primary);
+  background: var(--accent-glow);
+  
+  &::before {
+    opacity: 1;
+  }
+  
+  .categoryName {
+    color: var(--accent-secondary);
+  }
+}
+
+/* Tratamento de Estados */
+.loadingState, .emptyState {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: $space-4xl 0;
+  color: var(--text-muted);
+  text-align: center;
+  gap: $space-md;
+}
+
+.emptyState svg {
+  width: 48px;
+  height: 48px;
+  opacity: 0.3;
+}
+
+.spinner {
+  width: 32px;
+  height: 32px;
+  border: 3px solid var(--border-subtle);
+  border-top-color: var(--accent-primary);
+  border-radius: 50%;
+  animation: spin 1s cubic-bezier(0.16, 1, 0.3, 1) infinite;
+}
+
+.errorState {
+  background: rgba(239, 68, 68, 0.05);
+  border: 1px solid rgba(239, 68, 68, 0.2);
+  border-radius: $radius-lg;
+  padding: $space-lg;
+  color: #f87171;
+  text-align: center;
+  font-size: $text-base;
+}
+
+.loadingLabel {
+  display: flex;
+  align-items: center;
+  gap: $space-sm;
+  color: var(--text-primary);
+  font-size: $text-sm;
+  font-weight: $weight-medium;
+  
+  .smallSpinner {
+    width: 16px;
+    height: 16px;
+    border: 2px solid rgba(255, 255, 255, 0.2);
+    border-top-color: currentColor;
+    border-radius: 50%;
+    animation: spin 1s linear infinite;
+  }
+}
+
+@keyframes spin {
+  to { transform: rotate(360deg); }
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+@keyframes slideUpScale {
+  from {
+    opacity: 0;
+    transform: translateY(20px) scale(0.98);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+}
+
+@keyframes slideUpMobile {
+  from {
+    transform: translateY(100%);
+  }
+  to {
+    transform: translateY(0);
+  }
+}

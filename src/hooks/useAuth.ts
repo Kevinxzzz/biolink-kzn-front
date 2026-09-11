@@ -1,70 +1,37 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useQuery, useQueryClient } from "@tanstack/react-query";
 import { tokenStorage } from "@/lib/auth/tokenStorage";
+import { getMe } from "@/service/authService";
+import { useEffect } from "react";
 import { onAuthExpired } from "@/lib/auth/authEvents";
-
-interface DecodedToken {
-  sub: string;
-  accountType: "USER" | "INFLUENCER";
-  role?: string;
-  exp?: number;
-}
-
-function decodeJWT(token: string): DecodedToken | null {
-  try {
-    const parts = token.split(".");
-    if (parts.length !== 3) return null;
-    const payload = parts[1];
-    const decoded = atob(payload.replace(/-/g, "+").replace(/_/g, "/"));
-    return JSON.parse(decoded);
-  } catch {
-    return null;
-  }
-}
+import { ApiError } from "@/service/httpClient";
 
 export function useAuth() {
-  const [isAuthenticated, setIsAuthenticated] = useState<boolean>(false);
-  const [isLoading, setIsLoading] = useState<boolean>(true);
+  const queryClient = useQueryClient();
+  const token = typeof window !== 'undefined' ? tokenStorage.getAccessToken() : null;
+
+  const { data: user, isLoading, error } = useQuery({
+    queryKey: ["auth", "me"],
+    queryFn: getMe,
+    enabled: !!token,
+    retry: false,
+    staleTime: 5 * 60 * 1000, // 5 minutos de cache em memória
+  });
 
   useEffect(() => {
-    const checkAuth = () => {
-      const token = tokenStorage.getAccessToken();
-      if (!token) {
-        setIsAuthenticated(false);
-        setIsLoading(false);
-        return;
-      }
-
-      const decoded = decodeJWT(token);
-      if (!decoded) {
-        setIsAuthenticated(false);
-        setIsLoading(false);
-        return;
-      }
-
-      if (decoded.exp && decoded.exp * 1000 < Date.now()) {
-        setIsAuthenticated(false);
-        setIsLoading(false);
-        return;
-      }
-
-      if (decoded.role && (decoded.role === "OWNER" || decoded.role === "ADMIN")) {
-        setIsAuthenticated(true);
-      } else {
-        setIsAuthenticated(false);
-      }
-      setIsLoading(false);
-    };
-
-    checkAuth();
-
     const unsubscribe = onAuthExpired(() => {
-      setIsAuthenticated(false);
+      // O evento de auth expirado é disparado em caso de 401.
+      queryClient.removeQueries({ queryKey: ["auth", "me"] });
     });
 
     return () => unsubscribe();
-  }, []);
+  }, [queryClient]);
 
-  return { isAuthenticated, isLoading };
+  return {
+    user,
+    isAuthenticated: !!user && (user.role === "OWNER" || user.role === "ADMIN"),
+    isLoading: !!token && isLoading, 
+    error: error as ApiError | null
+  };
 }

@@ -21,11 +21,14 @@ import {
   useReorderLinks,
   useActivateLink,
 } from "@/hooks/useLinkMutations";
+import { useCategories } from "@/hooks/useCategories";
+import type { Category } from "@/types/categoryType";
 import type { Link } from "@/types/linkType";
 import styles from "./links.module.scss";
 
 export default function LinksPage() {
   const { links: initialLinks, isLoading, error: fetchError } = useLinks();
+  const { categories, isLoading: isLoadingCategories } = useCategories();
   const { create, isCreating, error: createError } = useCreateLink();
   const { update, isUpdating, error: updateError } = useUpdateLink();
   const { remove, isDeleting } = useDeleteLink();
@@ -50,13 +53,21 @@ export default function LinksPage() {
       const oldIndex = localLinks.findIndex((l) => l.id === active.id);
       const newIndex = localLinks.findIndex((l) => l.id === over.id);
 
+      if (oldIndex === -1 || newIndex === -1) return;
+      const categoryId = localLinks[oldIndex].categoryId;
+
       const previousOrder = [...localLinks];
       const newOrder = arrayMove(localLinks, oldIndex, newIndex);
 
       setLocalLinks(newOrder);
 
+      // Backend reorder expects ONLY the links from the affected category
+      const categoryLinksIds = newOrder
+        .filter((l) => l.categoryId === categoryId)
+        .map((l) => l.id);
+
       try {
-        await reorder(newOrder.map((l) => l.id));
+        await reorder(categoryLinksIds);
         toast.success("Ordem dos links atualizada!");
       } catch (err) {
         setLocalLinks(previousOrder);
@@ -66,7 +77,7 @@ export default function LinksPage() {
     }
   };
 
-  const handleCreateSubmit = async (data: { title: string; url: string }) => {
+  const handleCreateSubmit = async (data: { title: string; url: string; categoryId: string }) => {
     try {
       await create(data);
       setIsCreateModalOpen(false);
@@ -77,7 +88,7 @@ export default function LinksPage() {
     }
   };
 
-  const handleEditSubmit = async (id: string, data: { title: string; url: string }) => {
+  const handleEditSubmit = async (id: string, data: { title: string; url: string; categoryId?: string }) => {
     try {
       await update(id, data);
       setEditingLink(null);
@@ -110,7 +121,7 @@ export default function LinksPage() {
     }
   };
 
-  if (isLoading) {
+  if (isLoading || isLoadingCategories) {
     return (
       <DashboardLayout pageTitle="Links">
         <div className={styles.loadingState}>
@@ -153,6 +164,7 @@ export default function LinksPage() {
         ) : (
           <LinksList
             links={localLinks}
+            categories={categories}
             isReordering={isReordering}
             isActivating={isActivating}
             onDragEnd={handleDragEnd}
