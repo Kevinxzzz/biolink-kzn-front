@@ -7,8 +7,7 @@ import {
   ProfileSection,
 } from "@/components/ComponentsPage/settingsPage";
 import { useSettings } from "@/hooks/useSettings";
-import { useCategories } from "@/hooks/useCategories";
-import { useCategoryRotation } from "@/hooks/useCategoryRotation";
+import { useGlobalRotation } from "@/hooks/useGlobalRotation";
 import styles from "./settings.module.scss";
 
 export default function SettingsPage() {
@@ -20,17 +19,14 @@ export default function SettingsPage() {
     updateCompany,
   } = useSettings();
 
-  const { categories, isLoading: isCategoriesLoading } = useCategories();
-  const efootballCategory = categories.find((c) => c.name === "efootball");
-
   const {
     rotation: rotationSettings,
     isLoading: isRotationLoading,
     isSaving: isRotationSaving,
     updateRotation,
-  } = useCategoryRotation(efootballCategory?.id);
+  } = useGlobalRotation();
 
-  const isLoading = isSettingsLoading || isCategoriesLoading || isRotationLoading;
+  const isLoading = isSettingsLoading || isRotationLoading;
 
   if (isLoading) {
     return (
