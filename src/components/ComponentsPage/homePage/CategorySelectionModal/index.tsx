@@ -16,20 +16,19 @@ export function CategorySelectionModal({ isOpen, onClose }: CategorySelectionMod
 
   // Lock body scroll when open (disabled on iOS to prevent WebKit reflow freeze)
   useEffect(() => {
-    // Justificativa técnica: No iOS (WebKit), remover overflow: hidden do body 
-    // com filtros CSS pesados na página (como o FloatingBackground) causa um 
-    // recalculation de layout catastrófico, travando a thread por ~3s. 
-    // Além disso, overflow: hidden no body não previne scroll no iOS Safari.
+    console.log("[MODAL] mounted", performance.now());
     const isIOS = typeof navigator !== 'undefined' && /iPad|iPhone|iPod/.test(navigator.userAgent);
-    if (isIOS) return;
-
-    if (isOpen) {
-      document.body.style.overflow = "hidden";
-    } else {
-      document.body.style.overflow = "";
+    if (!isIOS) {
+      if (isOpen) {
+        document.body.style.overflow = "hidden";
+      } else {
+        document.body.style.overflow = "";
+      }
     }
+    
     return () => {
-      document.body.style.overflow = "";
+      console.log("[MODAL] unmounted", performance.now());
+      if (!isIOS) document.body.style.overflow = "";
     };
   }, [isOpen]);
 
@@ -62,11 +61,18 @@ export function CategorySelectionModal({ isOpen, onClose }: CategorySelectionMod
     window.location.assign(linkService.getRedirectUrl(categoryId));
   };
 
+  const handleClose = (source: string) => {
+    console.log(`[MODAL] close event from ${source}`, performance.now());
+    console.log("[MODAL] before onClose()", performance.now());
+    onClose();
+    console.log("[MODAL] after onClose()", performance.now());
+  };
+
   return (
     <div 
       className={styles.overlay} 
       onClick={(e) => {
-        if (e.target === e.currentTarget) onClose();
+        if (e.target === e.currentTarget) handleClose("overlay");
       }} 
       role="dialog" 
       aria-modal="true" 
@@ -87,7 +93,7 @@ export function CategorySelectionModal({ isOpen, onClose }: CategorySelectionMod
           
           <button 
             className={styles.closeButton} 
-            onClick={onClose} 
+            onClick={() => handleClose("button")} 
             aria-label="Fechar modal"
           >
             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={2} strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
