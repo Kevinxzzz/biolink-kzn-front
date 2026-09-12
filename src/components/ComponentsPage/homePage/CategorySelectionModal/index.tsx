@@ -14,8 +14,15 @@ export function CategorySelectionModal({ isOpen, onClose }: CategorySelectionMod
   const { categories, isLoading, error } = usePublicCategories();
   const [selectedId, setSelectedId] = useState<string | null>(null);
 
-  // Lock body scroll when open
+  // Lock body scroll when open (disabled on iOS to prevent WebKit reflow freeze)
   useEffect(() => {
+    // Justificativa técnica: No iOS (WebKit), remover overflow: hidden do body 
+    // com filtros CSS pesados na página (como o FloatingBackground) causa um 
+    // recalculation de layout catastrófico, travando a thread por ~3s. 
+    // Além disso, overflow: hidden no body não previne scroll no iOS Safari.
+    const isIOS = typeof navigator !== 'undefined' && /iPad|iPhone|iPod/.test(navigator.userAgent);
+    if (isIOS) return;
+
     if (isOpen) {
       document.body.style.overflow = "hidden";
     } else {
@@ -61,12 +68,6 @@ export function CategorySelectionModal({ isOpen, onClose }: CategorySelectionMod
       onClick={(e) => {
         if (e.target === e.currentTarget) onClose();
       }} 
-      onTouchEnd={(e) => {
-        if (e.target === e.currentTarget) {
-          e.preventDefault();
-          onClose();
-        }
-      }}
       role="dialog" 
       aria-modal="true" 
       aria-labelledby="category-modal-title"
@@ -87,10 +88,6 @@ export function CategorySelectionModal({ isOpen, onClose }: CategorySelectionMod
           <button 
             className={styles.closeButton} 
             onClick={onClose} 
-            onTouchEnd={(e) => {
-              e.preventDefault();
-              onClose();
-            }}
             aria-label="Fechar modal"
           >
             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={2} strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
