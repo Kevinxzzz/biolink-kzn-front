@@ -28,13 +28,23 @@ export function CategorySelectionModal({ isOpen, onClose }: CategorySelectionMod
 
   // Fix Back/Forward Cache issue where state remains stuck
   useEffect(() => {
-    const handlePageShow = (event: PageTransitionEvent) => {
-      if (event.persisted) {
+    const handlePageShow = () => {
+      setSelectedId(null);
+    };
+    
+    const handleVisibilityChange = () => {
+      if (document.visibilityState === "visible") {
         setSelectedId(null);
       }
     };
+
     window.addEventListener("pageshow", handlePageShow);
-    return () => window.removeEventListener("pageshow", handlePageShow);
+    document.addEventListener("visibilitychange", handleVisibilityChange);
+    
+    return () => {
+      window.removeEventListener("pageshow", handlePageShow);
+      document.removeEventListener("visibilitychange", handleVisibilityChange);
+    };
   }, []);
 
   if (!isOpen) return null;
