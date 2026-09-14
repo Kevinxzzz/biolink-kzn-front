@@ -1,11 +1,12 @@
 "use client";
 
 import { useState, type FormEvent } from "react";
-import { useParams } from "next/navigation";
+import { useParams, useRouter } from "next/navigation";
 import { AuthLayout } from "@/components/layout/AuthLayout";
 import { Input } from "@/components/ui/Input";
 import { useInviteToken } from "@/hooks/useInviteToken";
 import { useRegisterInvite } from "@/hooks/useRegisterInvite";
+import { toast } from "@/components/ui/Toast";
 import styles from "./invite.module.scss";
 
 const ERROR_MESSAGES: Record<string, { title: string; description: string }> = {
@@ -37,9 +38,10 @@ function accountTypeLabel(): string {
 
 export default function InviteRegisterPage() {
   const params = useParams();
+  const router = useRouter();
   const token = params.token as string;
   const { pageStatus, tokenData, retry } = useInviteToken(token);
-  const { register, status: registerStatus, error: registerError, isLoading: registerLoading } = useRegisterInvite();
+  const { register, isLoading: registerLoading } = useRegisterInvite();
 
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
@@ -49,7 +51,7 @@ export default function InviteRegisterPage() {
 
   const validate = (): boolean => {
     const errors: Record<string, string> = {};
-    if (!name.trim()) errors.name = "Nome é obrigatório.";
+    if (!name.trim() || name.trim().length < 3) errors.name = "Nome deve ter no mínimo 3 caracteres.";
     if (!email.trim()) errors.email = "Email é obrigatório.";
     if (!password) errors.password = "Senha é obrigatória.";
     if (password.length > 0 && password.length < 6) errors.password = "Senha deve ter no mínimo 6 caracteres.";
@@ -63,8 +65,12 @@ export default function InviteRegisterPage() {
     if (!validate()) return;
     try {
       await register({ name, email, password, confirmPassword, token });
-    } catch {
-      // handled by hook
+      toast.success("Conta criada com sucesso! Redirecionando...");
+      setTimeout(() => {
+        router.push("/login");
+      }, 2000);
+    } catch (err) {
+      toast.error(err instanceof Error ? err.message : "Erro ao realizar cadastro.");
     }
   };
 
@@ -131,24 +137,6 @@ export default function InviteRegisterPage() {
             {accountTypeLabel()}
           </span>
         </div>
-
-        {registerStatus === "error" && registerError && (
-          <div className={`${styles.alert} ${styles.alertError}`} role="alert">
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={2} strokeLinecap="round" aria-hidden="true">
-              <circle cx="12" cy="12" r="10" /><line x1="12" y1="8" x2="12" y2="12" /><line x1="12" y1="16" x2="12.01" y2="16" />
-            </svg>
-            <span>{registerError}</span>
-          </div>
-        )}
-
-        {registerStatus === "success" && (
-          <div className={`${styles.alert} ${styles.alertSuccess}`} role="status">
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={2} strokeLinecap="round" aria-hidden="true">
-              <path d="M22 11.08V12a10 10 0 1 1-5.93-9.14" /><polyline points="22 4 12 14.01 9 11.01" />
-            </svg>
-            <span>Conta criada com sucesso! Redirecionando...</span>
-          </div>
-        )}
 
         <form className={styles.form} onSubmit={handleSubmit} noValidate>
           <Input id="name" name="name" label="Nome" value={name} onChange={(e) => setName(e.target.value)} placeholder="Seu nome completo" required error={validationErrors.name} autoComplete="name" disabled={registerLoading} />

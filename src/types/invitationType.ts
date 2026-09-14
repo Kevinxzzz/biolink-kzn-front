@@ -19,10 +19,13 @@ export interface InvitationToken {
   accountType: InvitationAccountType;
   status: InvitationTokenStatus;
   createdAt: string;
+  maxUses: number;
+  uses: number;
   usedAt?: string;
   expiresAt?: string;
 }
 
 export interface CreateInvitationData {
-  accountType: InvitationAccountType;
+  expiresInHours: number;
+  maxUses: number;
 }
