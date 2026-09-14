@@ -19,10 +19,10 @@ export function CategorySelectionModal({ isOpen, onClose }: CategorySelectionMod
     if (isOpen) {
       document.body.style.overflow = "hidden";
     } else {
-      document.body.style.overflow = "";
+      document.body.style.overflow = "unset";
     }
     return () => {
-      document.body.style.overflow = "";
+      document.body.style.overflow = "unset";
     };
   }, [isOpen]);
 
@@ -56,22 +56,8 @@ export function CategorySelectionModal({ isOpen, onClose }: CategorySelectionMod
   };
 
   return (
-    <div 
-      className={styles.overlay} 
-      onClick={(e) => {
-        if (e.target === e.currentTarget) onClose();
-      }} 
-      onTouchEnd={(e) => {
-        if (e.target === e.currentTarget) {
-          e.preventDefault();
-          onClose();
-        }
-      }}
-      role="dialog" 
-      aria-modal="true" 
-      aria-labelledby="category-modal-title"
-    >
-      <div className={styles.modal}>
+    <div className={styles.overlay} onClick={onClose} role="dialog" aria-modal="true" aria-labelledby="category-modal-title">
+      <div className={styles.modal} onClick={(e) => e.stopPropagation()}>
         
         {/* Header Exclusivo e Tipograficamente Forte */}
         <div className={styles.header}>
@@ -84,15 +70,7 @@ export function CategorySelectionModal({ isOpen, onClose }: CategorySelectionMod
             </p>
           </div>
           
-          <button 
-            className={styles.closeButton} 
-            onClick={onClose} 
-            onTouchEnd={(e) => {
-              e.preventDefault();
-              onClose();
-            }}
-            aria-label="Fechar modal"
-          >
+          <button className={styles.closeButton} onClick={onClose} aria-label="Fechar modal">
             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={2} strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
               <line x1="18" y1="6" x2="6" y2="18" />
               <line x1="6" y1="6" x2="18" y2="18" />
