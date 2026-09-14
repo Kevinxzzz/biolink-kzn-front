@@ -5,14 +5,16 @@ import styles from "./ConfirmDialog.module.scss";
 
 interface ConfirmDialogProps {
   isOpen: boolean;
-  onClose: () => void;
+  onClose?: () => void;
   onConfirm: () => void;
   title: string;
   description: string;
   confirmText?: string;
   cancelText?: string;
   isDestructive?: boolean;
+  isDangerous?: boolean;
   isLoading?: boolean;
+  onCancel?: () => void;
 }
 
 export function ConfirmDialog({
@@ -24,23 +26,28 @@ export function ConfirmDialog({
   confirmText = "Confirmar",
   cancelText = "Cancelar",
   isDestructive = false,
-  isLoading = false
+  isDangerous,
+  isLoading = false,
+  onCancel,
 }: ConfirmDialogProps) {
+  const handleClose = onClose ?? onCancel ?? (() => {});
+  const isDestructiveAction = isDestructive || !!isDangerous;
+
   return (
-    <SharedModal isOpen={isOpen} onClose={isLoading ? () => {} : onClose} title={title} size="small">
+    <SharedModal isOpen={isOpen} onClose={isLoading ? () => {} : handleClose} title={title} size="small">
       <div className={styles.container}>
         <p className={styles.description}>{description}</p>
         <div className={styles.actions}>
           <button 
             className={styles.cancelButton} 
-            onClick={onClose} 
+            onClick={handleClose} 
             disabled={isLoading}
             type="button"
           >
             {cancelText}
           </button>
           <button 
-            className={`${styles.confirmButton} ${isDestructive ? styles.destructive : styles.primary}`} 
+            className={`${styles.confirmButton} ${isDestructiveAction ? styles.destructive : styles.primary}`} 
             onClick={onConfirm}
             disabled={isLoading}
             type="button"

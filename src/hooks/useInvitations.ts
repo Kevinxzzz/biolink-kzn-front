@@ -1,46 +1,51 @@
-"use client";
-
-import { useState, useEffect, useCallback } from "react";
-import type { InvitationToken, CreateInvitationData } from "@/types/invitationType";
+import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
+import type { CreateInvitationData } from "@/types/invitationType";
 import * as invitationService from "@/service/invitationService";
 
 export function useInvitations() {
-  const [invitations, setInvitations] = useState<InvitationToken[]>([]);
-  const [isLoading, setIsLoading] = useState(true);
-  const [error, setError] = useState<string | null>(null);
+  const { data, isLoading, error, refetch } = useQuery({
+    queryKey: ["invitations"],
+    queryFn: invitationService.listInvitations,
+  });
 
-  const fetchInvitations = useCallback(async () => {
-    setIsLoading(true);
-    setError(null);
-
-    try {
-      const data = await invitationService.listInvitations();
-      setInvitations(data);
-    } catch {
-      setError("Erro ao carregar convites.");
-    } finally {
-      setIsLoading(false);
-    }
-  }, []);
-
-  useEffect(() => {
-    fetchInvitations();
-  }, [fetchInvitations]);
-
-  const create = async (data: CreateInvitationData): Promise<InvitationToken> => {
-    const newInvitation = await invitationService.createInvitation(data);
-    setInvitations((prev) => [newInvitation, ...prev]);
-    return newInvitation;
+  return { 
+    invitations: data || [], 
+    isLoading, 
+    error: error instanceof Error ? error.message : null, 
+    refresh: refetch 
   };
+}
 
-  const revoke = async (id: string) => {
-    await invitationService.revokeInvitation(id);
-    setInvitations((prev) =>
-      prev.map((inv) =>
-        inv.id === id ? { ...inv, status: "REVOKED" as const } : inv
-      )
-    );
+export function useCreateInvitation() {
+  const queryClient = useQueryClient();
+
+  const mutation = useMutation({
+    mutationFn: (data: CreateInvitationData) => invitationService.createInvitation(data),
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ["invitations"] });
+    },
+  });
+
+  return {
+    create: mutation.mutateAsync,
+    isCreating: mutation.isPending,
+    error: mutation.error instanceof Error ? mutation.error.message : null,
   };
+}
 
-  return { invitations, isLoading, error, create, revoke, refresh: fetchInvitations };
+export function useRevokeInvitation() {
+  const queryClient = useQueryClient();
+
+  const mutation = useMutation({
+    mutationFn: (id: string) => invitationService.revokeInvitation(id),
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ["invitations"] });
+    },
+  });
+
+  return {
+    revoke: mutation.mutateAsync,
+    isRevoking: mutation.isPending,
+    error: mutation.error instanceof Error ? mutation.error.message : null,
+  };
 }

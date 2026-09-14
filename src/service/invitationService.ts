@@ -1,33 +1,48 @@
 import type { InvitationToken, CreateInvitationData } from "@/types/invitationType";
-import { MOCK_INVITATIONS, MOCK_INVITATION_DELAY } from "./mocks/invitationMocks";
+import { httpClient, getErrorMessage } from "./httpClient";
 
 export async function listInvitations(): Promise<InvitationToken[]> {
-  // TODO: Substituir por chamada real à API
-  await new Promise((resolve) => setTimeout(resolve, MOCK_INVITATION_DELAY));
-  return MOCK_INVITATIONS;
+  try {
+    const response = await httpClient.get("/token-invites");
+    
+    return response.data.map((inv: { id: string; token: string; status: string; createdAt: string; uses: number; maxUses: number; expiresAt: string }) => ({
+      id: inv.id,
+      token: inv.token,
+      accountType: "ADMIN",
+      status: inv.status === "ATIVO" ? "VALID" : inv.status === "ESGOTADO" ? "USED" : "EXPIRED",
+      createdAt: inv.createdAt,
+      maxUses: inv.maxUses,
+      uses: inv.uses,
+      usedAt: inv.uses > 0 ? new Date().toISOString() : undefined,
+      expiresAt: inv.expiresAt
+    }));
+  } catch (error) {
+    throw new Error(getErrorMessage(error));
+  }
 }
 
 export async function createInvitation(data: CreateInvitationData): Promise<InvitationToken> {
-  // TODO: Substituir por chamada real à API
-  await new Promise((resolve) => setTimeout(resolve, MOCK_INVITATION_DELAY));
-
-  const token = `KZN-${Math.random().toString(36).substring(2, 10).toUpperCase()}`;
-
-  return {
-    id: `inv_${Date.now()}`,
-    token,
-    accountType: data.accountType,
-    status: "VALID",
-    createdAt: new Date().toISOString(),
-  };
+  try {
+    const response = await httpClient.post("/token-invites", data);
+    const tokenData = response.data.data;
+    return {
+      id: tokenData.id,
+      token: tokenData.token,
+      accountType: "ADMIN",
+      status: "VALID",
+      createdAt: new Date().toISOString(),
+      maxUses: data.maxUses,
+      uses: 0
+    };
+  } catch (error) {
+    throw new Error(getErrorMessage(error));
+  }
 }
 
 export async function revokeInvitation(id: string): Promise<void> {
-  // TODO: Substituir por chamada real à API
-  await new Promise((resolve) => setTimeout(resolve, MOCK_INVITATION_DELAY));
-
-  const found = MOCK_INVITATIONS.find((inv) => inv.id === id);
-  if (!found) {
-    throw new Error("Token não encontrado.");
+  try {
+    await httpClient.delete(`/token-invites/${id}`);
+  } catch (error) {
+    throw new Error(getErrorMessage(error));
   }
 }

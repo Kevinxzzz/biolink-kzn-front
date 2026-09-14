@@ -16,6 +16,9 @@ interface InputProps {
   error?: string;
   helperText?: string;
   autoComplete?: string;
+  min?: number | string;
+  max?: number | string;
+  step?: number | string;
 }
 
 export function Input({
@@ -31,6 +34,9 @@ export function Input({
   error,
   helperText,
   autoComplete,
+  min,
+  max,
+  step,
 }: InputProps) {
   const [showPassword, setShowPassword] = useState(false);
   const isPassword = type === "password";
@@ -59,6 +65,9 @@ export function Input({
           disabled={disabled}
           required={required}
           autoComplete={autoComplete}
+          min={min}
+          max={max}
+          step={step}
           className={styles.input}
           aria-invalid={!!error}
           aria-describedby={
