@@ -14,12 +14,15 @@ export default async function InfluencerPage({ params }: { params: Promise<{ slu
     
     // Passamos o header host (ou x-forwarded-host) para que o backend extraia o domínio 
     // corretamente, conforme implementado no `extractDomain`.
-    const res = await fetch(`${baseUrl}/influencers/public/${slug}`, {
+    const url = `${baseUrl}/influencers/public/${slug}`;
+    console.log(`[SSR] Validando influencer via: ${url} com host: ${host}`);
+
+    const res = await fetch(url, {
       headers: {
         "x-forwarded-host": host,
         "host": host
       },
-      next: { revalidate: 60 } // Cache opcional de 60 segundos
+      cache: "no-store"
     });
 
     if (!res.ok) {
