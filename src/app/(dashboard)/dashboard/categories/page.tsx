@@ -237,6 +237,7 @@ export default function CategoriesPage() {
         isOpen={isCreateModalOpen}
         onClose={() => setIsCreateModalOpen(false)}
         title="Adicionar Nova Categoria"
+        error={formError}
         footer={
           <button
             style={{
@@ -257,11 +258,6 @@ export default function CategoriesPage() {
         }
       >
         <div className={styles.form}>
-          {formError && (
-            <div style={{ color: "var(--danger)", fontSize: "0.875rem" }}>
-              {formError}
-            </div>
-          )}
           <Input
             id="name"
             name="name"
@@ -279,6 +275,7 @@ export default function CategoriesPage() {
         isOpen={isEditModalOpen}
         onClose={() => setIsEditModalOpen(false)}
         title="Editar Categoria"
+        error={formError}
         footer={
           <button
             style={{
@@ -299,11 +296,6 @@ export default function CategoriesPage() {
         }
       >
         <div className={styles.form}>
-          {formError && (
-            <div style={{ color: "var(--danger)", fontSize: "0.875rem" }}>
-              {formError}
-            </div>
-          )}
           <Input
             id="edit-name"
             name="name"
