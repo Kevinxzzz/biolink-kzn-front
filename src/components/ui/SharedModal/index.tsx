@@ -8,6 +8,7 @@ interface SharedModalProps {
   onClose: () => void;
   title: string;
   description?: string;
+  error?: string | null;
   children: ReactNode;
   footer?: ReactNode;
   size?: "small" | "medium" | "large";
@@ -18,6 +19,7 @@ export function SharedModal({
   onClose,
   title,
   description,
+  error,
   children,
   footer,
   size = "medium"
@@ -53,6 +55,18 @@ export function SharedModal({
           </button>
         </div>
         {description && <p className={styles.description}>{description}</p>}
+        
+        {error && (
+          <div className={styles.errorContainer}>
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={2} strokeLinecap="round" strokeLinejoin="round" className={styles.errorIcon}>
+              <circle cx="12" cy="12" r="10"></circle>
+              <line x1="12" y1="8" x2="12" y2="12"></line>
+              <line x1="12" y1="16" x2="12.01" y2="16"></line>
+            </svg>
+            <span className={styles.errorMessage}>{error}</span>
+          </div>
+        )}
+
         <div className={styles.content}>
           {children}
         </div>

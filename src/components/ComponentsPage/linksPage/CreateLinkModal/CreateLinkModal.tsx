@@ -52,6 +52,7 @@ export function CreateLinkModal({
       isOpen={isOpen}
       onClose={isCreating ? () => {} : onClose}
       title="Adicionar Novo Link"
+      error={formError || createError}
       footer={
         <button
           className={styles.submitButton}
@@ -64,11 +65,6 @@ export function CreateLinkModal({
       }
     >
       <div className={styles.form}>
-        {(formError || createError) && (
-          <div className={styles.errorMessage}>
-            {formError || createError}
-          </div>
-        )}
         <Input
           id="create-link-title"
           name="title"

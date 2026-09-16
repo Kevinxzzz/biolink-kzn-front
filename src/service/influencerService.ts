@@ -1,51 +1,31 @@
-import type { Influencer, InfluencerPlatform } from "@/types/influencerType";
-import { MOCK_INFLUENCERS, MOCK_INFLUENCER_DELAY } from "./mocks/influencerMocks";
-import { generateSlug } from "@/utils/slug";
+import type { Influencer } from "@/types/influencerType";
+import { httpClient } from "./httpClient";
 
-const influencersDb = [...MOCK_INFLUENCERS];
-
-const delay = () => new Promise((res) => setTimeout(res, MOCK_INFLUENCER_DELAY));
+export type CreateInfluencerData = Omit<Influencer, "id" | "counterEntries" | "imgKey" | "personalUrl">;
+export type UpdateInfluencerData = Partial<CreateInfluencerData>;
 
 export const influencerService = {
   async getInfluencers(): Promise<Influencer[]> {
-    await delay();
-    return [...influencersDb];
+    const response = await httpClient.get<{ data: Influencer[] }>("/influencers");
+    return response.data.data;
   },
 
-  async createInfluencer(
-    data: Omit<Influencer, "id" | "clicks" | "status"> & { password?: string }
-  ): Promise<Influencer> {
-    await delay();
-    const newInfluencer: Influencer = {
-      name: data.name,
-      slug: generateSlug(data.name),
-      email: data.email,
-      avatarUrl: data.avatarUrl,
-      platforms: data.platforms || [],
-      id: `inf_${Date.now()}`,
-      clicks: 0,
-      status: "ACTIVE",
-    };
-    influencersDb.push(newInfluencer);
-    return newInfluencer;
+  async getInfluencerById(id: string): Promise<Influencer> {
+    const response = await httpClient.get<{ data: Influencer }>(`/influencers/${id}`);
+    return response.data.data;
   },
 
-  async updateInfluencer(
-    id: string,
-    data: Partial<Omit<Influencer, "id" | "clicks" | "email">>
-  ): Promise<Influencer> {
-    await delay();
-    const idx = influencersDb.findIndex((i) => i.id === id);
-    if (idx === -1) throw new Error("Influencer not found");
-    influencersDb[idx] = { ...influencersDb[idx], ...data };
-    return influencersDb[idx];
+  async createInfluencer(data: CreateInfluencerData): Promise<Influencer> {
+    const response = await httpClient.post<{ data: Influencer }>("/influencers", data);
+    return response.data.data;
   },
 
-  async updateInfluencerStatus(id: string, status: "ACTIVE" | "INACTIVE"): Promise<Influencer> {
-    return this.updateInfluencer(id, { status });
+  async updateInfluencer(id: string, data: UpdateInfluencerData): Promise<Influencer> {
+    const response = await httpClient.put<{ data: Influencer }>(`/influencers/${id}`, data);
+    return response.data.data;
   },
 
-  async updatePlatforms(id: string, platforms: InfluencerPlatform[]): Promise<Influencer> {
-    return this.updateInfluencer(id, { platforms });
-  },
+  async deleteInfluencer(id: string): Promise<void> {
+    await httpClient.delete(`/influencers/${id}`);
+  }
 };

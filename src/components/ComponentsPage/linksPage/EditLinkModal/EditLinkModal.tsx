@@ -56,6 +56,7 @@ export function EditLinkModal({
       isOpen={isOpen}
       onClose={isUpdating ? () => {} : onClose}
       title="Editar Link"
+      error={formError || updateError}
       footer={
         <button
           className={styles.submitButton}
@@ -68,11 +69,6 @@ export function EditLinkModal({
       }
     >
       <div className={styles.form}>
-        {(formError || updateError) && (
-          <div className={styles.errorMessage}>
-            {formError || updateError}
-          </div>
-        )}
         <Input
           id="edit-link-title"
           name="title"

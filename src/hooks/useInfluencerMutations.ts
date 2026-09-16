@@ -1,59 +1,55 @@
-import { useState } from "react";
-import { influencerService } from "@/service/influencerService";
-import type { InfluencerPlatform } from "@/types/influencerType";
+import { useMutation, useQueryClient } from "@tanstack/react-query";
+import { influencerService, CreateInfluencerData, UpdateInfluencerData } from "@/service/influencerService";
 
 export function useCreateInfluencer() {
-  const [isCreating, setIsCreating] = useState(false);
-  const [error, setError] = useState<string | null>(null);
+  const queryClient = useQueryClient();
 
-  const create = async (data: { name: string; email: string; avatarUrl?: string; password?: string; platforms: InfluencerPlatform[] }) => {
-    setIsCreating(true);
-    setError(null);
-    try {
-      return await influencerService.createInfluencer(data);
-    } catch (err) {
-      const msg = err instanceof Error ? err.message : "Erro ao criar influenciador.";
-      setError(msg);
-      throw new Error(msg);
-    } finally {
-      setIsCreating(false);
-    }
+  const mutation = useMutation({
+    mutationFn: (data: CreateInfluencerData) => influencerService.createInfluencer(data),
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ["influencers"] });
+    },
+  });
+
+  return {
+    create: mutation.mutateAsync,
+    isCreating: mutation.isPending,
+    error: mutation.error instanceof Error ? mutation.error.message : null,
   };
-
-  return { create, isCreating, error };
 }
 
 export function useUpdateInfluencer() {
-  const [isUpdating, setIsUpdating] = useState(false);
-  const [error, setError] = useState<string | null>(null);
+  const queryClient = useQueryClient();
 
-  const updateStatus = async (id: string, status: "ACTIVE" | "INACTIVE") => {
-    setIsUpdating(true);
-    setError(null);
-    try {
-      return await influencerService.updateInfluencerStatus(id, status);
-    } catch (err) {
-      const msg = err instanceof Error ? err.message : "Erro ao atualizar status.";
-      setError(msg);
-      throw new Error(msg);
-    } finally {
-      setIsUpdating(false);
-    }
+  const mutation = useMutation({
+    mutationFn: ({ id, data }: { id: string; data: UpdateInfluencerData }) =>
+      influencerService.updateInfluencer(id, data),
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ["influencers"] });
+    },
+  });
+
+  return {
+    update: (id: string, data: UpdateInfluencerData) =>
+      mutation.mutateAsync({ id, data }),
+    isUpdating: mutation.isPending,
+    error: mutation.error instanceof Error ? mutation.error.message : null,
   };
+}
 
-  const updatePlatforms = async (id: string, platforms: InfluencerPlatform[]) => {
-    setIsUpdating(true);
-    setError(null);
-    try {
-      return await influencerService.updatePlatforms(id, platforms);
-    } catch (err) {
-      const msg = err instanceof Error ? err.message : "Erro ao atualizar plataformas.";
-      setError(msg);
-      throw new Error(msg);
-    } finally {
-      setIsUpdating(false);
-    }
+export function useDeleteInfluencer() {
+  const queryClient = useQueryClient();
+
+  const mutation = useMutation({
+    mutationFn: (id: string) => influencerService.deleteInfluencer(id),
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ["influencers"] });
+    },
+  });
+
+  return {
+    remove: mutation.mutateAsync,
+    isDeleting: mutation.isPending,
+    error: mutation.error instanceof Error ? mutation.error.message : null,
   };
-
-  return { updateStatus, updatePlatforms, isUpdating, error };
 }
