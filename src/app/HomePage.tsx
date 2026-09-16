@@ -11,7 +11,11 @@ import { AboutSection } from "@/components/ComponentsPage/homePage/About";
 import { FaqSection } from "@/components/ComponentsPage/homePage/FAQ";
 import { CategorySelectionModal } from "@/components/ComponentsPage/homePage/CategorySelectionModal";
 
-export function HomePage() {
+interface HomePageProps {
+  influencerSlug?: string;
+}
+
+export function HomePage({ influencerSlug }: HomePageProps) {
   const [isCategoryModalOpen, setIsCategoryModalOpen] = useState(false);
 
   return (
@@ -29,6 +33,7 @@ export function HomePage() {
       <CategorySelectionModal 
         isOpen={isCategoryModalOpen} 
         onClose={() => setIsCategoryModalOpen(false)} 
+        influencerSlug={influencerSlug}
       />
     </>
   );

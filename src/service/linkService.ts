@@ -37,9 +37,13 @@ export const linkService = {
     return response.data.data;
   },
 
-  getRedirectUrl(categoryId: string): string {
+  getRedirectUrl(categoryId: string, influencerSlug?: string): string {
     const baseUrl = process.env.NEXT_PUBLIC_API_URL || "http://localhost:3000";
-    return `${baseUrl}/links/redirect/${categoryId}`;
+    let url = `${baseUrl}/links/redirect/${categoryId}`;
+    if (influencerSlug) {
+      url += `?influencer=${encodeURIComponent(influencerSlug)}`;
+    }
+    return url;
   },
 
   getEfootballRedirectUrl(): string {

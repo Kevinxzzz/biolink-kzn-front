@@ -8,9 +8,10 @@ import styles from "./CategorySelectionModal.module.scss";
 interface CategorySelectionModalProps {
   isOpen: boolean;
   onClose: () => void;
+  influencerSlug?: string;
 }
 
-export function CategorySelectionModal({ isOpen, onClose }: CategorySelectionModalProps) {
+export function CategorySelectionModal({ isOpen, onClose, influencerSlug }: CategorySelectionModalProps) {
   const { categories, isLoading, error } = usePublicCategories();
   const [selectedId, setSelectedId] = useState<string | null>(null);
 
@@ -52,7 +53,7 @@ export function CategorySelectionModal({ isOpen, onClose }: CategorySelectionMod
   const handleSelect = (categoryId: string) => {
     if (selectedId) return; // Previne múltiplos cliques
     setSelectedId(categoryId);
-    window.location.assign(linkService.getRedirectUrl(categoryId));
+    window.location.assign(linkService.getRedirectUrl(categoryId, influencerSlug));
   };
 
   return (
