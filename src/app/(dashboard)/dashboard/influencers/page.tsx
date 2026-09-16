@@ -268,6 +268,7 @@ export default function InfluencersPage() {
         isOpen={isCreateModalOpen}
         onClose={() => setIsCreateModalOpen(false)}
         title="Adicionar Influenciador"
+        error={formError}
         footer={
           <button
             style={{
@@ -283,7 +284,6 @@ export default function InfluencersPage() {
         }
       >
         <div className={styles.form}>
-          {formError && <div style={{ color: "var(--danger)", fontSize: "0.875rem" }}>{formError}</div>}
           <Input id="create-name" name="name" label="Nome Completo" value={formName} onChange={(e) => setFormName(e.target.value)} disabled={isCreating} required />
           <Input id="create-slug" name="slug" label="Slug (Identificador)" value={formSlug} onChange={(e) => setFormSlug(e.target.value)} disabled={isCreating} required />
         </div>
@@ -294,6 +294,7 @@ export default function InfluencersPage() {
         isOpen={isEditModalOpen}
         onClose={() => setIsEditModalOpen(false)}
         title="Editar Influenciador"
+        error={formError}
         footer={
           <button
             style={{
@@ -309,7 +310,6 @@ export default function InfluencersPage() {
         }
       >
         <div className={styles.form}>
-          {formError && <div style={{ color: "var(--danger)", fontSize: "0.875rem" }}>{formError}</div>}
           <Input id="edit-name" name="name" label="Nome Completo" value={formName} onChange={(e) => setFormName(e.target.value)} disabled={isUpdating} required />
           <Input id="edit-slug" name="slug" label="Slug (Identificador)" value={formSlug} onChange={(e) => setFormSlug(e.target.value)} disabled={isUpdating} required />
         </div>

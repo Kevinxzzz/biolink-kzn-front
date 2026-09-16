@@ -90,3 +90,28 @@
   border-top: 1px solid var(--border-subtle);
   margin-top: $space-sm;
 }
+
+.errorContainer {
+  display: flex;
+  align-items: flex-start;
+  gap: $space-sm;
+  margin: 0 $space-xl $space-md;
+  padding: $space-md;
+  background: rgba(239, 68, 68, 0.08);
+  border: 1px solid rgba(239, 68, 68, 0.2);
+  border-radius: $radius-md;
+  color: #ef4444;
+}
+
+.errorIcon {
+  width: 18px;
+  height: 18px;
+  flex-shrink: 0;
+  margin-top: 2px;
+}
+
+.errorMessage {
+  font-size: $text-sm;
+  font-weight: $weight-medium;
+  line-height: 1.4;
+}
