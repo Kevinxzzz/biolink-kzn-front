@@ -1,8 +1,7 @@
 import type { Influencer } from "@/types/influencerType";
 import { httpClient } from "./httpClient";
+import { CreateInfluencerData, UpdateInfluencerData } from "../types/influencerType"
 
-export type CreateInfluencerData = Omit<Influencer, "id" | "counterEntries" | "imgKey" | "personalUrl">;
-export type UpdateInfluencerData = Partial<CreateInfluencerData>;
 
 export const influencerService = {
   async getInfluencers(): Promise<Influencer[]> {
@@ -21,7 +20,7 @@ export const influencerService = {
   },
 
   async updateInfluencer(id: string, data: UpdateInfluencerData): Promise<Influencer> {
-    const response = await httpClient.put<{ data: Influencer }>(`/influencers/${id}`, data);
+    const response = await httpClient.patch<{ data: Influencer }>(`/influencers/${id}`, data);
     return response.data.data;
   },
 
