@@ -4,7 +4,7 @@ import { useState } from "react";
 import { SharedModal } from "@/components/ui/SharedModal";
 import { Input } from "@/components/ui/Input";
 import { toast } from "@/components/ui/Toast";
-import { useCreateInfluencer } from "@/hooks/useInfluencerMutations";
+import { useCreateInfluencer } from "@/hooks/influencer/useInfluencerMutations";
 import styles from "@/app/(dashboard)/dashboard/influencers/influencers.module.scss";
 
 interface CreateInfluencerModalProps {

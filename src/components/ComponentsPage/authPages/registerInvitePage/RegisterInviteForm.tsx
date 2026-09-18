@@ -3,7 +3,7 @@
 import { useState, type FormEvent } from "react";
 import { useRouter } from "next/navigation";
 import { Input } from "@/components/ui/Input";
-import { useRegisterInvite } from "@/hooks/useRegisterInvite";
+import { useRegisterInvite } from "@/hooks/auth/useRegisterInvite";
 import { toast } from "@/components/ui/Toast";
 import styles from "@/app/(auth)/register/invite/[token]/invite.module.scss";
 

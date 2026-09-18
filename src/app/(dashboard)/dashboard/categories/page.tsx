@@ -5,8 +5,8 @@ import { DashboardLayout } from "@/components/layout/DashboardLayout";
 import { ConfirmDialog } from "@/components/ui/ConfirmDialog";
 import { EmptyState } from "@/components/ui/EmptyState";
 import { toast } from "@/components/ui/Toast";
-import { useCategories } from "@/hooks/useCategories";
-import { useDeleteCategory } from "@/hooks/useCategoryMutations";
+import { useCategories } from "@/hooks/category/useCategories";
+import { useDeleteCategory } from "@/hooks/category/useCategoryMutations";
 import type { Category } from "@/types/categoryType";
 import {
   CategoriesHeader,

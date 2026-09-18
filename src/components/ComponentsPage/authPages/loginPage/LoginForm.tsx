@@ -2,7 +2,7 @@
 
 import { useState, type FormEvent } from "react";
 import { Input } from "@/components/ui/Input";
-import { useLogin } from "@/hooks/useLogin";
+import { useLogin } from "@/hooks/auth/useLogin";
 import styles from "@/app/(auth)/login/login.module.scss";
 
 export function LoginForm() {

@@ -6,8 +6,8 @@ import {
   RotationSection,
   ProfileSection,
 } from "@/components/ComponentsPage/settingsPage";
-import { useAuth } from "@/hooks/useAuth";
-import { useGlobalRotation } from "@/hooks/useGlobalRotation";
+import { useAuth } from "@/hooks/auth/useAuth";
+import { useGlobalRotation } from "@/hooks/rotation/useGlobalRotation";
 import styles from "./settings.module.scss";
 import { toast } from "@/components/ui/Toast";
 

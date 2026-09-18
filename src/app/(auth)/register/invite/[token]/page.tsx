@@ -3,7 +3,7 @@
 import { useParams } from "next/navigation";
 import { AuthLayout } from "@/components/layout/AuthLayout";
 import { RegisterInviteForm } from "@/components/ComponentsPage/authPages/registerInvitePage";
-import { useInviteToken } from "@/hooks/useInviteToken";
+import { useInviteToken } from "@/hooks/auth/useInviteToken";
 import styles from "./invite.module.scss";
 
 const ERROR_MESSAGES: Record<string, { title: string; description: string }> = {

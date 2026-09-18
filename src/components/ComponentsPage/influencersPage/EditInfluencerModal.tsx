@@ -4,7 +4,7 @@ import { useState, useEffect } from "react";
 import { SharedModal } from "@/components/ui/SharedModal";
 import { Input } from "@/components/ui/Input";
 import { toast } from "@/components/ui/Toast";
-import { useUpdateInfluencer } from "@/hooks/useInfluencerMutations";
+import { useUpdateInfluencer } from "@/hooks/influencer/useInfluencerMutations";
 import type { Influencer } from "@/types/influencerType";
 import styles from "@/app/(dashboard)/dashboard/influencers/influencers.module.scss";
 

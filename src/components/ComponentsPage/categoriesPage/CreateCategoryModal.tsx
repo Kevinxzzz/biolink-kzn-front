@@ -4,7 +4,7 @@ import { useState } from "react";
 import { SharedModal } from "@/components/ui/SharedModal";
 import { Input } from "@/components/ui/Input";
 import { toast } from "@/components/ui/Toast";
-import { useCreateCategory } from "@/hooks/useCategoryMutations";
+import { useCreateCategory } from "@/hooks/category/useCategoryMutations";
 import styles from "@/app/(dashboard)/dashboard/categories/categories.module.scss";
 
 interface CreateCategoryModalProps {

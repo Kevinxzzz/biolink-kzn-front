@@ -3,8 +3,8 @@
 import { useState, useEffect } from "react";
 import { useRouter } from "next/navigation";
 import { DashboardLayout } from "@/components/layout/DashboardLayout";
-import { useInvitations, useRevokeInvitation } from "@/hooks/useInvitations";
-import { useAuth } from "@/hooks/useAuth";
+import { useInvitations, useRevokeInvitation } from "@/hooks/invitation/useInvitations";
+import { useAuth } from "@/hooks/auth/useAuth";
 import type { InvitationToken } from "@/types/invitationType";
 import { ConfirmDialog } from "@/components/ui/ConfirmDialog";
 import { toast } from "@/components/ui/Toast";

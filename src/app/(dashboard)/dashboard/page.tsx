@@ -3,7 +3,7 @@
 import { useState } from "react";
 import { DashboardLayout } from "@/components/layout/DashboardLayout";
 import { StatCard } from "@/components/ui/StatCard";
-import { useDashboard } from "@/hooks/useDashboard";
+import { useDashboard } from "@/hooks/dashboard/useDashboard";
 import type { DashboardPeriodFilter } from "@/types/analyticsType";
 import { DashboardHeader, DashboardCharts, DashboardWidgets } from "@/components/ComponentsPage/dashboardOverviewPage";
 import styles from "./dashboard.module.scss";

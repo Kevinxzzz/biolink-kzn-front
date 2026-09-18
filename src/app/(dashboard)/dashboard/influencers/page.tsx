@@ -2,12 +2,12 @@
 
 import { useState } from "react";
 import { DashboardLayout } from "@/components/layout/DashboardLayout";
-import { useInfluencers } from "@/hooks/useInfluencers";
-import { useDeleteInfluencer } from "@/hooks/useInfluencerMutations";
+import { useInfluencers } from "@/hooks/influencer/useInfluencers";
+import { useDeleteInfluencer } from "@/hooks/influencer/useInfluencerMutations";
 import { ConfirmDialog } from "@/components/ui/ConfirmDialog";
 import { EmptyState } from "@/components/ui/EmptyState";
 import { toast } from "@/components/ui/Toast";
-import { useAuth } from "@/hooks/useAuth";
+import { useAuth } from "@/hooks/auth/useAuth";
 import type { Influencer } from "@/types/influencerType";
 import {
   InfluencersHeader,

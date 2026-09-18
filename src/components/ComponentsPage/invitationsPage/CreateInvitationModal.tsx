@@ -3,7 +3,7 @@
 import { useState } from "react";
 import { Input } from "@/components/ui/Input";
 import { toast } from "@/components/ui/Toast";
-import { useCreateInvitation } from "@/hooks/useInvitations";
+import { useCreateInvitation } from "@/hooks/invitation/useInvitations";
 import type { InvitationToken } from "@/types/invitationType";
 import styles from "@/app/(dashboard)/dashboard/invitations/invitations.module.scss";
 

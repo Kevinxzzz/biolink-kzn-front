@@ -1,7 +1,7 @@
 "use client";
 
 import { useState, useEffect } from "react";
-import { usePublicCategories } from "@/hooks/useCategories";
+import { usePublicCategories } from "@/hooks/category/useCategories";
 import { linkService } from "@/service/linkService";
 import styles from "./CategorySelectionModal.module.scss";
 

@@ -2,7 +2,7 @@
 
 import { useState, type FormEvent } from "react";
 import { Input } from "@/components/ui/Input";
-import { useRegisterCompany } from "@/hooks/useRegisterCompany";
+import { useRegisterCompany } from "@/hooks/auth/useRegisterCompany";
 import styles from "@/app/(auth)/register/company/company.module.scss";
 
 export function CompanyRegisterForm() {
