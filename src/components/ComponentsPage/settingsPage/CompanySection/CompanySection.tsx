@@ -9,7 +9,7 @@ import styles from "./CompanySection.module.scss";
 interface CompanySettingsData {
   name: string;
   email: string;
-  phoneNumber: string;
+  phone: string;
 }
 
 interface CompanySectionProps {
@@ -22,7 +22,7 @@ export function CompanySection({ companySettings, isSaving, onSave }: CompanySec
   const [formCompany, setFormCompany] = useState<CompanySettingsData>({
     name: "",
     email: "",
-    phoneNumber: "",
+    phone: "",
   });
 
   useEffect(() => {
@@ -30,19 +30,19 @@ export function CompanySection({ companySettings, isSaving, onSave }: CompanySec
       setFormCompany({
         name: companySettings.name || "",
         email: companySettings.email || "",
-        phoneNumber: companySettings.phoneNumber || "",
+        phone: companySettings.phone || "",
       });
     }
   }, [companySettings]);
 
   const initialName = companySettings?.name || "";
   const initialEmail = companySettings?.email || "";
-  const initialPhone = companySettings?.phoneNumber || "";
+  const initialPhone = companySettings?.phone || "";
 
   const hasChanges =
     formCompany.name !== initialName ||
     formCompany.email !== initialEmail ||
-    formCompany.phoneNumber !== initialPhone;
+    formCompany.phone !== initialPhone;
 
   const handleSave = async () => {
     try {
@@ -82,10 +82,10 @@ export function CompanySection({ companySettings, isSaving, onSave }: CompanySec
           />
           <Input
             id="company-phone"
-            name="phoneNumber"
+            name="phone"
             label="Telefone"
-            value={formCompany.phoneNumber}
-            onChange={(e) => setFormCompany({ ...formCompany, phoneNumber: e.target.value })}
+            value={formCompany.phone}
+            onChange={(e) => setFormCompany({ ...formCompany, phone: e.target.value })}
           />
         </div>
         {hasChanges && (

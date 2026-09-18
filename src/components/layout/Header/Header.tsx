@@ -2,8 +2,8 @@
 
 import Image from "next/image";
 import { useState } from "react";
-import { useScroll } from "@/hooks/ui/useScroll";
-import { useAuth } from "@/hooks/auth/useAuth";
+import { useScroll } from "@/hooks/useScroll";
+import { useAuth } from "@/hooks/useAuth";
 import { ThemeToggle } from "@/components/ui/ThemeToggle";
 import { Button, ButtonLink } from "@/components/ui/Button";
 import styles from "./Header.module.scss";

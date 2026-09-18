@@ -5,7 +5,7 @@
 import axios, { AxiosError } from 'axios';
 import { tokenStorage } from '@/lib/auth/tokenStorage';
 import { dispatchAuthExpired } from '@/lib/auth/authEvents';
-import { ApiErrorResponse } from '@/types/apiType';
+import { ApiErrorResponse } from '@/types';
 
 // ── Tipos de Erro ───────────────────────────────────────────
 

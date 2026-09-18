@@ -4,7 +4,7 @@ import { useState, useEffect } from "react";
 import { SharedModal } from "@/components/ui/SharedModal";
 import { Input } from "@/components/ui/Input";
 import { Select } from "@/components/ui/Select";
-import { useCategories } from "@/hooks/category/useCategories";
+import { useCategories } from "@/hooks/useCategories";
 import styles from "../LinkModals.module.scss";
 
 interface CreateLinkModalProps {

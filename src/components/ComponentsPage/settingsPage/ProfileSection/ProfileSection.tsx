@@ -2,11 +2,16 @@
 
 import { Input } from "@/components/ui/Input";
 import { SubTitleDashboard } from "@/components/layout/DashboardLayout";
-import type { AuthenticatedUser } from "@/types/authType";
 import styles from "./ProfileSection.module.scss";
 
+interface UserProfileData {
+  name?: string;
+  email?: string;
+  role?: string;
+}
+
 interface ProfileSectionProps {
-  userProfile?: AuthenticatedUser | null;
+  userProfile?: UserProfileData | null;
 }
 
 export function ProfileSection({ userProfile }: ProfileSectionProps) {

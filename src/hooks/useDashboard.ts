@@ -10,7 +10,6 @@ export function useDashboard(
   const { data, isLoading, error, refetch } = useQuery({
     queryKey: ["dashboard", period, linkId, influencerId],
     queryFn: () => dashboardService.getAnalytics(period, linkId, influencerId),
-    refetchOnMount: "always",
   });
 
   return { 

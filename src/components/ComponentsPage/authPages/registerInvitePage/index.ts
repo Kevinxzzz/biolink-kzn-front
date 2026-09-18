@@ -1,1 +1,0 @@
-export { RegisterInviteForm } from "./RegisterInviteForm";

@@ -8,17 +8,12 @@ export interface LoginResponse {
 }
 
 export interface AuthenticatedUser {
+  id: string;
   email: string;
   name: string;
+  enterpriseId: string;
+  accountType: "USER" | "INFLUENCER";
   role?: UserRole;
-  enterprise?: {
-    name: string;
-    email: string;
-    phoneNumber: string;
-  } | null;
-  application?: {
-    domain: string;
-  } | null;
 }
 
 export type UserRole = "OWNER" | "ADMIN";

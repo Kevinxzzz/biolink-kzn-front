@@ -6,13 +6,18 @@ import {
   RotationSection,
   ProfileSection,
 } from "@/components/ComponentsPage/settingsPage";
-import { useAuth } from "@/hooks/auth/useAuth";
-import { useGlobalRotation } from "@/hooks/rotation/useGlobalRotation";
+import { useSettings } from "@/hooks/useSettings";
+import { useGlobalRotation } from "@/hooks/useGlobalRotation";
 import styles from "./settings.module.scss";
-import { toast } from "@/components/ui/Toast";
 
 export default function SettingsPage() {
-  const { user, isLoading: isAuthLoading } = useAuth();
+  const {
+    companySettings,
+    userProfile,
+    isLoading: isSettingsLoading,
+    isSaving: isSettingsSaving,
+    updateCompany,
+  } = useSettings();
 
   const {
     rotation: rotationSettings,
@@ -21,7 +26,7 @@ export default function SettingsPage() {
     updateRotation,
   } = useGlobalRotation();
 
-  const isLoading = isAuthLoading || isRotationLoading;
+  const isLoading = isSettingsLoading || isRotationLoading;
 
   if (isLoading) {
     return (
@@ -33,19 +38,13 @@ export default function SettingsPage() {
     );
   }
 
-  const handleUpdateCompany = async () => {
-    // TODO: Connect to an actual update enterprise endpoint when available.
-    toast.success("Função de atualização ainda não implementada no back-end.");
-    return Promise.resolve();
-  };
-
   return (
     <DashboardLayout pageTitle="Configurações">
       <div className={styles.page}>
         <CompanySection
-          companySettings={user?.enterprise || null}
-          isSaving={false}
-          onSave={handleUpdateCompany}
+          companySettings={companySettings}
+          isSaving={isSettingsSaving}
+          onSave={updateCompany}
         />
 
         <RotationSection
@@ -54,7 +53,7 @@ export default function SettingsPage() {
           onSave={updateRotation}
         />
 
-        <ProfileSection userProfile={user} />
+        <ProfileSection userProfile={userProfile} />
       </div>
     </DashboardLayout>
   );
