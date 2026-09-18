@@ -24,6 +24,11 @@ export const influencerService = {
     return response.data.data;
   },
 
+  async getPublicInfluencerBySlug(slug: string): Promise<Influencer> {
+    const response = await httpClient.get<{ data: Influencer }>(`/influencers/public/${slug}`);
+    return response.data.data;
+  },
+
   async deleteInfluencer(id: string): Promise<void> {
     await httpClient.delete(`/influencers/${id}`);
   }

@@ -15,3 +15,20 @@ export function useInfluencers() {
     refetch 
   };
 }
+
+export function usePublicInfluencer(slug?: string) {
+  const { data, isLoading, error, refetch } = useQuery({
+    queryKey: ["publicInfluencer", slug],
+    queryFn: () => influencerService.getPublicInfluencerBySlug(slug!),
+    enabled: !!slug,
+    refetchOnMount: "always",
+    retry: false
+  });
+
+  return {
+    influencer: data,
+    isLoading,
+    error,
+    refetch
+  };
+}
