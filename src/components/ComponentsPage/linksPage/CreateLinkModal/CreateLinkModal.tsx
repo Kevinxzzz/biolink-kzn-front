@@ -4,7 +4,7 @@ import { useState, useEffect } from "react";
 import { SharedModal } from "@/components/ui/SharedModal";
 import { Input } from "@/components/ui/Input";
 import { Select } from "@/components/ui/Select";
-import { useCategories } from "@/hooks/useCategories";
+import { useCategories } from "@/hooks/category/useCategories";
 import styles from "../LinkModals.module.scss";
 
 interface CreateLinkModalProps {
@@ -52,6 +52,7 @@ export function CreateLinkModal({
       isOpen={isOpen}
       onClose={isCreating ? () => {} : onClose}
       title="Adicionar Novo Link"
+      error={formError || createError}
       footer={
         <button
           className={styles.submitButton}
@@ -64,11 +65,6 @@ export function CreateLinkModal({
       }
     >
       <div className={styles.form}>
-        {(formError || createError) && (
-          <div className={styles.errorMessage}>
-            {formError || createError}
-          </div>
-        )}
         <Input
           id="create-link-title"
           name="title"

@@ -1,16 +1,17 @@
 "use client";
 
 import { useState, useEffect } from "react";
-import { usePublicCategories } from "@/hooks/useCategories";
+import { usePublicCategories } from "@/hooks/category/useCategories";
 import { linkService } from "@/service/linkService";
 import styles from "./CategorySelectionModal.module.scss";
 
 interface CategorySelectionModalProps {
   isOpen: boolean;
   onClose: () => void;
+  influencerSlug?: string;
 }
 
-export function CategorySelectionModal({ isOpen, onClose }: CategorySelectionModalProps) {
+export function CategorySelectionModal({ isOpen, onClose, influencerSlug }: CategorySelectionModalProps) {
   const { categories, isLoading, error } = usePublicCategories();
   const [selectedId, setSelectedId] = useState<string | null>(null);
 
@@ -52,30 +53,43 @@ export function CategorySelectionModal({ isOpen, onClose }: CategorySelectionMod
   const handleSelect = (categoryId: string) => {
     if (selectedId) return; // Previne múltiplos cliques
     setSelectedId(categoryId);
-    window.location.assign(linkService.getRedirectUrl(categoryId));
+    window.location.assign(linkService.getRedirectUrl(categoryId, influencerSlug));
   };
 
   return (
     <div className={styles.overlay} onClick={onClose} role="dialog" aria-modal="true" aria-labelledby="category-modal-title">
       <div className={styles.modal} onClick={(e) => e.stopPropagation()}>
         
-        {/* Header Exclusivo e Tipograficamente Forte */}
+        {/* Aurora Background — decorativo */}
+        <div className={styles.auroraBackground} aria-hidden="true">
+          <div className={`${styles.auroraBlob} ${styles.auroraBlobPrimary}`} />
+          <div className={`${styles.auroraBlob} ${styles.auroraBlobSecondary}`} />
+          <div className={styles.auroraNoise} />
+          <div className={styles.auroraGlow} />
+        </div>
+
+        {/* Header */}
         <div className={styles.header}>
-          <div className={styles.titleGroup}>
-            <h2 id="category-modal-title" className={styles.title}>
-              Escolha seu segmento
-            </h2>
-            <p className={styles.description}>
-              Selecione a categoria para continuar o acesso.
-            </p>
+          <div className={styles.headerTop}>
+            <div className={styles.titleGroup}>
+              <h2 id="category-modal-title" className={styles.title}>
+                Escolha seu{" "}
+                <span className={styles.titleAccent}>segmento</span>
+              </h2>
+              <p className={styles.description}>
+                Selecione a categoria para continuar o acesso.
+              </p>
+            </div>
+            
+            <button className={styles.closeButton} onClick={onClose} aria-label="Fechar modal">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={2} strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
+                <line x1="18" y1="6" x2="6" y2="18" />
+                <line x1="6" y1="6" x2="18" y2="18" />
+              </svg>
+            </button>
           </div>
-          
-          <button className={styles.closeButton} onClick={onClose} aria-label="Fechar modal">
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={2} strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
-              <line x1="18" y1="6" x2="6" y2="18" />
-              <line x1="6" y1="6" x2="18" y2="18" />
-            </svg>
-          </button>
+
+          <div className={styles.divider} aria-hidden="true" />
         </div>
 
         {/* Área Principal */}
@@ -114,10 +128,11 @@ export function CategorySelectionModal({ isOpen, onClose }: CategorySelectionMod
                     key={category.id}
                     className={`${styles.categoryCard} ${isSelected ? styles.categoryCardSelected : ""}`}
                     onClick={() => handleSelect(category.id)}
-                    disabled={!!selectedId} // Desabilita todos se algum for selecionado
+                    disabled={!!selectedId}
                     aria-pressed={isSelected}
                   >
                     <div className={styles.categoryInfo}>
+                      <div className={styles.diamond} aria-hidden="true" />
                       <h3 className={styles.categoryName}>
                         {category.name}
                       </h3>
@@ -129,7 +144,7 @@ export function CategorySelectionModal({ isOpen, onClose }: CategorySelectionMod
                         <div className={styles.smallSpinner} />
                       </div>
                     ) : (
-                      <svg className={styles.arrowIcon} viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" strokeWidth={2} strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
+                      <svg className={styles.arrowIcon} viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" strokeWidth={2} strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
                         <line x1="5" y1="12" x2="19" y2="12" />
                         <polyline points="12 5 19 12 12 19" />
                       </svg>

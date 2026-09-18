@@ -4,7 +4,7 @@ import { useState, useEffect } from "react";
 import { SharedModal } from "@/components/ui/SharedModal";
 import { Input } from "@/components/ui/Input";
 import { Select } from "@/components/ui/Select";
-import { useCategories } from "@/hooks/useCategories";
+import { useCategories } from "@/hooks/category/useCategories";
 import type { Link } from "@/types/linkType";
 import styles from "../LinkModals.module.scss";
 
@@ -56,6 +56,7 @@ export function EditLinkModal({
       isOpen={isOpen}
       onClose={isUpdating ? () => {} : onClose}
       title="Editar Link"
+      error={formError || updateError}
       footer={
         <button
           className={styles.submitButton}
@@ -68,11 +69,6 @@ export function EditLinkModal({
       }
     >
       <div className={styles.form}>
-        {(formError || updateError) && (
-          <div className={styles.errorMessage}>
-            {formError || updateError}
-          </div>
-        )}
         <Input
           id="edit-link-title"
           name="title"

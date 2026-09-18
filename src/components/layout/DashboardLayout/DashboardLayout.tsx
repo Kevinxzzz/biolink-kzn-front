@@ -4,6 +4,7 @@ import { useState } from "react";
 import Link from "next/link";
 import Image from "next/image";
 import { usePathname } from "next/navigation";
+import { useAuth } from "@/hooks/auth/useAuth";
 import { ThemeToggle } from "@/components/ui/ThemeToggle";
 import styles from "./DashboardLayout.module.scss";
 
@@ -79,8 +80,16 @@ interface DashboardLayoutProps {
 export function DashboardLayout({ children, pageTitle }: DashboardLayoutProps) {
   const [sidebarOpen, setSidebarOpen] = useState(false);
   const pathname = usePathname();
+  const { user } = useAuth();
 
   const closeSidebar = () => setSidebarOpen(false);
+
+  const filteredNavItems = NAV_ITEMS.filter((item) => {
+    if (item.href === "/dashboard/invitations" && user?.role === "ADMIN") {
+      return false;
+    }
+    return true;
+  });
 
   return (
     <div className={styles.layout}>
@@ -117,7 +126,7 @@ export function DashboardLayout({ children, pageTitle }: DashboardLayoutProps) {
         </div>
 
         <nav className={styles.sidebarNav} aria-label="Menu principal">
-          {NAV_ITEMS.map((item) => {
+          {filteredNavItems.map((item) => {
             const isActive = pathname === item.href;
             return (
               <Link

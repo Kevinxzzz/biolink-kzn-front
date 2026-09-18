@@ -13,15 +13,15 @@ import {
 import { ConfirmDialog } from "@/components/ui/ConfirmDialog";
 import { EmptyState } from "@/components/ui/EmptyState";
 import { toast } from "@/components/ui/Toast";
-import { useLinks } from "@/hooks/useLinks";
+import { useLinks } from "@/hooks/link/useLinks";
 import {
   useCreateLink,
   useUpdateLink,
   useDeleteLink,
   useReorderLinks,
   useActivateLink,
-} from "@/hooks/useLinkMutations";
-import { useCategories } from "@/hooks/useCategories";
+} from "@/hooks/link/useLinkMutations";
+import { useCategories } from "@/hooks/category/useCategories";
 import type { Category } from "@/types/categoryType";
 import type { Link } from "@/types/linkType";
 import styles from "./links.module.scss";

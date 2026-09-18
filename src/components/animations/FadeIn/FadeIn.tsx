@@ -1,6 +1,6 @@
 "use client";
 
-import { useIntersection } from "@/hooks/useIntersection";
+import { useIntersection } from "@/hooks/ui/useIntersection";
 import styles from "./FadeIn.module.scss";
 
 interface FadeInProps {

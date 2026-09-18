@@ -27,4 +27,4 @@ export interface TopInfluencer {
   rank: number;
 }
 
-export type DashboardPeriodFilter = "today" | "7days" | "30days" | "custom";
+export type DashboardPeriodFilter = "dia" | "mes" | "ano";

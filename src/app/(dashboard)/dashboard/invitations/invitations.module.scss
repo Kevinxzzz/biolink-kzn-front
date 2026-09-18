@@ -230,55 +230,133 @@
 }
 
 // ============================================
-// Table
+// Cards Grid
 // ============================================
-.tableWrapper {
-  overflow-x: auto;
-  border: 1px solid var(--border-subtle);
-  border-radius: $radius-lg;
-}
-
-.table {
+.cardsGrid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+  gap: $space-lg;
   width: 100%;
-  border-collapse: collapse;
-  font-size: $text-sm;
 }
 
-.table th {
-  text-align: left;
-  padding: $space-md $space-lg;
-  font-size: $text-xs;
-  font-weight: $weight-semibold;
-  color: var(--text-muted);
-  text-transform: uppercase;
-  letter-spacing: $tracking-wider;
-  border-bottom: 1px solid var(--border-subtle);
-  white-space: nowrap;
-}
-
-.table td {
-  padding: $space-md $space-lg;
-  color: var(--text-primary);
-  border-bottom: 1px solid var(--border-subtle);
-  white-space: nowrap;
-}
-
-.table tr:last-child td {
-  border-bottom: none;
-}
-
-.table tbody tr {
-  transition: background 0.15s ease;
+.card {
+  display: flex;
+  flex-direction: column;
+  background: var(--bg-elevated);
+  border: 1px solid var(--border-subtle);
+  border-radius: $radius-xl;
+  overflow: hidden;
+  transition: all 0.2s ease;
 
   &:hover {
-    background: var(--accent-glow);
+    border-color: var(--border-accent);
+    box-shadow: 0 4px 20px var(--accent-glow);
   }
 }
 
-.tokenCode {
-  font-family: monospace;
-  font-size: $text-xs;
+.cardHeader {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: $space-md $space-lg;
+  border-bottom: 1px solid var(--border-subtle);
+  background: var(--bg-primary);
+}
+
+.cardTitle {
+  font-size: $text-sm;
+  font-weight: $weight-semibold;
   color: var(--text-secondary);
+}
+
+.cardBody {
+  display: flex;
+  flex-direction: column;
+  gap: $space-md;
+  padding: $space-lg;
+  flex: 1;
+}
+
+.cardHighlightRow {
+  display: flex;
+  align-items: center;
+  gap: $space-sm;
+  padding: $space-sm $space-md;
+  background: var(--bg-primary);
+  border: 1px solid var(--border-subtle);
+  border-radius: $radius-md;
+}
+
+.cardHighlightValue {
+  flex: 1;
+  font-family: monospace;
+  font-size: $text-base;
+  font-weight: $weight-bold;
+  color: var(--text-primary);
+  word-break: break-all;
+}
+
+.cardLinkRow {
+  display: flex;
+  align-items: center;
+  gap: $space-sm;
+}
+
+.cardLinkValue {
+  flex: 1;
+  font-size: $text-xs;
+  color: var(--text-muted);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  font-family: monospace;
+}
+
+.cardStats {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: $space-sm;
+  margin-top: $space-sm;
+  padding-top: $space-md;
+  border-top: 1px dashed var(--border-subtle);
+}
+
+.statItem {
+  display: flex;
+  flex-direction: column;
+  gap: $space-2xs;
+}
+
+.statLabel {
+  font-size: $text-xs;
+  color: var(--text-muted);
+  text-transform: uppercase;
+  letter-spacing: $tracking-wider;
+}
+
+.statValue {
+  font-size: $text-sm;
+  font-weight: $weight-medium;
+  color: var(--text-secondary);
+}
+
+.usesBadge {
+  display: inline-flex;
+  align-items: center;
+  padding: 2px $space-xs;
+  border-radius: $radius-sm;
+  background: var(--accent-glow);
+  color: var(--text-primary);
+  font-weight: $weight-semibold;
+  font-size: $text-xs;
+}
+
+.cardFooter {
+  padding: $space-sm $space-lg;
+  border-top: 1px solid var(--border-subtle);
+  display: flex;
+  justify-content: flex-end;
+  background: var(--bg-primary);
 }
 
 // ============================================
