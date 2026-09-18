@@ -19,7 +19,7 @@ export default async function InfluencerPage({ params }: { params: Promise<{ slu
 
     const res = await fetch(url, {
       headers: {
-        "x-forwarded-host": host
+        "x-tenant-domain": host
       },
       cache: "no-store"
     });
