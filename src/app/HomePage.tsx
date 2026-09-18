@@ -10,6 +10,9 @@ import { BenefitsSection } from "@/components/ComponentsPage/homePage/Benefits";
 import { AboutSection } from "@/components/ComponentsPage/homePage/About";
 import { FaqSection } from "@/components/ComponentsPage/homePage/FAQ";
 import { CategorySelectionModal } from "@/components/ComponentsPage/homePage/CategorySelectionModal";
+import { InfluencerNotFound } from "@/components/ComponentsPage/homePage/InfluencerNotFound";
+import { usePublicInfluencer } from "@/hooks/influencer/useInfluencers";
+import { ApiError } from "@/service/httpClient";
 
 interface HomePageProps {
   influencerSlug?: string;
@@ -17,6 +20,31 @@ interface HomePageProps {
 
 export function HomePage({ influencerSlug }: HomePageProps) {
   const [isCategoryModalOpen, setIsCategoryModalOpen] = useState(false);
+  const { isLoading, error } = usePublicInfluencer(influencerSlug);
+
+  if (error && (error as ApiError).statusCode === 404) {
+    return (
+      <>
+        <Header onOpenCategoryModal={() => setIsCategoryModalOpen(true)} />
+        <main>
+          <FloatingBackground />
+          <InfluencerNotFound />
+        </main>
+        <Footer />
+      </>
+    );
+  }
+
+  if (isLoading) {
+    return (
+      <>
+        <Header onOpenCategoryModal={() => setIsCategoryModalOpen(true)} />
+        <main>
+          <FloatingBackground />
+        </main>
+      </>
+    );
+  }
 
   return (
     <>
@@ -38,3 +66,4 @@ export function HomePage({ influencerSlug }: HomePageProps) {
     </>
   );
 }
+
