@@ -1,4 +1,4 @@
-import { useState, useEffect, useCallback } from "react";
+import { useQuery } from "@tanstack/react-query";
 import { dashboardService, type DashboardAnalyticsResponse } from "@/service/dashboardService";
 import type { DashboardPeriodFilter } from "@/types/analyticsType";
 
@@ -7,26 +7,15 @@ export function useDashboard(
   linkId?: string,
   influencerId?: string
 ) {
-  const [data, setData] = useState<DashboardAnalyticsResponse | null>(null);
-  const [isLoading, setIsLoading] = useState(true);
-  const [error, setError] = useState<string | null>(null);
+  const { data, isLoading, error, refetch } = useQuery({
+    queryKey: ["dashboard", period, linkId, influencerId],
+    queryFn: () => dashboardService.getAnalytics(period, linkId, influencerId),
+  });
 
-  const fetchAnalytics = useCallback(async () => {
-    setIsLoading(true);
-    setError(null);
-    try {
-      const response = await dashboardService.getAnalytics(period, linkId, influencerId);
-      setData(response);
-    } catch (err) {
-      setError(err instanceof Error ? err.message : "Erro ao carregar dados do dashboard.");
-    } finally {
-      setIsLoading(false);
-    }
-  }, [period, linkId, influencerId]);
-
-  useEffect(() => {
-    fetchAnalytics();
-  }, [fetchAnalytics]);
-
-  return { data, isLoading, error, refetch: fetchAnalytics };
+  return { 
+    data, 
+    isLoading, 
+    error: error instanceof Error ? error.message : null, 
+    refetch 
+  };
 }

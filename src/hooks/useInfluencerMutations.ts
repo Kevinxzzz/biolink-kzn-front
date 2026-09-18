@@ -1,5 +1,6 @@
 import { useMutation, useQueryClient } from "@tanstack/react-query";
-import { influencerService, CreateInfluencerData, UpdateInfluencerData } from "@/service/influencerService";
+import { influencerService } from "@/service/influencerService";
+import { CreateInfluencerData, UpdateInfluencerData } from "@/types";
 
 export function useCreateInfluencer() {
   const queryClient = useQueryClient();

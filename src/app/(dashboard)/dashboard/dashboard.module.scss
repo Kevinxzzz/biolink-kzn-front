@@ -5,7 +5,15 @@
 .page {
   display: flex;
   flex-direction: column;
-  gap: $space-2xl;
+  gap: $space-md;
+
+  @include md {
+    gap: $space-lg;
+  }
+
+  @include lg {
+    gap: $space-xl;
+  }
 }
 
 // ============================================
@@ -14,30 +22,48 @@
 .header {
   display: flex;
   flex-direction: column;
-  gap: $space-md;
+  gap: $space-sm;
 
   @include md {
     flex-direction: row;
     align-items: center;
     justify-content: space-between;
+    gap: $space-md;
   }
 }
 
 .pageTitle {
-  font-size: $text-2xl;
+  font-size: $text-xl;
   font-weight: $weight-bold;
   color: var(--text-primary);
+
+  @include md {
+    font-size: $text-2xl;
+  }
 }
 
 .filters {
   display: flex;
-  flex-wrap: wrap;
-  gap: $space-sm;
+  gap: $space-xs;
+  overflow-x: auto;
+  -webkit-overflow-scrolling: touch;
+  scrollbar-width: none;
+  padding-bottom: 2px;
+
+  &::-webkit-scrollbar {
+    display: none;
+  }
+
+  @include md {
+    flex-wrap: wrap;
+    gap: $space-sm;
+    overflow-x: visible;
+  }
 }
 
 .filterSelect {
-  padding: $space-xs $space-md;
-  font-size: $text-sm;
+  padding: $space-2xs $space-lg $space-2xs $space-sm;
+  font-size: $text-xs;
   color: var(--text-primary);
   background: var(--bg-primary);
   border: 1px solid var(--border-subtle);
@@ -45,11 +71,18 @@
   outline: none;
   cursor: pointer;
   appearance: none;
-  padding-right: $space-2xl;
-  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='16' viewBox='0 0 24 24' fill='none' stroke='currentColor' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpolyline points='6 9 12 15 18 9'%3E%3C/polyline%3E%3C/svg%3E");
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='14' height='14' viewBox='0 0 24 24' fill='none' stroke='currentColor' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpolyline points='6 9 12 15 18 9'%3E%3C/polyline%3E%3C/svg%3E");
   background-repeat: no-repeat;
-  background-position: right $space-sm center;
+  background-position: right $space-xs center;
   transition: all 0.2s ease;
+  white-space: nowrap;
+  flex-shrink: 0;
+
+  @include md {
+    padding: $space-xs $space-2xl $space-xs $space-md;
+    font-size: $text-sm;
+    background-position: right $space-sm center;
+  }
 
   &:hover, &:focus {
     border-color: var(--accent-primary);
@@ -61,11 +94,84 @@
 // ============================================
 .statsGrid {
   display: grid;
-  grid-template-columns: 1fr;
-  gap: $space-lg;
+  grid-template-columns: repeat(2, 1fr);
+  gap: $space-sm;
 
-  @include sm { grid-template-columns: repeat(2, 1fr); }
-  @include lg { grid-template-columns: repeat(4, 1fr); }
+  @include md {
+    gap: $space-lg;
+  }
+}
+
+// ============================================
+// Segmented Controls (Pills)
+// ============================================
+.segmentedControl {
+  display: inline-flex;
+  align-items: center;
+  gap: 2px;
+  background: var(--bg-primary);
+  padding: 3px;
+  border-radius: $radius-pill;
+  border: 1px solid var(--border-subtle);
+  width: fit-content;
+}
+
+.segmentButton {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 4px;
+  padding: 4px 10px;
+  border-radius: $radius-pill;
+  border: 1px solid transparent;
+  background: transparent;
+  color: var(--text-secondary);
+  font-size: 0.75rem;
+  font-weight: $weight-medium;
+  cursor: pointer;
+  transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+  white-space: nowrap;
+
+  @include md {
+    padding: 6px 14px;
+    font-size: $text-xs;
+    gap: 6px;
+  }
+
+  &:hover {
+    color: var(--text-primary);
+  }
+
+  &.activeSegment {
+    background: var(--bg-elevated);
+    color: var(--accent-primary);
+    border-color: var(--border-subtle);
+    font-weight: $weight-semibold;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
+  }
+}
+
+.widgetSegmentedControl {
+  display: flex;
+  align-items: center;
+  gap: 3px;
+  background: var(--bg-elevated);
+  padding: 4px;
+  border-radius: $radius-pill;
+  border: 1px solid var(--border-subtle);
+  width: 100%;
+  box-sizing: border-box;
+
+  .segmentButton {
+    flex: 1;
+    padding: 6px 4px;
+    font-size: 0.75rem;
+    text-align: center;
+  }
+
+  @include md {
+    display: none; // On iPad and desktop, grid displays all widgets simultaneously
+  }
 }
 
 // ============================================
@@ -74,29 +180,69 @@
 .chartSection {
   background: var(--bg-elevated);
   border: 1px solid var(--border-subtle);
-  border-radius: $radius-xl;
-  padding: $space-xl;
+  border-radius: $radius-lg;
+  padding: $space-md;
+
+  @include md {
+    border-radius: $radius-xl;
+    padding: $space-lg;
+  }
+
+  @include lg {
+    padding: $space-xl;
+  }
 }
 
-.sectionHeader {
+.chartHeader {
+  display: flex;
+  flex-direction: column;
+  gap: $space-sm;
+  margin-bottom: $space-md;
+
+  @include sm {
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-between;
+  }
+
+  @include md {
+    margin-bottom: $space-lg;
+  }
+}
+
+.chartTitleGroup {
   display: flex;
   align-items: center;
-  justify-content: space-between;
-  margin-bottom: $space-xl;
+  flex-wrap: wrap;
+  gap: $space-sm;
 }
 
 .sectionTitle {
-  font-size: $text-lg;
+  font-size: $text-sm;
   font-weight: $weight-semibold;
   color: var(--text-primary);
+
+  @include md {
+    font-size: $text-lg;
+  }
+}
+
+.chartSubtitle {
+  font-size: $text-xs;
+  color: var(--text-secondary);
 }
 
 .chartLegend {
   display: flex;
-  gap: $space-lg;
-  font-size: $text-xs;
+  gap: $space-sm;
+  font-size: 0.6875rem;
   font-weight: $weight-medium;
   color: var(--text-secondary);
+
+  @include md {
+    gap: $space-lg;
+    font-size: $text-xs;
+  }
 }
 
 .legendItem {
@@ -107,9 +253,14 @@
   &::before {
     content: '';
     display: block;
-    width: 8px;
-    height: 8px;
+    width: 6px;
+    height: 6px;
     border-radius: 50%;
+
+    @include md {
+      width: 8px;
+      height: 8px;
+    }
   }
 }
 
@@ -122,17 +273,31 @@
 }
 
 .chartContainer {
-  height: 300px;
+  height: 220px;
   width: 100%;
+
+  @include md {
+    height: 280px;
+  }
+
+  @include lg {
+    height: 300px;
+  }
 }
 
 // ============================================
 // Bottom Grid (Rankings & Status)
 // ============================================
 .bottomGrid {
-  display: grid;
-  grid-template-columns: 1fr;
-  gap: $space-lg;
+  display: flex;
+  flex-direction: column;
+  gap: $space-md;
+
+  @include md {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: $space-lg;
+  }
 
   @include lg {
     grid-template-columns: repeat(3, 1fr);
@@ -142,32 +307,79 @@
 .widget {
   background: var(--bg-elevated);
   border: 1px solid var(--border-subtle);
-  border-radius: $radius-xl;
-  padding: $space-xl;
+  border-radius: $radius-lg;
+  padding: $space-md;
   display: flex;
   flex-direction: column;
+
+  @include md {
+    border-radius: $radius-xl;
+    padding: $space-lg;
+  }
+
+  @include lg {
+    padding: $space-xl;
+  }
+
+  &.tabHiddenOnMobile {
+    display: none;
+
+    @include md {
+      display: flex;
+    }
+  }
 }
 
 .widgetTitle {
-  font-size: $text-base;
+  font-size: $text-sm;
   font-weight: $weight-semibold;
   color: var(--text-primary);
-  margin-bottom: $space-lg;
+  margin-bottom: $space-sm;
+
+  @include md {
+    font-size: $text-base;
+    margin-bottom: $space-lg;
+  }
 }
 
 .list {
   display: flex;
   flex-direction: column;
-  gap: $space-md;
+  gap: $space-sm;
   flex: 1;
+  max-height: 260px;
+  overflow-y: auto;
+  padding-right: $space-2xs;
+
+  /* Custom scrollbar */
+  &::-webkit-scrollbar {
+    width: 4px;
+  }
+  &::-webkit-scrollbar-track {
+    background: transparent;
+  }
+  &::-webkit-scrollbar-thumb {
+    background: var(--border-strong);
+    border-radius: 4px;
+  }
+
+  @include md {
+    gap: $space-md;
+    max-height: 280px;
+  }
 }
 
 .listItem {
   display: flex;
   align-items: center;
-  gap: $space-md;
-  padding-bottom: $space-sm;
+  gap: $space-sm;
+  padding-bottom: $space-xs;
   border-bottom: 1px solid var(--border-subtle);
+
+  @include md {
+    gap: $space-md;
+    padding-bottom: $space-sm;
+  }
 
   &:last-child {
     border-bottom: none;
@@ -186,6 +398,7 @@
   color: var(--text-secondary);
   background: var(--bg-primary);
   border-radius: 50%;
+  flex-shrink: 0;
 }
 
 .rankTop {
@@ -219,6 +432,7 @@
   font-size: $text-sm;
   font-weight: $weight-bold;
   color: var(--text-primary);
+  flex-shrink: 0;
 }
 
 .avatar {
@@ -248,32 +462,88 @@
 .statusWidget {
   background: linear-gradient(135deg, var(--bg-elevated) 0%, var(--bg-primary) 100%);
   border-color: var(--border-accent);
+
+  @include md {
+    grid-column: span 2;
+  }
+
+  @include lg {
+    grid-column: span 1;
+  }
+}
+
+.activeLinksGrid {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: $space-xs;
+  max-height: 260px;
+  overflow-y: auto;
+  padding-right: $space-2xs;
+
+  /* Custom scrollbar */
+  &::-webkit-scrollbar {
+    width: 4px;
+  }
+  &::-webkit-scrollbar-track {
+    background: transparent;
+  }
+  &::-webkit-scrollbar-thumb {
+    background: var(--border-strong);
+    border-radius: 4px;
+  }
+
+  @media (min-width: 640px) {
+    grid-template-columns: repeat(2, 1fr);
+    gap: $space-sm;
+  }
+
+  @include md {
+    grid-template-columns: repeat(2, 1fr);
+  }
+
+  @include lg {
+    grid-template-columns: 1fr;
+  }
+
+  @media (min-width: 1280px) {
+    grid-template-columns: repeat(2, 1fr);
+  }
 }
 
 .activeLinkCard {
-  padding: $space-md;
+  padding: $space-xs $space-sm;
   background: rgba(34, 197, 94, 0.05);
   border: 1px solid rgba(34, 197, 94, 0.2);
-  border-radius: $radius-lg;
-  margin-bottom: $space-lg;
+  border-radius: $radius-md;
+  display: flex;
+  flex-direction: column;
+  gap: $space-2xs;
+  transition: all 0.2s ease;
+
+  @include md {
+    padding: $space-sm;
+  }
+
+  &:hover {
+    background: rgba(34, 197, 94, 0.08);
+  }
 }
 
 .activeHeader {
   display: flex;
   align-items: center;
   justify-content: space-between;
-  margin-bottom: $space-sm;
 }
 
 .activeLabel {
-  font-size: $text-xs;
+  font-size: 0.65rem;
   font-weight: $weight-bold;
   text-transform: uppercase;
   letter-spacing: $tracking-wider;
   color: #22c55e;
   display: flex;
   align-items: center;
-  gap: $space-2xs;
+  gap: 4px;
 
   &::before {
     content: '';
@@ -286,17 +556,31 @@
   }
 }
 
+.activeCategory {
+  font-size: 0.65rem;
+  font-weight: $weight-semibold;
+  color: var(--text-secondary);
+  background: var(--bg-secondary);
+  padding: 2px 6px;
+  border-radius: 4px;
+}
+
 .activeLinkName {
-  font-size: $text-lg;
+  font-size: $text-sm;
   font-weight: $weight-bold;
   color: var(--text-primary);
-  margin-bottom: $space-2xs;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
 }
 
 .activeLinkUrl {
-  font-size: $text-xs;
+  font-size: 0.7rem;
   color: var(--text-secondary);
   font-family: monospace;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
 }
 
 .rotationStatus {

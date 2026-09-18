@@ -45,8 +45,6 @@ export default function InfluencersPage() {
       await create({
         name: formName.trim(),
         slug: formSlug.trim(),
-        email: null,
-        urlImgProfile: null
       });
       setIsCreateModalOpen(false);
       toast.success("Influenciador adicionado com sucesso!");
@@ -66,13 +64,24 @@ export default function InfluencersPage() {
       return;
     }
 
+    const trimmedName = formName.trim();
+    const trimmedSlug = formSlug.trim();
+
+    const payload: { name?: string; slug?: string } = {};
+    if (trimmedName !== editingInfluencer.name) {
+      payload.name = trimmedName;
+    }
+    if (trimmedSlug !== editingInfluencer.slug) {
+      payload.slug = trimmedSlug;
+    }
+
+    if (Object.keys(payload).length === 0) {
+      setIsEditModalOpen(false);
+      return;
+    }
+
     try {
-      await update(editingInfluencer.id, {
-        name: formName.trim(),
-        slug: formSlug.trim(),
-        email: editingInfluencer.email, // preserve existing data
-        urlImgProfile: editingInfluencer.urlImgProfile
-      });
+      await update(editingInfluencer.id, payload);
       setIsEditModalOpen(false);
       toast.success("Influenciador atualizado com sucesso!");
       refetch();

@@ -5,11 +5,16 @@
 .card {
   display: flex;
   flex-direction: column;
-  padding: $space-xl;
+  padding: $space-sm $space-md;
   background: var(--bg-elevated);
   border: 1px solid var(--border-subtle);
-  border-radius: $radius-xl;
+  border-radius: $radius-lg;
   transition: transform 0.2s ease, box-shadow 0.2s ease, border-color 0.2s ease;
+
+  @include md {
+    padding: $space-xl;
+    border-radius: $radius-xl;
+  }
 
   &:hover {
     transform: translateY(-2px);
@@ -22,45 +27,84 @@
   display: flex;
   align-items: center;
   justify-content: space-between;
-  margin-bottom: $space-sm;
+  margin-bottom: $space-2xs;
+
+  @include md {
+    margin-bottom: $space-sm;
+  }
 }
 
 .title {
-  font-size: $text-sm;
+  font-size: $text-xs;
   font-weight: $weight-medium;
   color: var(--text-secondary);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+
+  @include md {
+    font-size: $text-sm;
+  }
 }
 
 .icon {
   display: flex;
   align-items: center;
   justify-content: center;
-  width: 32px;
-  height: 32px;
-  border-radius: $radius-md;
+  width: 28px;
+  height: 28px;
+  border-radius: $radius-sm;
   background: var(--accent-glow);
   color: var(--accent-primary);
+  flex-shrink: 0;
+
+  @include md {
+    width: 32px;
+    height: 32px;
+    border-radius: $radius-md;
+  }
   
   svg {
-    width: 16px;
-    height: 16px;
+    width: 14px;
+    height: 14px;
+
+    @include md {
+      width: 16px;
+      height: 16px;
+    }
   }
 }
 
 .value {
-  font-size: $text-3xl;
+  font-size: $text-xl;
   font-weight: $weight-bold;
   color: var(--text-primary);
   margin-bottom: $space-2xs;
+  line-height: 1.2;
+
+  @include sm {
+    font-size: $text-2xl;
+  }
+
+  @include md {
+    font-size: $text-3xl;
+  }
 }
 
 .trend {
   display: flex;
   align-items: center;
   gap: $space-2xs;
-  font-size: $text-xs;
+  font-size: 0.6875rem;
   font-weight: $weight-medium;
   color: var(--text-muted);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+
+  @include md {
+    font-size: $text-xs;
+  }
 }
 
 .trendPositive {
@@ -72,8 +116,16 @@
 }
 
 .trendIcon {
+  display: flex;
+  align-items: center;
+
   svg {
-    width: 12px;
-    height: 12px;
+    width: 10px;
+    height: 10px;
+
+    @include md {
+      width: 12px;
+      height: 12px;
+    }
   }
 }
