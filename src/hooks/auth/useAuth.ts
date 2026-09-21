@@ -21,8 +21,10 @@ export function useAuth() {
 
   useEffect(() => {
     const unsubscribe = onAuthExpired(() => {
-      // O evento de auth expirado é disparado em caso de 401.
-      queryClient.removeQueries({ queryKey: ["auth", "me"] });
+      // Previne loop do React Query: em vez de remover a query e causar re-fetch imediato,
+      // removemos o token local e avisamos a query que os dados não existem mais.
+      tokenStorage.removeAccessToken();
+      queryClient.setQueryData(["auth", "me"], null);
     });
 
     return () => unsubscribe();

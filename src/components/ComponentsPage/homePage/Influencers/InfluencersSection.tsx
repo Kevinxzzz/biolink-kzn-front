@@ -58,6 +58,76 @@ const INFLUENCERS = [
       instagram: "https://www.instagram.com/el_mysterioo?utm_source=ig_web_button_share_sheet&igsi=ZDNlZDc0MzIxNw==",
     },
   },
+  {
+    id: "barao-gamer",
+    name: "BARÃO GAMER",
+    image: "/Influencers/BARÃO-SITE.jpeg",
+    platforms: {
+      youtube: "https://youtube.com/@baraoegamer",
+      instagram: "https://instagram.com/baraoegamer",
+    },
+  },
+  {
+    id: "portal",
+    name: "PORTAL",
+    image: "/Influencers/PORTAL-SITE.jpeg",
+    platforms: {
+      instagram: "https://www.instagram.com/portalefootball",
+    },
+  },
+  {
+    id: "ruivo9",
+    name: "RUIVO9",
+    image: "/Influencers/RUIVO9-SITE.jpeg",
+    platforms: {
+      instagram: "https://www.instagram.com/ruivo_rv9",
+      tiktok: "https://www.tiktok.com/@ruivorv_9",
+    },
+  },
+  {
+    id: "gael",
+    name: "GAEL",
+    image: "/Influencers/GAEL-SITE.jpeg",
+    platforms: {
+      instagram: "https://www.instagram.com/gaelzzkq0",
+      tiktok: "https://www.tiktok.com/@gaelzzkq",
+    },
+  },
+  {
+    id: "souza",
+    name: "SOUZA",
+    image: "/Influencers/SOUZA-SITE.jpeg",
+    platforms: {
+      instagram: "https://www.instagram.com/souza_efootball.10",
+      tiktok: "https://www.tiktok.com/@souzaefootball.10",
+    },
+  },
+  {
+    id: "apolo",
+    name: "APOLO",
+    image: "/Influencers/APOLO-SITE.jpeg",
+    platforms: {
+      instagram: "https://www.instagram.com/apolo_games01/",
+      tiktok: "https://www.tiktok.com/@apolo_ga444",
+    },
+  },
+  {
+    id: "astro",
+    name: "ASTRO",
+    image: "/Influencers/ASTRO-INFLUENCER.jpg",
+    platforms: {
+      instagram: "https://www.instagram.com/astroef/",
+      tiktok: "https://www.tiktok.com/@astroef",
+    },
+  },
+  {
+    id: "gabriel",
+    name: "GABRIEL",
+    image: "/Influencers/GABRIEL-INFLUENCER.jpg",
+    platforms: {
+      instagram: "https://www.instagram.com/gabriel.efootballbr/",
+    },
+  },
 ];
 
 export function InfluencersSection() {

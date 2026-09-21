@@ -45,6 +45,9 @@ const httpClient = axios.create({
     Accept: 'application/json',
   },
   timeout: 15000,
+  // Necessário para que o navegador aceite/envie cookies em requisições cross-origin.
+  // Permite que o backend injete o cookie kzn_auth_token via Set-Cookie no login.
+  withCredentials: true,
   paramsSerializer: {
     serialize: (params) => {
       const searchParams = new URLSearchParams();
