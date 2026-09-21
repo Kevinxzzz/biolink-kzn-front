@@ -21,3 +21,16 @@ export async function getMe(): Promise<AuthenticatedUser> {
     throw error;
   }
 }
+
+/**
+ * Encerra a sessão no servidor, removendo o cookie de autenticação (kzn_auth_token).
+ * Deve ser chamado junto com a limpeza local do token no localStorage.
+ * Ignora erros silenciosamente para não bloquear o fluxo de logout local.
+ */
+export async function logout(): Promise<void> {
+  try {
+    await httpClient.post("/auth/logout");
+  } catch {
+    // Ignora erros de rede: o logout local deve sempre prosseguir.
+  }
+}
