@@ -163,13 +163,12 @@ export function CategorySelectionModal({ isOpen, onClose, influencerSlug }: Cate
                       </div>
 
                       <h3 className={styles.categoryName}>
-                        {category.name}
+                        {isSelected ? "Redirecionando..." : category.name}
                       </h3>
                     </div>
 
                     {isSelected ? (
                       <div className={styles.loadingLabel} aria-live="polite">
-                        <span>Redirecionando...</span>
                         <div className={styles.smallSpinner} />
                       </div>
                     ) : (
