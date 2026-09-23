@@ -4,25 +4,59 @@
 @use '../../../../styles/tokens' as *;
 
 // ============================================
-// Aurora Portal — Category Selection Modal
+// Cosmic Gateway — Category Selection Modal
+// ============================================
+
+// ============================================
+// Overlay
 // ============================================
 
 .overlay {
   position: fixed;
   inset: 0;
-  background: rgba(0, 0, 0, 0.88);
-  -webkit-backdrop-filter: blur(12px);
-  backdrop-filter: blur(12px);
-  transform: translateZ(0);
-  -webkit-transform: translateZ(0);
-  will-change: opacity;
   display: flex;
   align-items: center;
   justify-content: center;
   z-index: 1000;
   padding: $space-lg;
   cursor: pointer;
-  animation: auroraFadeIn 0.35s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+  animation: overlayIn 0.4s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+
+  // Layered cosmic background
+  &::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: rgba(6, 5, 12, 0.92);
+    -webkit-backdrop-filter: blur(14px);
+    backdrop-filter: blur(14px);
+  }
+
+  // Animated mesh gradient layer
+  &::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background:
+      radial-gradient(ellipse 60% 50% at 20% 30%, rgba(139, 92, 246, 0.08) 0%, transparent 60%),
+      radial-gradient(ellipse 50% 60% at 80% 70%, rgba(192, 132, 252, 0.06) 0%, transparent 60%),
+      radial-gradient(ellipse 40% 40% at 50% 50%, rgba(109, 40, 217, 0.04) 0%, transparent 70%);
+    animation: meshBreath 12s ease-in-out infinite alternate;
+    pointer-events: none;
+  }
+
+  [data-theme="light"] & {
+    &::before {
+      background: rgba(240, 238, 252, 0.92);
+      backdrop-filter: blur(14px);
+      -webkit-backdrop-filter: blur(14px);
+    }
+    &::after {
+      background:
+        radial-gradient(ellipse 60% 50% at 20% 30%, rgba(124, 58, 237, 0.06) 0%, transparent 60%),
+        radial-gradient(ellipse 50% 60% at 80% 70%, rgba(168, 85, 247, 0.04) 0%, transparent 60%);
+    }
+  }
 
   @media (max-width: $breakpoint-md) {
     padding: 0;
@@ -31,6 +65,7 @@
 
   @include reduced-motion {
     animation: none;
+    &::after { animation: none; }
   }
 }
 
@@ -40,29 +75,89 @@
 
 .modal {
   width: 100%;
-  max-width: 680px;
-  background: #0c0b14;
-  border: 1px solid rgba(139, 92, 246, 0.12);
+  max-width: 700px;
+  background: linear-gradient(
+    160deg,
+    #0e0c1a 0%,
+    #0c0b18 50%,
+    #0f0d1f 100%
+  );
   border-radius: $radius-2xl;
   display: flex;
   flex-direction: column;
   cursor: default;
-  animation: auroraSlideUp 0.5s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+  animation: modalIn 0.5s cubic-bezier(0.16, 1, 0.3, 1) forwards;
   max-height: 85vh;
-  box-shadow:
-    0 0 0 1px rgba(139, 92, 246, 0.06) inset,
-    0 32px 64px rgba(0, 0, 0, 0.5),
-    0 0 120px rgba(139, 92, 246, 0.06);
   position: relative;
   overflow: hidden;
+  z-index: 1;
+
+  // Glow border via box-shadow layering
+  box-shadow:
+    0 0 0 1px rgba(139, 92, 246, 0.18),
+    0 0 0 2px rgba(139, 92, 246, 0.04),
+    0 40px 80px rgba(0, 0, 0, 0.6),
+    0 0 60px rgba(139, 92, 246, 0.08),
+    inset 0 1px 0 rgba(255, 255, 255, 0.04),
+    inset 0 -1px 0 rgba(139, 92, 246, 0.06);
+
+  // Aurora border — animated gradient ring
+  &::before {
+    content: '';
+    position: absolute;
+    inset: -1px;
+    border-radius: inherit;
+    background: conic-gradient(
+      from 0deg at 50% 50%,
+      transparent 0deg,
+      rgba(139, 92, 246, 0.5) 60deg,
+      rgba(192, 132, 252, 0.6) 120deg,
+      transparent 180deg,
+      rgba(109, 40, 217, 0.4) 240deg,
+      rgba(139, 92, 246, 0.5) 300deg,
+      transparent 360deg
+    );
+    animation: auroraBorder 8s linear infinite;
+    z-index: -1;
+    opacity: 0.6;
+    pointer-events: none;
+  }
+
+  // Mask the border to only show as a thin ring
+  &::after {
+    content: '';
+    position: absolute;
+    inset: 1px;
+    background: inherit;
+    border-radius: calc(#{$radius-2xl} - 1px);
+    z-index: 0;
+    pointer-events: none;
+  }
 
   [data-theme="light"] & {
-    background: #faf9fe;
-    border-color: rgba(124, 58, 237, 0.15);
+    background: linear-gradient(160deg, #faf9fe 0%, #f4f0fd 50%, #faf9fe 100%);
     box-shadow:
-      0 0 0 1px rgba(124, 58, 237, 0.04) inset,
-      0 32px 64px rgba(0, 0, 0, 0.12),
-      0 0 80px rgba(124, 58, 237, 0.04);
+      0 0 0 1px rgba(124, 58, 237, 0.2),
+      0 40px 80px rgba(0, 0, 0, 0.12),
+      0 0 40px rgba(124, 58, 237, 0.06),
+      inset 0 1px 0 rgba(255, 255, 255, 0.8);
+
+    &::before {
+      background: conic-gradient(
+        from 0deg at 50% 50%,
+        transparent 0deg,
+        rgba(124, 58, 237, 0.4) 60deg,
+        rgba(168, 85, 247, 0.5) 120deg,
+        transparent 180deg,
+        rgba(109, 40, 217, 0.3) 240deg,
+        rgba(124, 58, 237, 0.4) 300deg,
+        transparent 360deg
+      );
+    }
+
+    &::after {
+      background: linear-gradient(160deg, #faf9fe 0%, #f4f0fd 50%, #faf9fe 100%);
+    }
   }
 
   @media (max-width: $breakpoint-md) {
@@ -70,16 +165,24 @@
     max-width: 100%;
     border-radius: $radius-2xl $radius-2xl 0 0;
     border-bottom: none;
-    animation: auroraSlideUpMobile 0.4s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+    animation: modalInMobile 0.4s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+
+    &::before {
+      border-radius: $radius-2xl $radius-2xl 0 0;
+    }
+    &::after {
+      border-radius: calc(#{$radius-2xl} - 1px) calc(#{$radius-2xl} - 1px) 0 0;
+    }
   }
 
   @include reduced-motion {
     animation: none;
+    &::before { animation: none; }
   }
 }
 
 // ============================================
-// Aurora Background (decorative)
+// Aurora Background (decorative, inside modal)
 // ============================================
 
 .auroraBackground {
@@ -87,13 +190,13 @@
   inset: 0;
   overflow: hidden;
   pointer-events: none;
-  z-index: 0;
+  z-index: 1;
 }
 
 .auroraBlob {
   position: absolute;
   border-radius: 50%;
-  filter: blur(80px);
+  filter: blur(70px);
   will-change: transform;
 
   @include reduced-motion {
@@ -102,32 +205,32 @@
 }
 
 .auroraBlobPrimary {
-  width: 280px;
-  height: 280px;
-  background: var(--accent-primary);
-  opacity: 0.15;
-  top: -80px;
-  right: -60px;
+  width: 320px;
+  height: 320px;
+  background: radial-gradient(circle, var(--accent-primary) 0%, transparent 70%);
+  opacity: 0.12;
+  top: -100px;
+  right: -80px;
   animation: blobFloat 22s ease-in-out infinite;
 
   [data-theme="light"] & {
-    opacity: 0.06;
+    opacity: 0.05;
   }
 
   @media (max-width: $breakpoint-md) {
-    width: 200px;
-    height: 200px;
-    opacity: 0.12;
+    width: 220px;
+    height: 220px;
+    opacity: 0.1;
   }
 }
 
 .auroraBlobSecondary {
-  width: 240px;
-  height: 240px;
-  background: var(--accent-secondary);
-  opacity: 0.1;
-  bottom: -60px;
-  left: -40px;
+  width: 260px;
+  height: 260px;
+  background: radial-gradient(circle, var(--accent-secondary) 0%, transparent 70%);
+  opacity: 0.08;
+  bottom: -80px;
+  left: -60px;
   animation: blobFloatReverse 28s ease-in-out infinite;
 
   [data-theme="light"] & {
@@ -135,23 +238,22 @@
   }
 
   @media (max-width: $breakpoint-md) {
-    width: 160px;
-    height: 160px;
-    opacity: 0.08;
+    width: 180px;
+    height: 180px;
   }
 }
 
 .auroraNoise {
   position: absolute;
   inset: 0;
-  opacity: 0.03;
+  opacity: 0.025;
   background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
   background-repeat: repeat;
   background-size: 128px 128px;
   mix-blend-mode: overlay;
 
   [data-theme="light"] & {
-    opacity: 0.02;
+    opacity: 0.015;
   }
 }
 
@@ -160,11 +262,11 @@
   top: 0;
   left: 50%;
   transform: translateX(-50%);
-  width: 70%;
-  height: 200px;
+  width: 80%;
+  height: 180px;
   background: radial-gradient(
     ellipse at center top,
-    rgba(139, 92, 246, 0.12) 0%,
+    rgba(139, 92, 246, 0.1) 0%,
     transparent 70%
   );
   pointer-events: none;
@@ -172,7 +274,7 @@
   [data-theme="light"] & {
     background: radial-gradient(
       ellipse at center top,
-      rgba(124, 58, 237, 0.06) 0%,
+      rgba(124, 58, 237, 0.05) 0%,
       transparent 70%
     );
   }
@@ -200,12 +302,49 @@
   display: flex;
   align-items: flex-start;
   justify-content: space-between;
+  gap: $space-md;
 }
 
 .titleGroup {
   display: flex;
   flex-direction: column;
   gap: $space-xs;
+}
+
+// Small badge above the title
+.titleBadge {
+  display: inline-flex;
+  align-items: center;
+  gap: $space-2xs;
+  padding: $space-2xs $space-xs;
+  border-radius: $radius-pill;
+  background: rgba(139, 92, 246, 0.1);
+  border: 1px solid rgba(139, 92, 246, 0.2);
+  font-size: $text-xs;
+  font-weight: $weight-semibold;
+  color: var(--accent-secondary);
+  letter-spacing: $tracking-wider;
+  text-transform: uppercase;
+  width: fit-content;
+
+  [data-theme="light"] & {
+    background: rgba(124, 58, 237, 0.07);
+    border-color: rgba(124, 58, 237, 0.2);
+    color: var(--accent-primary);
+  }
+}
+
+.titleBadgeDot {
+  width: 5px;
+  height: 5px;
+  border-radius: 50%;
+  background: currentColor;
+  animation: dotPulse 2.5s ease-in-out infinite;
+  flex-shrink: 0;
+
+  @include reduced-motion {
+    animation: none;
+  }
 }
 
 .title {
@@ -215,14 +354,31 @@
   line-height: $leading-tight;
   letter-spacing: $tracking-tight;
   margin: 0;
+
+  @media (max-width: $breakpoint-md) {
+    font-size: $text-2xl;
+  }
 }
 
 .titleAccent {
-  background: linear-gradient(135deg, var(--accent-primary), var(--accent-secondary));
+  background: linear-gradient(
+    135deg,
+    var(--accent-primary) 0%,
+    var(--accent-secondary) 40%,
+    #e879f9 80%,
+    var(--accent-secondary) 100%
+  );
+  background-size: 200% auto;
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
   background-clip: text;
   color: transparent;
+  animation: gradientShift 4s ease-in-out infinite;
+
+  @include reduced-motion {
+    animation: none;
+    background-size: 100% auto;
+  }
 }
 
 .description {
@@ -240,26 +396,26 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  width: 40px;
-  height: 40px;
+  width: 38px;
+  height: 38px;
   border-radius: 50%;
   background: rgba(255, 255, 255, 0.04);
-  border: 1px solid rgba(255, 255, 255, 0.06);
+  border: 1px solid rgba(255, 255, 255, 0.08);
   color: var(--text-muted);
   cursor: pointer;
-  transition: all 0.25s cubic-bezier(0.16, 1, 0.3, 1);
+  transition: background 0.25s ease, color 0.25s ease, border-color 0.25s ease, transform 0.3s cubic-bezier(0.16, 1, 0.3, 1);
   flex-shrink: 0;
-  margin-top: -$space-2xs;
+  margin-top: 2px;
 
   [data-theme="light"] & {
     background: rgba(0, 0, 0, 0.03);
-    border-color: rgba(0, 0, 0, 0.06);
+    border-color: rgba(0, 0, 0, 0.08);
   }
 
   &:hover {
-    background: rgba(139, 92, 246, 0.1);
+    background: rgba(139, 92, 246, 0.12);
     color: var(--text-primary);
-    border-color: rgba(139, 92, 246, 0.2);
+    border-color: rgba(139, 92, 246, 0.25);
     transform: rotate(90deg);
   }
 
@@ -269,8 +425,13 @@
   }
 
   svg {
-    width: 18px;
-    height: 18px;
+    width: 16px;
+    height: 16px;
+  }
+
+  @include reduced-motion {
+    transition: background 0.15s ease, color 0.15s ease;
+    &:hover { transform: none; }
   }
 }
 
@@ -279,13 +440,21 @@
   background: linear-gradient(
     90deg,
     transparent 0%,
-    var(--accent-primary) 50%,
+    rgba(139, 92, 246, 0.4) 30%,
+    rgba(192, 132, 252, 0.5) 50%,
+    rgba(139, 92, 246, 0.4) 70%,
     transparent 100%
   );
-  opacity: 0.3;
 
   [data-theme="light"] & {
-    opacity: 0.2;
+    background: linear-gradient(
+      90deg,
+      transparent 0%,
+      rgba(124, 58, 237, 0.25) 30%,
+      rgba(168, 85, 247, 0.35) 50%,
+      rgba(124, 58, 237, 0.25) 70%,
+      transparent 100%
+    );
   }
 }
 
@@ -331,7 +500,8 @@
   gap: $space-sm;
   padding-bottom: $space-md;
 
-  @media (max-width: $breakpoint-sm) {
+  // Single column on all mobile viewports
+  @media (max-width: $breakpoint-md) {
     grid-template-columns: 1fr;
   }
 }
@@ -342,9 +512,9 @@
 
 .categoryCard {
   position: relative;
-  background: rgba(255, 255, 255, 0.03);
-  border: 1px solid rgba(255, 255, 255, 0.06);
-  border-radius: $radius-lg;
+  background: rgba(255, 255, 255, 0.025);
+  border: 1px solid rgba(255, 255, 255, 0.07);
+  border-radius: $radius-xl;
   padding: $space-lg $space-xl;
   display: flex;
   align-items: center;
@@ -355,54 +525,80 @@
   width: 100%;
   color: var(--text-primary);
   overflow: hidden;
-  transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+  transition:
+    background 0.3s cubic-bezier(0.16, 1, 0.3, 1),
+    border-color 0.3s cubic-bezier(0.16, 1, 0.3, 1),
+    box-shadow 0.3s cubic-bezier(0.16, 1, 0.3, 1),
+    transform 0.3s cubic-bezier(0.16, 1, 0.3, 1);
   animation: cardEnter 0.45s cubic-bezier(0.16, 1, 0.3, 1) backwards;
 
   [data-theme="light"] & {
-    background: rgba(255, 255, 255, 0.7);
+    background: rgba(255, 255, 255, 0.8);
     border-color: rgba(0, 0, 0, 0.06);
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.04);
   }
 
-  // Glow layer behind the card
-  &::after {
+  // Horizontal light sweep on hover
+  &::before {
     content: '';
     position: absolute;
-    inset: -1px;
-    border-radius: inherit;
-    background: radial-gradient(
-      circle at 50% 50%,
-      rgba(139, 92, 246, 0.12) 0%,
-      transparent 70%
+    inset: 0;
+    background: linear-gradient(
+      105deg,
+      transparent 20%,
+      rgba(139, 92, 246, 0.07) 50%,
+      transparent 80%
     );
     opacity: 0;
     transition: opacity 0.35s ease;
+    pointer-events: none;
     z-index: 0;
+  }
+
+  // Bottom glow accent line
+  &::after {
+    content: '';
+    position: absolute;
+    bottom: 0;
+    left: 10%;
+    right: 10%;
+    height: 1px;
+    background: linear-gradient(
+      90deg,
+      transparent,
+      rgba(139, 92, 246, 0.5),
+      rgba(192, 132, 252, 0.6),
+      rgba(139, 92, 246, 0.5),
+      transparent
+    );
+    opacity: 0;
+    transition: opacity 0.35s ease;
     pointer-events: none;
   }
 
   &:hover:not(:disabled) {
-    background: rgba(139, 92, 246, 0.06);
-    border-color: rgba(139, 92, 246, 0.2);
-    transform: translateY(-2px) scale(1.02);
+    background: rgba(139, 92, 246, 0.07);
+    border-color: rgba(139, 92, 246, 0.25);
+    transform: translateY(-2px);
     box-shadow:
-      0 8px 32px rgba(139, 92, 246, 0.12),
-      0 0 0 1px rgba(139, 92, 246, 0.08) inset;
+      0 8px 24px rgba(139, 92, 246, 0.12),
+      0 0 0 1px rgba(139, 92, 246, 0.1) inset,
+      0 0 20px rgba(139, 92, 246, 0.06);
 
     [data-theme="light"] & {
-      background: rgba(124, 58, 237, 0.04);
+      background: rgba(124, 58, 237, 0.05);
       border-color: rgba(124, 58, 237, 0.25);
       box-shadow:
-        0 8px 32px rgba(124, 58, 237, 0.08),
-        0 0 0 1px rgba(124, 58, 237, 0.06) inset;
+        0 8px 24px rgba(124, 58, 237, 0.08),
+        0 0 0 1px rgba(124, 58, 237, 0.08) inset;
     }
 
-    &::after {
+    &::before { opacity: 1; }
+    &::after { opacity: 1; }
+
+    .categoryIcon {
+      transform: rotate(30deg) scale(1.1);
       opacity: 1;
-    }
-
-    .diamond {
-      transform: rotate(45deg) scale(1.15);
-      box-shadow: 0 0 12px rgba(139, 92, 246, 0.4);
     }
 
     .categoryName {
@@ -416,6 +612,11 @@
     .arrowIcon {
       opacity: 1;
       transform: translateX(0);
+      color: var(--accent-secondary);
+    }
+
+    .orderNumber {
+      opacity: 0.5;
     }
   }
 
@@ -430,26 +631,32 @@
 
   &:disabled {
     cursor: not-allowed;
-    opacity: 0.5;
+    opacity: 0.45;
     transform: none;
+  }
+
+  @media (max-width: $breakpoint-md) {
+    padding: $space-md $space-lg;
   }
 
   @include reduced-motion {
     animation: none;
     transition: opacity 0.2s ease, background 0.2s ease;
-
-    &:hover:not(:disabled) {
-      transform: none;
-    }
+    &:hover:not(:disabled) { transform: none; }
+    &::before, &::after { transition: none; }
   }
 }
 
 // Staggered entrance for cards
-@for $i from 1 through 12 {
+@for $i from 1 through 16 {
   .categoryCard:nth-child(#{$i}) {
-    animation-delay: #{0.06 * $i}s;
+    animation-delay: #{0.05 * $i}s;
   }
 }
+
+// ============================================
+// Card Internal Layout
+// ============================================
 
 .categoryInfo {
   display: flex;
@@ -457,20 +664,43 @@
   gap: $space-sm;
   z-index: 2;
   min-width: 0;
+  flex: 1;
 }
 
-.diamond {
-  width: 10px;
-  height: 10px;
+// Hexagonal geometric icon
+.categoryIcon {
+  width: 32px;
+  height: 32px;
   flex-shrink: 0;
-  background: linear-gradient(135deg, var(--accent-primary), var(--accent-secondary));
-  transform: rotate(45deg);
-  border-radius: 2px;
-  transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
-  box-shadow: 0 0 6px rgba(139, 92, 246, 0.2);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  opacity: 0.75;
+  transition: transform 0.4s cubic-bezier(0.16, 1, 0.3, 1), opacity 0.3s ease;
+  color: var(--accent-primary);
 
   [data-theme="light"] & {
-    box-shadow: 0 0 6px rgba(124, 58, 237, 0.15);
+    color: var(--accent-primary);
+  }
+
+  svg {
+    width: 28px;
+    height: 28px;
+    filter: drop-shadow(0 0 4px rgba(139, 92, 246, 0.3));
+
+    [data-theme="light"] & {
+      filter: drop-shadow(0 0 3px rgba(124, 58, 237, 0.2));
+    }
+  }
+
+  @media (max-width: $breakpoint-md) {
+    width: 28px;
+    height: 28px;
+    svg { width: 24px; height: 24px; }
+  }
+
+  @include reduced-motion {
+    transition: opacity 0.2s ease;
   }
 }
 
@@ -478,23 +708,42 @@
   font-size: $text-base;
   font-weight: $weight-semibold;
   margin: 0;
+  line-height: $leading-snug;
   transition: color 0.25s ease;
-  white-space: nowrap;
-  overflow: hidden;
-  text-overflow: ellipsis;
+  // Allow wrapping for longer titles
+  white-space: normal;
+  overflow-wrap: break-word;
+  word-break: break-word;
+  min-width: 0;
 
-  @media (max-width: $breakpoint-sm) {
-    font-size: $text-lg;
+  @media (max-width: $breakpoint-md) {
+    font-size: $text-sm;
   }
+}
+
+// Discrete order number top-right
+.orderNumber {
+  position: absolute;
+  top: $space-xs;
+  right: $space-sm;
+  font-size: 0.65rem;
+  font-weight: $weight-bold;
+  color: var(--text-muted);
+  opacity: 0.25;
+  letter-spacing: $tracking-wide;
+  line-height: 1;
+  z-index: 2;
+  transition: opacity 0.25s ease;
+  pointer-events: none;
+  font-variant-numeric: tabular-nums;
 }
 
 .arrowIcon {
   opacity: 0;
-  transform: translateX(-8px);
-  transition: all 0.25s cubic-bezier(0.16, 1, 0.3, 1);
-  color: var(--accent-primary);
-  z-index: 2;
+  transform: translateX(-6px);
+  transition: opacity 0.25s cubic-bezier(0.16, 1, 0.3, 1), transform 0.25s cubic-bezier(0.16, 1, 0.3, 1), color 0.25s ease;
   flex-shrink: 0;
+  z-index: 2;
 
   @include reduced-motion {
     transition: opacity 0.15s ease;
@@ -507,31 +756,43 @@
 // ============================================
 
 .categoryCardSelected {
-  border-color: var(--accent-primary) !important;
-  background: rgba(139, 92, 246, 0.08) !important;
+  border-color: rgba(139, 92, 246, 0.5) !important;
+  background: rgba(139, 92, 246, 0.09) !important;
   opacity: 1 !important;
+  transform: none !important;
   box-shadow:
-    0 0 24px rgba(139, 92, 246, 0.15),
-    0 0 0 1px rgba(139, 92, 246, 0.15) inset !important;
+    0 0 0 1px rgba(139, 92, 246, 0.2) inset,
+    0 0 30px rgba(139, 92, 246, 0.12),
+    0 8px 20px rgba(0, 0, 0, 0.2) !important;
 
   [data-theme="light"] & {
-    background: rgba(124, 58, 237, 0.06) !important;
+    border-color: rgba(124, 58, 237, 0.4) !important;
+    background: rgba(124, 58, 237, 0.07) !important;
     box-shadow:
-      0 0 24px rgba(124, 58, 237, 0.1),
-      0 0 0 1px rgba(124, 58, 237, 0.12) inset !important;
+      0 0 0 1px rgba(124, 58, 237, 0.15) inset,
+      0 0 20px rgba(124, 58, 237, 0.08),
+      0 8px 20px rgba(0, 0, 0, 0.06) !important;
   }
 
-  .diamond {
-    box-shadow: 0 0 16px rgba(139, 92, 246, 0.5);
-    animation: diamondPulse 1.5s ease-in-out infinite;
+  &::after {
+    opacity: 1 !important;
+  }
+
+  .categoryIcon {
+    opacity: 1;
+    animation: iconPulse 2s ease-in-out infinite;
   }
 
   .categoryName {
-    color: var(--accent-secondary);
+    color: var(--accent-secondary) !important;
 
     [data-theme="light"] & {
-      color: var(--accent-primary);
+      color: var(--accent-primary) !important;
     }
+  }
+
+  @include reduced-motion {
+    .categoryIcon { animation: none; }
   }
 }
 
@@ -548,6 +809,7 @@
   font-weight: $weight-medium;
   z-index: 2;
   white-space: nowrap;
+  flex-shrink: 0;
 
   [data-theme="light"] & {
     color: var(--accent-primary);
@@ -555,12 +817,12 @@
 }
 
 .smallSpinner {
-  width: 14px;
-  height: 14px;
+  width: 13px;
+  height: 13px;
   border: 2px solid rgba(139, 92, 246, 0.2);
   border-top-color: currentColor;
   border-radius: 50%;
-  animation: spin 1s linear infinite;
+  animation: spin 0.8s linear infinite;
 }
 
 // ============================================
@@ -580,18 +842,18 @@
 }
 
 .emptyState svg {
-  width: 48px;
-  height: 48px;
+  width: 44px;
+  height: 44px;
   opacity: 0.3;
 }
 
 .spinner {
-  width: 32px;
-  height: 32px;
-  border: 3px solid rgba(139, 92, 246, 0.15);
+  width: 30px;
+  height: 30px;
+  border: 2px solid rgba(139, 92, 246, 0.15);
   border-top-color: var(--accent-primary);
   border-radius: 50%;
-  animation: spin 1s cubic-bezier(0.16, 1, 0.3, 1) infinite;
+  animation: spin 0.9s linear infinite;
 }
 
 .errorState {
@@ -605,6 +867,7 @@
 
   [data-theme="light"] & {
     background: rgba(239, 68, 68, 0.04);
+    color: #dc2626;
   }
 }
 
@@ -613,24 +876,18 @@
 // ============================================
 
 @keyframes spin {
-  to {
-    transform: rotate(360deg);
-  }
+  to { transform: rotate(360deg); }
 }
 
-@keyframes auroraFadeIn {
-  from {
-    opacity: 0;
-  }
-  to {
-    opacity: 1;
-  }
+@keyframes overlayIn {
+  from { opacity: 0; }
+  to   { opacity: 1; }
 }
 
-@keyframes auroraSlideUp {
+@keyframes modalIn {
   from {
     opacity: 0;
-    transform: translateY(24px) scale(0.97);
+    transform: translateY(20px) scale(0.97);
   }
   to {
     opacity: 1;
@@ -638,19 +895,15 @@
   }
 }
 
-@keyframes auroraSlideUpMobile {
-  from {
-    transform: translateY(100%);
-  }
-  to {
-    transform: translateY(0);
-  }
+@keyframes modalInMobile {
+  from { transform: translateY(100%); }
+  to   { transform: translateY(0); }
 }
 
 @keyframes cardEnter {
   from {
     opacity: 0;
-    transform: translateY(12px);
+    transform: translateY(10px);
   }
   to {
     opacity: 1;
@@ -658,11 +911,50 @@
   }
 }
 
-@keyframes diamondPulse {
-  0%, 100% {
-    box-shadow: 0 0 8px rgba(139, 92, 246, 0.3);
+@keyframes auroraBorder {
+  from { transform: rotate(0deg); }
+  to   { transform: rotate(360deg); }
+}
+
+@keyframes meshBreath {
+  0% {
+    opacity: 0.6;
+    transform: scale(1);
   }
   50% {
-    box-shadow: 0 0 20px rgba(139, 92, 246, 0.6);
+    opacity: 1;
+    transform: scale(1.03);
   }
+  100% {
+    opacity: 0.7;
+    transform: scale(1.01);
+  }
+}
+
+@keyframes blobFloat {
+  0%, 100% { transform: translate(0, 0) scale(1); }
+  33%       { transform: translate(28px, -36px) scale(1.04); }
+  66%       { transform: translate(-18px, 18px) scale(0.97); }
+}
+
+@keyframes blobFloatReverse {
+  0%, 100% { transform: translate(0, 0) scale(1); }
+  33%       { transform: translate(-28px, 28px) scale(0.97); }
+  66%       { transform: translate(18px, -18px) scale(1.04); }
+}
+
+@keyframes gradientShift {
+  0%   { background-position: 0% 50%; }
+  50%  { background-position: 100% 50%; }
+  100% { background-position: 0% 50%; }
+}
+
+@keyframes dotPulse {
+  0%, 100% { opacity: 1; transform: scale(1); }
+  50%       { opacity: 0.4; transform: scale(0.8); }
+}
+
+@keyframes iconPulse {
+  0%, 100% { filter: drop-shadow(0 0 4px rgba(139, 92, 246, 0.3)); }
+  50%       { filter: drop-shadow(0 0 10px rgba(192, 132, 252, 0.6)); }
 }
