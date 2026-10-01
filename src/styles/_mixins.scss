@@ -30,10 +30,12 @@
 }
 
 // Glassmorphism
+// blur reduzido de 20px→12px e saturate de 180%→140% para reduzir custo de
+// composição no iOS/WebKit quando combinado com outras camadas blur na página.
 @mixin glass($bg: var(--bg-glass)) {
   background: $bg;
-  backdrop-filter: blur(20px) saturate(180%);
-  -webkit-backdrop-filter: blur(20px) saturate(180%);
+  backdrop-filter: blur(12px) saturate(140%);
+  -webkit-backdrop-filter: blur(12px) saturate(140%);
 }
 
 // Focus visible
