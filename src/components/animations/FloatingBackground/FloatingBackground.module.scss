@@ -24,8 +24,10 @@
 .blob {
   position: absolute;
   border-radius: 50%;
-  filter: blur(100px);
-  will-change: transform;
+  filter: blur(60px);
+  // will-change removido: criava camadas composited extras no WebKit/iOS
+  // que tornavam a composição do backdrop-filter do modal serial e cara.
+  // O filter:blur já isola a camada no compositor naturalmente.
 
   @include reduced-motion {
     animation: none !important;

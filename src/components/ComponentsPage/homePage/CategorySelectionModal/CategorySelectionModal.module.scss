@@ -22,14 +22,16 @@
   cursor: pointer;
   animation: overlayIn 0.4s cubic-bezier(0.16, 1, 0.3, 1) forwards;
 
-  // Layered cosmic background
+  // Fundo escurecido sem backdrop-filter.
+  // backdrop-filter: blur() foi removido pois, no iOS/WebKit, o compositor
+  // precisa "achatar" todas as camadas com filter:blur() do FloatingBackground
+  // antes de aplicar o blur do overlay — operação serial que causa o delay
+  // perceptível exclusivamente no iPhone. O rgba mais opaco compensa visualmente.
   &::before {
     content: '';
     position: absolute;
     inset: 0;
-    background: rgba(6, 5, 12, 0.92);
-    -webkit-backdrop-filter: blur(14px);
-    backdrop-filter: blur(14px);
+    background: rgba(6, 5, 12, 0.90);
   }
 
   // Animated mesh gradient layer
@@ -47,9 +49,7 @@
 
   [data-theme="light"] & {
     &::before {
-      background: rgba(240, 238, 252, 0.92);
-      backdrop-filter: blur(14px);
-      -webkit-backdrop-filter: blur(14px);
+      background: rgba(240, 238, 252, 0.90);
     }
     &::after {
       background:
@@ -102,6 +102,9 @@
     inset 0 -1px 0 rgba(139, 92, 246, 0.06);
 
   // Aurora border — animated gradient ring
+  // auroraBorder (conic-gradient + rotate) desativado em mobile:
+  // conic-gradient não possui aceleração GPU no iOS/WebKit e forçava
+  // rerasterização em cada frame, agravando o custo de composição do modal.
   &::before {
     content: '';
     position: absolute;
@@ -167,7 +170,10 @@
     border-bottom: none;
     animation: modalInMobile 0.4s cubic-bezier(0.16, 1, 0.3, 1) forwards;
 
+    // Desativa auroraBorder em mobile: conic-gradient sem GPU acceleration
+    // no iOS causa rerasterização por frame — custo inaceitável em mobile.
     &::before {
+      animation: none;
       border-radius: $radius-2xl $radius-2xl 0 0;
     }
     &::after {
@@ -954,7 +960,10 @@
   50%       { opacity: 0.4; transform: scale(0.8); }
 }
 
+// iconPulse convertido de filter:drop-shadow para opacity.
+// filter não é compositor-only: cada frame forçava paint no iOS.
+// opacity é compositor-only: sem paint, sem custo de GPU adicional.
 @keyframes iconPulse {
-  0%, 100% { filter: drop-shadow(0 0 4px rgba(139, 92, 246, 0.3)); }
-  50%       { filter: drop-shadow(0 0 10px rgba(192, 132, 252, 0.6)); }
+  0%, 100% { opacity: 0.75; }
+  50%       { opacity: 1; }
 }
