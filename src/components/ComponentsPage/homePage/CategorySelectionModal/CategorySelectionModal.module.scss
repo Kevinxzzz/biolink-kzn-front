@@ -646,6 +646,10 @@
 
   @media (max-width: $breakpoint-md) {
     padding: $space-md $space-lg;
+    // Animação de entrada desativada em mobile: o fill-mode backwards +
+    // stagger causava até ~0.57s de cards invisíveis no iOS, gerando
+    // um delay perceptível antes da lista aparecer.
+    animation: none;
   }
 
   @include reduced-motion {
@@ -659,6 +663,8 @@
 // Staggered entrance for cards
 // Step reduzido de 0.05s→0.02s: delay máximo cai de 0.80s (card 16)
 // para 0.32s, mantendo o efeito visual escalonado sem o ~1s de espera.
+// Em mobile, animation:none no .categoryCard já elimina o stagger;
+// os seletores abaixo afetam apenas desktop (>768px).
 @for $i from 1 through 16 {
   .categoryCard:nth-child(#{$i}) {
     animation-delay: #{0.02 * $i}s;
