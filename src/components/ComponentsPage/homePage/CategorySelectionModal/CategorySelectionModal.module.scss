@@ -536,7 +536,10 @@
     border-color 0.3s cubic-bezier(0.16, 1, 0.3, 1),
     box-shadow 0.3s cubic-bezier(0.16, 1, 0.3, 1),
     transform 0.3s cubic-bezier(0.16, 1, 0.3, 1);
-  animation: cardEnter 0.45s cubic-bezier(0.16, 1, 0.3, 1) backwards;
+  // Duração reduzida de 0.45s→0.25s: com fill-mode backwards, cada card
+  // ficava invisível por até 1.25s acumulados no iOS. 0.25s mantém o
+  // efeito de entrada sem o delay perceptível.
+  animation: cardEnter 0.25s cubic-bezier(0.16, 1, 0.3, 1) backwards;
 
   [data-theme="light"] & {
     background: rgba(255, 255, 255, 0.8);
@@ -654,9 +657,11 @@
 }
 
 // Staggered entrance for cards
+// Step reduzido de 0.05s→0.02s: delay máximo cai de 0.80s (card 16)
+// para 0.32s, mantendo o efeito visual escalonado sem o ~1s de espera.
 @for $i from 1 through 16 {
   .categoryCard:nth-child(#{$i}) {
-    animation-delay: #{0.05 * $i}s;
+    animation-delay: #{0.02 * $i}s;
   }
 }
 
