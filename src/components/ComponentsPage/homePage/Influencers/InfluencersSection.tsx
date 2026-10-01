@@ -128,6 +128,16 @@ const INFLUENCERS = [
       instagram: "https://www.instagram.com/gabriel.efootballbr/",
     },
   },
+  {
+    id: "drummer",
+    name: "DRUMMER",
+    image: "/Influencers/DRUMMER-SITE.jpeg",
+    platforms: {
+      youtube: "https://www.youtube.com/@Drummerefootballl",
+      instagram: "https://www.instagram.com/drummerefootball",
+      tiktok: "https://www.tiktok.com/@israeldrummer",
+    },
+  },
 ];
 
 export function InfluencersSection() {
