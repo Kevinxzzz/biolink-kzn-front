@@ -39,16 +39,6 @@ const INFLUENCERS = [
     },
   },
   {
-    id: "thg",
-    name: "THG",
-    image: "/Influencers/THG-INFLUENCER.jpg",
-    platforms: {
-      youtube: "https://youtube.com/@thg_efootball5?si=xck1zKF_VHWreTj0",
-      instagram: "https://www.instagram.com/thg_efootball?utm_source=ig_web_button_share_sheet&igsi=ZDNlZDc0MzIxNw==",
-      tiktok: "https://www.tiktok.com/@thg_efootball?is_from_webapp=1&sender_device=pc",
-    },
-  },
-  {
     id: "el-mysterio",
     name: "EL MYSTERIO",
     image: "/Influencers/ELMYSTERIO-INFLUENCER.JPEG",
@@ -65,14 +55,6 @@ const INFLUENCERS = [
     platforms: {
       youtube: "https://youtube.com/@baraoegamer",
       instagram: "https://instagram.com/baraoegamer",
-    },
-  },
-  {
-    id: "portal",
-    name: "PORTAL",
-    image: "/Influencers/PORTAL-SITE.jpeg",
-    platforms: {
-      instagram: "https://www.instagram.com/portalefootball",
     },
   },
   {
@@ -93,41 +75,7 @@ const INFLUENCERS = [
       tiktok: "https://www.tiktok.com/@gaelzzkq",
     },
   },
-  {
-    id: "souza",
-    name: "SOUZA",
-    image: "/Influencers/SOUZA-SITE.jpeg",
-    platforms: {
-      instagram: "https://www.instagram.com/souza_efootball.10",
-      tiktok: "https://www.tiktok.com/@souzaefootball.10",
-    },
-  },
-  {
-    id: "apolo",
-    name: "APOLO",
-    image: "/Influencers/APOLO-SITE.jpeg",
-    platforms: {
-      instagram: "https://www.instagram.com/apolo_games01/",
-      tiktok: "https://www.tiktok.com/@apolo_ga444",
-    },
-  },
-  {
-    id: "astro",
-    name: "ASTRO",
-    image: "/Influencers/ASTRO-INFLUENCER.jpg",
-    platforms: {
-      instagram: "https://www.instagram.com/astroef/",
-      tiktok: "https://www.tiktok.com/@astroef",
-    },
-  },
-  {
-    id: "gabriel",
-    name: "GABRIEL",
-    image: "/Influencers/GABRIEL-INFLUENCER.jpg",
-    platforms: {
-      instagram: "https://www.instagram.com/gabriel.efootballbr/",
-    },
-  },
+
   {
     id: "drummer",
     name: "DRUMMER",
