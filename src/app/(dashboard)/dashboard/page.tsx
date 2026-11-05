@@ -78,6 +78,7 @@ export default function DashboardOverviewPage() {
         </div>
 
         <DashboardCharts
+          period={period}
           chartTab={chartTab}
           setChartTab={setChartTab}
           chartData={data.chartData}
